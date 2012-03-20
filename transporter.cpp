@@ -1,11 +1,12 @@
 #include "transporter.h"
-int DEBUG = 1;
+int DEBUG = 0;
 
 Transporter::Transporter(std::string parhost,std::string parport){
       //std::cout <<" OK\n" << std::flush;
 	    host = parhost;
       port = parport;
       cache_name = "";
+
       create_connection();
         //std::cout << "Transporter zije "<<"\n"<<host<<":"<<port<<std::endl;
 }
@@ -276,7 +277,8 @@ response Transporter::read_data(int *state,long long *data){
         std::cout <<std::dec << "ping in ms: "<< (*data)/1000<<std::endl;
       }
     }
-    std::map<std::string, std::string>bulk;
+    
+
     if(op_code == 0x1a){ //getBulk
       int key_len = 0;
       int value_len = 0;
@@ -285,26 +287,34 @@ response Transporter::read_data(int *state,long long *data){
         n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
         if(buffer2[0] == 0x00) break;
         key_len = decode_varint();
-        std::cout << "* ";
+        if(DEBUG){
+          std::cout << "* ";
+        }
         tmp_key.clear();
         for(int i = 0;i < key_len; i++)
         {  
           n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
           buffer2[n] = '\0';
-          std::cout << (char*)buffer2;
+          if(DEBUG){
+            std::cout << (char*)buffer2;
+          }
           tmp_key += (char*)buffer2;
 
           //std::cout << n<<" ";
           //std::cout << buffer2<<" "<< std::hex << (u_short)buffer2[0]<<std::endl;
         }
-        std::cout << " : ";
+        if(DEBUG){
+          std::cout << " : ";
+        }
         value_len = decode_varint();
         tmp_value.clear();
         for(int i = 0;i < value_len; i++)
         {  
           n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
           buffer2[n] = '\0';
-          std::cout << (char*)buffer2;
+          if(DEBUG){
+            std::cout << (char*)buffer2;
+          }
           tmp_value += (char*)buffer2;
           //std::cout << n<<" ";
           //std::cout << buffer2<<" "<< std::hex << (u_short)buffer2[0]<<std::endl;

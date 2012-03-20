@@ -14,3 +14,10 @@
 	>> org.infinispan.interceptors.EntryWrappingInterceptor
 	>> org.infinispan.interceptors.CallInterceptor
 2012-03-20 11:12:23,571 DEBUG (InfinispanServer-Main) [org.infinispan.CacheImpl] Started cache ___defaultcache on null
+2012-03-20 14:12:07,669 INFO  (ShutdownHookThread) [org.infinispan.server.core.ShutdownHook] ISPN005002: Posting Shutdown Request to the server...
+2012-03-20 14:12:07,974 DEBUG (StopThread) [org.infinispan.server.hotrod.HotRodServer] Stopping server listening in 127.0.0.1:11222
+2012-03-20 14:12:08,105 DEBUG (StopThread) [org.infinispan.server.core.transport.NettyTransport] Channel group completely closed, release external resources
+2012-03-20 14:12:08,109 DEBUG (StopThread) [org.infinispan.server.hotrod.HotRodServer] Server stopped
+2012-03-20 14:12:08,110 DEBUG (StopThread) [org.infinispan.manager.DefaultCacheManager] Stopping cache manager Infinispan-Cluster on null
+2012-03-20 14:12:08,238 DEBUG (StopThread) [org.infinispan.CacheImpl] Stopping cache ___defaultcache on null
+2012-03-20 14:12:08,239 DEBUG (StopThread) [org.infinispan.transaction.TransactionTable] Wait for on-going transactions to finish for 30 seconds.

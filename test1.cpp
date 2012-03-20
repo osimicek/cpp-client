@@ -9,10 +9,8 @@ void print_map(std::map<std::string,std::string>  coll){
 }
 
 int test1(){
-	std::cout <<" OK\n" << std::flush<<std::endl;
 	RemoteCache *x = new RemoteCache();
 	int ret = 0;
-	std::cout <<" OK\n" << std::flush<<std::endl;
 	x->putIfAbsent(std::string("Hell"),std::string("aa"));
 	//std::cerr << x->get(std::string("Hell")) <<"|"<<std::endl;
 	if(x->get(std::string("Hell")) != std::string("aa")){
@@ -69,6 +67,8 @@ int test2(){
 	}
 	//x->clear();
 	x->put(std::string("Hell"),std::string("ff"));
+	x->put(std::string("Hell2"),std::string("f2"));
+	x->put(std::string("Hell3"),std::string("f3"));
 	print_map(x->getBulk());
 	//std::cout <<x->ping()<<std::endl;
 	return ret;

@@ -27,13 +27,17 @@ typedef struct {
     };
 } response;
 
+
 class Transporter{
 	public:
+    std::map<std::string, std::string> bulk;
     std::string host, port, cache_name;
     std::string result;
     response resp;
 
+
     int sock;
+
   
     Transporter(std::string,std::string);
     void create_connection();
