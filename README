@@ -1,0 +1,7 @@
+Run new Terminal
+~/make starts  #to run infinispan server
+
+
+Run new Terminal
+~/make  
+~/make run  #to run rest
