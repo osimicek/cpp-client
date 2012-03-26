@@ -77,11 +77,12 @@ int test3(){
 	int stat;
 	long long ver;
 	std::map<std::string,std::string>  data;
-
+	x->clear();
 	x->put(&std::string("Hell"),&std::string("ff"));
 	x->put(&std::string("Hell2"),&std::string("f2"));
 	x->put(&std::string("Hell3"),&std::string("f3"));
 	print_map(x->getBulk());
+	std::cout << "ok"<<std::endl;
 
 	data["Hell4"] = "f4";
 	data["Hell5"] = "f5";

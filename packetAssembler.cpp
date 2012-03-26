@@ -90,21 +90,21 @@ int PacketAssembler::createClear(){
     return state;                                 
 }
 
-int PacketAssembler::createPut(const char *key,const char *value){
+int PacketAssembler::createPut(const char *key,const char *value,int lifespan, int idle){
     std::string tmp_key(key);
     std::string tmp_value(value);
-	return createPut(&tmp_key,&tmp_value);
+	return createPut(&tmp_key,&tmp_value,lifespan,idle);
 }
 
-int PacketAssembler::createPut(const std::string *key, const std::string *value){
+int PacketAssembler::createPut(const std::string *key, const std::string *value,int lifespan, int idle){
     createBase(0x09,0x01);      
 
                   
     packet += encode_varlong((*key).length()); // key len
     packet += (*key); //key
         	
-    packet += (char)0x00; //Life span
-    packet += (char)0x00;	//Max idle
+    packet += (char)lifespan; //Life span
+    packet += (char)idle;	//Max idle
 
     packet += encode_varlong((*value).length()); // key len
     packet += (*value); //key
@@ -113,13 +113,13 @@ int PacketAssembler::createPut(const std::string *key, const std::string *value)
     return state;	
 }
 
-int PacketAssembler::createPutIfAbsent(const char *key,const char *value){
+int PacketAssembler::createPutIfAbsent(const char *key,const char *value,int lifespan, int idle){
     std::string tmp_key(key);
     std::string tmp_value(value);
-    return createPutIfAbsent(&tmp_key,&tmp_value);
+    return createPutIfAbsent(&tmp_key,&tmp_value,lifespan,idle);
 }
 
-int PacketAssembler::createPutIfAbsent(std::string *key, std::string *value){
+int PacketAssembler::createPutIfAbsent(std::string *key, std::string *value,int lifespan, int idle){
     std::string  *s_key, *s_value;
     s_key = key;
     s_value = value;
@@ -130,8 +130,8 @@ int PacketAssembler::createPutIfAbsent(std::string *key, std::string *value){
     packet += encode_varlong((*s_key).length()); // key len
     packet += (*s_key); //key
             
-    packet += (char)0x00; //Life span
-    packet += (char)0x00; //Max idle
+    packet += (char)lifespan; //Life span
+    packet += (char)idle; //Max idle
 
 
     packet += encode_varlong((*s_value).length()); // key len
@@ -141,13 +141,13 @@ int PacketAssembler::createPutIfAbsent(std::string *key, std::string *value){
     return state;   
 }
 
-int PacketAssembler::createReplace(const char *key,const char *value){
+int PacketAssembler::createReplace(const char *key,const char *value,int lifespan, int idle){
     std::string tmp_key(key);
     std::string tmp_value(value);
-    return createReplace(&tmp_key,&tmp_value);
+    return createReplace(&tmp_key,&tmp_value,lifespan,idle);
 }
 
-int PacketAssembler::createReplace(std::string *key, std::string *value){
+int PacketAssembler::createReplace(std::string *key, std::string *value,int lifespan, int idle){
     std::string  *s_key, *s_value;
     s_key = key;
     s_value = value;
@@ -157,8 +157,8 @@ int PacketAssembler::createReplace(std::string *key, std::string *value){
     packet += encode_varlong((*s_key).length()); // key len
     packet += (*s_key); //key
             
-    packet += (char)0x00; //Life span
-    packet += (char)0x00; //Max idle
+    packet += (char)lifespan; //Life span
+    packet += (char)idle; //Max idle
 
     packet += encode_varlong((*s_value).length()); // key len
     packet += (*s_value); //key
@@ -167,13 +167,13 @@ int PacketAssembler::createReplace(std::string *key, std::string *value){
     return state;   
 }
 
-int PacketAssembler::createReplaceWithVersion(const char *key,const char *value, long long version){
+int PacketAssembler::createReplaceWithVersion(const char *key,const char *value, long long version,int lifespan, int idle){
     std::string tmp_key(key);
     std::string tmp_value(value);
-    return createReplaceWithVersion(&tmp_key,&tmp_value,version);
+    return createReplaceWithVersion(&tmp_key,&tmp_value,version,lifespan,idle);
 }
 
-int PacketAssembler::createReplaceWithVersion(std::string *key, std::string *value, long long version){
+int PacketAssembler::createReplaceWithVersion(std::string *key, std::string *value, long long version,int lifespan, int idle){
     std::string  *s_key, *s_value;
     s_key = key;
     s_value = value;
@@ -184,8 +184,8 @@ int PacketAssembler::createReplaceWithVersion(std::string *key, std::string *val
     packet += encode_varlong((*s_key).length()); // key len
     packet += (*s_key); //key
             
-    packet += (char)0x00; //Life span
-    packet += (char)0x00; //Max idle
+    packet += (char)lifespan; //Life span
+    packet += (char)idle; //Max idle
  
     packet += encode_version(version); //version
 

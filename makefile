@@ -4,8 +4,8 @@
 CC= g++ -Wall 
 
 
-ALL:  transporter.o packetParser.o packetAssembler.o remoteCache.o test1.o				
-	$(CC)  transporter.o packetParser.o  packetAssembler.o remoteCache.o test1.o -o test1
+ALL:  packetParser.o transporter.o packetAssembler.o remoteCache.o test1.o				
+	$(CC)  packetParser.o transporter.o packetAssembler.o remoteCache.o test1.o -o test1
 
 
 run:

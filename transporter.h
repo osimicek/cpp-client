@@ -14,26 +14,18 @@
 #include <netdb.h>
 #include "error.h"
 #include <stdio.h>
-#include <map>
 
-#include <sys/time.h>//time for ping
 
 #include "packetParser.h"
 
-typedef struct {
-    union {
-        std::string *data;
-        std::map<std::string, std::string>*bulk;
-    };
-} response;
+
 
 
 class Transporter{
 	public:
-    std::map<std::string, std::string> bulk;
+    
     std::string host, port, cache_name;
-    std::string result;
-    response resp;
+    
 
 
     int sock;
@@ -47,9 +39,9 @@ class Transporter{
     
     void close_connection();
 private:
-	int decode_varint();
-	long long decode_varlong();
-	response read_data(int *state,long long *data = 0); 
+	
+    int choose_socket();
+	
     
         
 	void write_data(const char *data,int len);
