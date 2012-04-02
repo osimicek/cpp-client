@@ -1,3 +1,6 @@
+#ifndef REMOTE_H_INCLUDED
+#define REMOTE_H_INCLUDED
+
 #include <string>
 #include <iostream>
 #include "transporter.h"
@@ -30,12 +33,14 @@ class RemoteCache{
     int removeWithVersion(std::string *key, long long version);
     int containsKey(const char *key);
     int containsKey(std::string *key);
-    const char* getWithVersion(const char *key,long long *version);
-    std::string *getWithVersion(std::string *key,long long *version);
-    std::string *get(std::string *key);
+    int getWithVersion(const char* value, const char *key,long long *version);
+    int getWithVersion(std::string *value, std::string *key,long long *version);
+    int get(std::string * value, std::string *key);
 
-    const char* get(const char *key);
+    int get(const char* value, const char *key);
 
-    std::map<std::string,std::string> *getBulk();
-    std::map<std::string,std::string> *getBulk(int count);
+    int getBulk(std::map<std::string,std::string> *bulk);
+    int getBulk(std::map<std::string,std::string> *bulk, int count);
 };
+
+#endif

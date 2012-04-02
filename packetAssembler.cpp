@@ -196,18 +196,25 @@ int PacketAssembler::createReplaceWithVersion(std::string *key, std::string *val
     return state;   
 }
 
-const char * PacketAssembler::createGet(const char *key){
+int PacketAssembler::createGet(const char *value,const char *key){
     std::string tmp_key(key);
-	return (*createGet(&tmp_key)).c_str();
+    std::string val;  //zmenit
+    createGet(&val,&tmp_key);
+    value = (val.c_str());
+	return state; // state of this packet
 }
 
-std::string *PacketAssembler::createGet(std::string *key){
+int PacketAssembler::createGet(std::string *value, std::string *key){
     createBase(0x09,0x03);      
 
     packet += encode_varlong((*key).length()); // key len
     packet += (*key); //key
 
-    return (transporter->send(packet.c_str(),packet.length(),&state).data);	      
+    response resp;
+    resp.data = value;
+
+    transporter->send(packet.c_str(),packet.length(),&state,&resp);	 
+    return state;     
 }
 
 
@@ -258,26 +265,37 @@ int PacketAssembler::createContainsKey(std::string *key){
     return state; 
 }
 
-const char * PacketAssembler::createGetWithVersion(const char *key,long long *version){
+int PacketAssembler::createGetWithVersion(const char *value,const char *key,long long *version){
     std::string tmp_key(key);
-    return (*createGetWithVersion(&tmp_key,version)).c_str();
+    std::string val;  //zmenit
+    createGetWithVersion(&val,&tmp_key,version);
+    value = (val.c_str());
+    return state; // state of this packet
 }
 
-std::string *PacketAssembler::createGetWithVersion(std::string *key,long long *version){
+int PacketAssembler::createGetWithVersion(std::string *value,std::string *key,long long *version){
     createBase(0x09,0x11);      
 
     packet += encode_varlong((*key).length()); // key len
     packet += *key; //key
 
-    return (transporter->send(packet.c_str(),packet.length(),&state,version).data);     
+    response resp;
+    resp.data = value;
+
+    transporter->send(packet.c_str(),packet.length(),&state,version,&resp);  
+    return state;   
 }
 
-std::map<std::string,std::string> *PacketAssembler::createGetBulk(int count){
+int PacketAssembler::createGetBulk(std::map<std::string,std::string> *bulk, int count){
     createBase(0x09,0x19);      
 
     packet += encode_varint(count);//entry count
+    response resp;
+    resp.bulk = bulk;
+    
 
-    return  (transporter->send(packet.c_str(),packet.length(),&state).bulk); 
+    transporter->send(packet.c_str(),packet.length(),&state,&resp); 
+    return state;
 }
 
 

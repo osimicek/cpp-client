@@ -97,15 +97,20 @@ int RemoteCache::replaceWithVersion(std::string *key,std::string *value, long lo
 
     return PA->createReplaceWithVersion(key,value,version,lifespan,idle);
 }
-const char* RemoteCache::get(const char *key){
+int RemoteCache::get(const char* value, const char *key){
     std::string tmp_key(key);
-    return (*get(&tmp_key)).c_str();
+    std::string val; //zmenit
+
+    get(&val,&tmp_key);
+    value = (val.c_str());
+    return 0;
 }
 
-std::string *RemoteCache::get(std::string *key){
+int RemoteCache::get(std::string *value, std::string *key){
     PacketAssembler *PA = new PacketAssembler(transporter);
 
-    return PA->createGet(key);
+    PA->createGet(value, key);
+    return 0;
 }
 
 int RemoteCache::remove(const char *key){
@@ -149,18 +154,22 @@ int RemoteCache::containsKey(std::string *key){
     return PA->createContainsKey(key);
 }
 
-const char* RemoteCache::getWithVersion(const char *key,long long *version){
+int RemoteCache::getWithVersion(const char *value, const char *key,long long *version){
     std::string tmp_key(key);
-    return (*getWithVersion(&tmp_key,version)).c_str();
+    std::string val;  //zmenit
+    getWithVersion(&val,&tmp_key,version);
+    value = (val.c_str());
+    return 0;
 }
 
-std::string *RemoteCache::getWithVersion(std::string *key,long long *version){
+int RemoteCache::getWithVersion(std::string *value,std::string *key,long long *version){
     PacketAssembler *PA = new PacketAssembler(transporter);
 
-    return PA->createGetWithVersion(key,version);
+    PA->createGetWithVersion(value,key,version);
+    return 0;
 }
 
-std::map<std::string,std::string> *RemoteCache::getBulk(int count){
+int RemoteCache::getBulk(std::map<std::string,std::string> *bulk,int count){
     /**
     * Bulk get operations, returns all the entries within the remote cache.
     *
@@ -169,15 +178,18 @@ std::map<std::string,std::string> *RemoteCache::getBulk(int count){
     */
     PacketAssembler *PA = new PacketAssembler(transporter);
 
-    return PA->createGetBulk(count);    
+    PA->createGetBulk(bulk,count);    
+    return 0;
 }
-std::map<std::string,std::string>  *RemoteCache::getBulk(){
+int RemoteCache::getBulk(std::map<std::string,std::string> *bulk){
     /**
     * Bulk get operations, returns all the entries within the remote cache.
     *
     * @return returns Map of string
     */
-    return getBulk(0);
+    
+    getBulk(bulk,0);
+    return 0;
 }
 
 void RemoteCache::stats(){

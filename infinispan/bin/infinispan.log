@@ -1,20 +1,20 @@
-2012-03-18 22:27:04,743 INFO  (main) [org.infinispan.server.core.Main$] ISPN005001: Start main with args: -r, hotrod
-2012-03-18 22:27:05,357 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] Loading lifecycle SPI class: org.infinispan.server.memcached.LifecycleCallbacks@73da669c
-2012-03-18 22:27:05,360 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] Loading lifecycle SPI class: org.infinispan.server.core.LifecycleCallbacks@4f4db0e3
-2012-03-18 22:27:05,362 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] Loading lifecycle SPI class: org.infinispan.server.hotrod.LifecycleCallbacks@39e4853f
-2012-03-18 22:27:05,685 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] No module command extensions to load
-2012-03-18 22:27:06,247 DEBUG (InfinispanServer-Main) [org.infinispan.manager.DefaultCacheManager] Started cache manager Infinispan-Cluster on null
-2012-03-18 22:27:06,405 DEBUG (InfinispanServer-Main) [org.infinispan.server.hotrod.HotRodServer] Starting server with basic settings: host=127.0.0.1, port=11222, masterThreads=-1, workerThreads=40, idleTimeout=-1, tcpNoDelay=true, sendBufSize=0, recvBufSize=0
-2012-03-18 22:27:07,227 DEBUG (InfinispanServer-Main) [org.infinispan.interceptors.InterceptorChain] Interceptor chain size: 6
-2012-03-18 22:27:07,227 DEBUG (InfinispanServer-Main) [org.infinispan.interceptors.InterceptorChain] Interceptor chain is: 
+2012-04-01 18:55:39,083 INFO  (main) [org.infinispan.server.core.Main$] ISPN005001: Start main with args: -r, hotrod
+2012-04-01 18:55:39,790 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] Loading lifecycle SPI class: org.infinispan.server.memcached.LifecycleCallbacks@4dd36dfe
+2012-04-01 18:55:39,797 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] Loading lifecycle SPI class: org.infinispan.server.core.LifecycleCallbacks@506f9b8e
+2012-04-01 18:55:39,799 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] Loading lifecycle SPI class: org.infinispan.server.hotrod.LifecycleCallbacks@5a676437
+2012-04-01 18:55:40,176 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] No module command extensions to load
+2012-04-01 18:55:40,931 DEBUG (InfinispanServer-Main) [org.infinispan.manager.DefaultCacheManager] Started cache manager Infinispan-Cluster on null
+2012-04-01 18:55:41,119 DEBUG (InfinispanServer-Main) [org.infinispan.server.hotrod.HotRodServer] Starting server with basic settings: host=127.0.0.1, port=11222, masterThreads=-1, workerThreads=40, idleTimeout=-1, tcpNoDelay=true, sendBufSize=0, recvBufSize=0
+2012-04-01 18:55:41,823 DEBUG (InfinispanServer-Main) [org.infinispan.interceptors.InterceptorChain] Interceptor chain size: 6
+2012-04-01 18:55:41,823 DEBUG (InfinispanServer-Main) [org.infinispan.interceptors.InterceptorChain] Interceptor chain is: 
 	>> org.infinispan.interceptors.InvocationContextInterceptor
 	>> org.infinispan.interceptors.CacheMgmtInterceptor
 	>> org.infinispan.interceptors.NotificationInterceptor
 	>> org.infinispan.interceptors.locking.NonTransactionalLockingInterceptor
 	>> org.infinispan.interceptors.EntryWrappingInterceptor
 	>> org.infinispan.interceptors.CallInterceptor
-2012-03-18 22:27:07,243 DEBUG (InfinispanServer-Main) [org.infinispan.CacheImpl] Started cache ___defaultcache on null
-2012-03-19 00:19:15,470 ERROR (HotRodServerWorker-1-12) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+2012-04-01 18:55:41,840 DEBUG (InfinispanServer-Main) [org.infinispan.CacheImpl] Started cache ___defaultcache on null
+2012-04-02 19:07:45,659 ERROR (HotRodServerWorker-1-6) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
 java.io.IOException: Connection reset by peer
 	at sun.nio.ch.FileDispatcher.read0(Native Method)
 	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
@@ -27,7 +27,7 @@ java.io.IOException: Connection reset by peer
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
 	at java.lang.Thread.run(Thread.java:679)
-2012-03-19 00:19:15,528 ERROR (HotRodServerWorker-1-12) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+2012-04-02 19:07:45,667 ERROR (HotRodServerWorker-1-6) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
 java.io.IOException: Broken pipe
 	at sun.nio.ch.FileDispatcher.write0(Native Method)
 	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
@@ -52,7 +52,7 @@ java.io.IOException: Broken pipe
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
 	at java.lang.Thread.run(Thread.java:679)
-2012-03-19 00:22:58,990 ERROR (HotRodServerWorker-1-13) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+2012-04-02 19:37:10,068 ERROR (HotRodServerWorker-1-16) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
 java.io.IOException: Connection reset by peer
 	at sun.nio.ch.FileDispatcher.read0(Native Method)
 	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
@@ -65,7 +65,7 @@ java.io.IOException: Connection reset by peer
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
 	at java.lang.Thread.run(Thread.java:679)
-2012-03-19 00:22:58,996 ERROR (HotRodServerWorker-1-13) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+2012-04-02 19:37:10,078 ERROR (HotRodServerWorker-1-16) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
 java.io.IOException: Broken pipe
 	at sun.nio.ch.FileDispatcher.write0(Native Method)
 	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
@@ -90,7 +90,7 @@ java.io.IOException: Broken pipe
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
 	at java.lang.Thread.run(Thread.java:679)
-2012-03-19 00:23:53,198 ERROR (HotRodServerWorker-1-14) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+2012-04-02 19:38:44,977 ERROR (HotRodServerWorker-1-19) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
 java.io.IOException: Connection reset by peer
 	at sun.nio.ch.FileDispatcher.read0(Native Method)
 	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
@@ -103,7 +103,7 @@ java.io.IOException: Connection reset by peer
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
 	at java.lang.Thread.run(Thread.java:679)
-2012-03-19 00:23:53,216 ERROR (HotRodServerWorker-1-14) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+2012-04-02 19:38:44,982 ERROR (HotRodServerWorker-1-19) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
 java.io.IOException: Broken pipe
 	at sun.nio.ch.FileDispatcher.write0(Native Method)
 	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
@@ -128,7 +128,7 @@ java.io.IOException: Broken pipe
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
 	at java.lang.Thread.run(Thread.java:679)
-2012-03-19 00:24:11,082 ERROR (HotRodServerWorker-1-15) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+2012-04-02 19:41:37,318 ERROR (HotRodServerWorker-1-22) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
 java.io.IOException: Connection reset by peer
 	at sun.nio.ch.FileDispatcher.read0(Native Method)
 	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
@@ -141,7 +141,7 @@ java.io.IOException: Connection reset by peer
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
 	at java.lang.Thread.run(Thread.java:679)
-2012-03-19 00:24:11,085 ERROR (HotRodServerWorker-1-15) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+2012-04-02 19:41:37,319 ERROR (HotRodServerWorker-1-22) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
 java.io.IOException: Broken pipe
 	at sun.nio.ch.FileDispatcher.write0(Native Method)
 	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
@@ -166,10 +166,231 @@ java.io.IOException: Broken pipe
 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
 	at java.lang.Thread.run(Thread.java:679)
-2012-03-19 01:36:33,676 INFO  (ShutdownHookThread) [org.infinispan.server.core.ShutdownHook] ISPN005002: Posting Shutdown Request to the server...
-2012-03-19 01:36:35,330 DEBUG (StopThread) [org.infinispan.server.hotrod.HotRodServer] Stopping server listening in 127.0.0.1:11222
-2012-03-19 01:36:36,107 DEBUG (StopThread) [org.infinispan.server.core.transport.NettyTransport] Channel group completely closed, release external resources
-2012-03-19 01:36:37,453 DEBUG (StopThread) [org.infinispan.server.hotrod.HotRodServer] Server stopped
-2012-03-19 01:36:37,454 DEBUG (StopThread) [org.infinispan.manager.DefaultCacheManager] Stopping cache manager Infinispan-Cluster on null
-2012-03-19 01:36:38,658 DEBUG (StopThread) [org.infinispan.CacheImpl] Stopping cache ___defaultcache on null
-2012-03-19 01:36:38,660 DEBUG (StopThread) [org.infinispan.transaction.TransactionTable] Wait for on-going transactions to finish for 30 seconds.
+2012-04-02 19:41:58,119 ERROR (HotRodServerWorker-1-25) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+java.io.IOException: Connection reset by peer
+	at sun.nio.ch.FileDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
+	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
+	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
+	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)
+2012-04-02 19:41:58,136 ERROR (HotRodServerWorker-1-25) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+java.io.IOException: Broken pipe
+	at sun.nio.ch.FileDispatcher.write0(Native Method)
+	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
+	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
+	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
+	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
+	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
+	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
+	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
+	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
+	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
+	at org.jboss.netty.channel.Channels.write(Channels.java:632)
+	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
+	at org.jboss.netty.channel.Channels.write(Channels.java:611)
+	at org.jboss.netty.channel.Channels.write(Channels.java:578)
+	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
+	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
+	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
+	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
+	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
+	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)
+2012-04-02 19:42:26,947 ERROR (HotRodServerWorker-1-28) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+java.io.IOException: Connection reset by peer
+	at sun.nio.ch.FileDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
+	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
+	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
+	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)
+2012-04-02 19:42:26,957 ERROR (HotRodServerWorker-1-28) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+java.io.IOException: Broken pipe
+	at sun.nio.ch.FileDispatcher.write0(Native Method)
+	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
+	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
+	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
+	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
+	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
+	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
+	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
+	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
+	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
+	at org.jboss.netty.channel.Channels.write(Channels.java:632)
+	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
+	at org.jboss.netty.channel.Channels.write(Channels.java:611)
+	at org.jboss.netty.channel.Channels.write(Channels.java:578)
+	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
+	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
+	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
+	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
+	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
+	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)
+2012-04-02 19:44:14,012 ERROR (HotRodServerWorker-1-31) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+java.io.IOException: Connection reset by peer
+	at sun.nio.ch.FileDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
+	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
+	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
+	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)
+2012-04-02 19:44:14,014 ERROR (HotRodServerWorker-1-31) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+java.io.IOException: Broken pipe
+	at sun.nio.ch.FileDispatcher.write0(Native Method)
+	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
+	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
+	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
+	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
+	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
+	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
+	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
+	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
+	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
+	at org.jboss.netty.channel.Channels.write(Channels.java:632)
+	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
+	at org.jboss.netty.channel.Channels.write(Channels.java:611)
+	at org.jboss.netty.channel.Channels.write(Channels.java:578)
+	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
+	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
+	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
+	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
+	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
+	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)
+2012-04-02 19:48:38,796 ERROR (HotRodServerWorker-1-34) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+java.io.IOException: Connection reset by peer
+	at sun.nio.ch.FileDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
+	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
+	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
+	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)
+2012-04-02 19:48:38,798 ERROR (HotRodServerWorker-1-34) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+java.io.IOException: Broken pipe
+	at sun.nio.ch.FileDispatcher.write0(Native Method)
+	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
+	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
+	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
+	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
+	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
+	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
+	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
+	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
+	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
+	at org.jboss.netty.channel.Channels.write(Channels.java:632)
+	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
+	at org.jboss.netty.channel.Channels.write(Channels.java:611)
+	at org.jboss.netty.channel.Channels.write(Channels.java:578)
+	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
+	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
+	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
+	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
+	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
+	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)
+2012-04-02 19:48:51,723 ERROR (HotRodServerWorker-1-37) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+java.io.IOException: Connection reset by peer
+	at sun.nio.ch.FileDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
+	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
+	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
+	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)
+2012-04-02 19:48:51,725 ERROR (HotRodServerWorker-1-37) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+java.io.IOException: Broken pipe
+	at sun.nio.ch.FileDispatcher.write0(Native Method)
+	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
+	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
+	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
+	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
+	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
+	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
+	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
+	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
+	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
+	at org.jboss.netty.channel.Channels.write(Channels.java:632)
+	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
+	at org.jboss.netty.channel.Channels.write(Channels.java:611)
+	at org.jboss.netty.channel.Channels.write(Channels.java:578)
+	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
+	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
+	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
+	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
+	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
+	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)
+2012-04-02 19:49:32,407 ERROR (HotRodServerWorker-1-40) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+java.io.IOException: Connection reset by peer
+	at sun.nio.ch.FileDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
+	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
+	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
+	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)
+2012-04-02 19:49:32,408 ERROR (HotRodServerWorker-1-40) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
+java.io.IOException: Broken pipe
+	at sun.nio.ch.FileDispatcher.write0(Native Method)
+	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
+	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
+	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
+	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
+	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
+	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
+	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
+	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
+	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
+	at org.jboss.netty.channel.Channels.write(Channels.java:632)
+	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
+	at org.jboss.netty.channel.Channels.write(Channels.java:611)
+	at org.jboss.netty.channel.Channels.write(Channels.java:578)
+	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
+	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
+	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
+	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
+	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
+	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
+	at java.lang.Thread.run(Thread.java:679)

@@ -46,10 +46,7 @@ long long PacketParser::decode_varlong(){
   }
 }
 
-response PacketParser::read_data(int *state,long long *data){
-  
-  result = "";
-  resp.data = &result;
+int PacketParser::read_data(int *state,long long *data,response *resp){
   char buffer;
   u_short buffer2[9];
   int n;
@@ -97,16 +94,22 @@ response PacketParser::read_data(int *state,long long *data){
   if(status != 0x00) //chyba
   {
       if(status == 0x01){
-        std::cerr <<"* Not put/remove/replaced: "<<std::endl;
-              return resp; //empty
+        if(DEBUG){
+          std::cerr <<"* Not put/remove/replaced: "<<std::endl;
+        }
+        return 1; //empty
       } else if(status == 0x02){
-        std::cerr <<"* Key does not exist: "<<std::endl;
-              return resp; //empty
+        if(DEBUG){
+          std::cerr <<"* Key does not exist: "<<std::endl;
+        }
+        return 1; //empty
       }
 
       n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
       buffer2[n] = '\0';
-      std::cerr <<"* Error Message Length: "<< std::hex << buffer2[0]<<std::endl;
+      if(DEBUG){
+        std::cerr <<"* Error Message Length: "<< std::hex << buffer2[0]<<std::endl;
+      }
       err_len = (u_short)buffer2[0];
 
       std::cout << "* ";
@@ -123,7 +126,7 @@ response PacketParser::read_data(int *state,long long *data){
       if(DEBUG){
         std::cout << std::endl;
       }
-      return resp; //empty
+      return 1; //empty
   }
 
   if(op_code == 0x04 )//get response
@@ -144,7 +147,7 @@ response PacketParser::read_data(int *state,long long *data){
         if(DEBUG){
           std::cout << (char*)buffer2;
         }
-        *(resp.data) += buffer2[0];
+        *(*resp).data += buffer2[0];
         //std::cout << n<<" ";
         //std::cout << buffer2<<" "<< std::hex << (u_short)buffer2[0]<<std::endl;
 
@@ -186,7 +189,7 @@ response PacketParser::read_data(int *state,long long *data){
         if(DEBUG){
           std::cout << (char*)buffer2;
         }
-        *(resp.data) += buffer2[0];
+        *(*resp).data += buffer2[0];
         //std::cout << n<<" ";
         //std::cout << buffer2<<" "<< std::hex << (u_short)buffer2[0]<<std::endl;
 
@@ -255,17 +258,15 @@ response PacketParser::read_data(int *state,long long *data){
           //std::cout << n<<" ";
           //std::cout << buffer2<<" "<< std::hex << (u_short)buffer2[0]<<std::endl;
         }
-        bulk[tmp_key] = tmp_value;
+        (*(resp->bulk))[tmp_key] = tmp_value;
         if(DEBUG){
           std::cout << std::endl;
         }
 
 
       }
-      resp.bulk = &bulk;
     }
-    return resp; //may containst restult of get operation
-
+    return 0; 
 }
 
  

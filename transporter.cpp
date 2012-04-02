@@ -43,7 +43,7 @@ void Transporter::create_connection(){
 
 
 
-response Transporter::send(const char *packet,int len, int *state){
+int Transporter::send(const char *packet,int len, int *state, response *resp){
         //std::cout << "send"<<std::endl;
         response ret;
         int s;
@@ -55,12 +55,12 @@ response Transporter::send(const char *packet,int len, int *state){
         }*/
         s = choose_socket();
         PacketParser *PP = new PacketParser(s);
-        ret = PP->read_data(state);
+        long long unused;
+        return PP->read_data(state,&unused,resp);
 
-        return ret;
 }
 
-response Transporter::send(const char *packet,int len, int *state,long long *data){
+int Transporter::send(const char *packet,int len, int *state,long long *data,response *resp){
         //std::cout << "send"<<std::endl;
         response ret;
         int s;
@@ -73,9 +73,8 @@ response Transporter::send(const char *packet,int len, int *state,long long *dat
         }*/
         s = choose_socket();
         PacketParser *PP = new PacketParser(s);
-        ret = PP->read_data(state,data);
+        return PP->read_data(state,data,resp);
 
-        return ret;
 }
 
 

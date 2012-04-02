@@ -35,12 +35,9 @@ class PacketParser{
 	public:
     Transporter *transporter;
     int sock;
-    std::map<std::string, std::string> bulk;
-    std::string result;
-    response resp;
   
     PacketParser(int s);
-    response read_data(int *state,long long *data = 0);
+    int read_data(int *state,long long *data, response *resp);
     
     private:
     int decode_varint();

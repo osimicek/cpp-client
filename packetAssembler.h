@@ -1,4 +1,7 @@
+#ifndef ASSEMBL_H_INCLUDED
+#define ASSEMBL_H_INCLUDED
 #include "transporter.h"
+#include "packetParser.h"
 #include <sys/time.h>
 
 class PacketAssembler{
@@ -28,10 +31,12 @@ class PacketAssembler{
     int createRemoveWithVersion(std::string *key, long long version);
     int createContainsKey(const char *key);
     int createContainsKey(std::string *key);
-    const char * createGetWithVersion(const char *key,long long *version);
-    std::string *createGetWithVersion(std::string *key,long long *version);
-    std::string *createGet(std::string *key);
-    const char * createGet(const char *key);
-    std::map<std::string,std::string>  *createGetBulk(int count);
+    int createGetWithVersion(const char *value , const char *key,long long *version);
+    int createGetWithVersion(std::string *value, std::string *key,long long *version);
+    int createGet(std::string *value, std::string *key);
+    int createGet(const char * value, const char *key);
+    int createGetBulk(std::map<std::string,std::string>  *bulk, int count);
     
 };
+
+#endif

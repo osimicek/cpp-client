@@ -33,8 +33,8 @@ class Transporter{
   
     Transporter(std::string,std::string);
     void create_connection();
-    response send(const char *packet,int len,int *state);
-    response send(const char *packet,int len,int *state,long long *data);
+    int send(const char *packet,int len,int *state,response *resp = NULL);
+    int send(const char *packet,int len,int *state,long long *data,response *resp = NULL);
 
     
     void close_connection();

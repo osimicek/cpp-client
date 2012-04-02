@@ -1,5 +1,6 @@
 #include <string>
 #include "remoteCache.h"
+#include "RMMap.h"
 
 void print_map(std::map<std::string,std::string>  *data){
 	std::map<std::string,std::string>::iterator pos;
@@ -11,23 +12,35 @@ void print_map(std::map<std::string,std::string>  *data){
 
 int test1(){
 	RemoteCache *x = new RemoteCache();
+	std::string resp;
+
 	int ret = 0;
+	x->clear();
 	x->putIfAbsent(&std::string("Hell"),&std::string("aa"));
 	//std::cerr << x->get(std::string("Hell")) <<"|"<<std::endl;
-	if(*(x->get(&std::string("Hell"))) != std::string("aa")){
+	x->get(&resp, &std::string("Hell"));
+
+	if( resp != std::string("aa")){
 		std::cerr << "Error #1 in test1" <<std::endl;
 		ret = 1;
 	}
+	resp.clear();
+
 	x->put(&std::string("Hell"),&std::string("bb"));
-	if(*(x->get(&std::string("Hell"))) != std::string("bb")){
+	x->get(&resp, &std::string("Hell"));
+	if(resp != std::string("bb")){
 		std::cerr << "Error #2 in test1" <<std::endl;
 		ret = 1;
 	}
-	x->replace(&std::string("Hell"),&std::string("cc"));	
-	if(*(x->get(&std::string("Hell"))) != std::string("cc")){
+	resp.clear();
+
+	x->replace(&std::string("Hell"),&std::string("cc"));
+	x->get(&resp, &std::string("Hell"));
+	if(resp!= std::string("cc")){
 		std::cerr << "Error #3 in test1" <<std::endl;
 		ret = 1;
 	}
+	resp.clear();
 
 	return ret;
 
@@ -36,27 +49,32 @@ int test1(){
 
 int test2(){
 	RemoteCache *x = new RemoteCache();
+	std::string resp;
 	int ret = 0;
 	int stat;
 	long long ver;
-	if(*(x->getWithVersion(&std::string("Hell"),&ver)) != std::string("cc")){
+
+	x->getWithVersion(&resp, &std::string("Hell"),&ver);
+	if(resp != std::string("cc")){
 		std::cerr << "Error #1 in test2 "<<std::endl;
 		ret = 1;
 	}
+	resp.clear();
 	if((stat = x->replaceWithVersion("Hell","dd",ver++))){
 		std::cerr << "Error #2 in test2   stat:"<<stat <<std::endl;
 		ret = 1;
 	}
-	if(*(x->get(&std::string("Hell"))) != std::string("dd")){
+	x->get(&resp, &std::string("Hell"));
+	if(resp != std::string("dd")){
 		std::cerr << "Error #3 in test2" <<std::endl;
 		ret = 1;
 	}
+	resp.clear();
 
 
 	for(int i=0;i<1000;i++){
 		x->put(&std::string("Hell"),&std::string("ee"));
 	}
-
 	if((stat = x->replaceWithVersion("Hell","dd",ver+1000))){
 		std::cerr << "Error #4 in test2   stat:"<<stat <<std::endl;
 		ret = 1;
@@ -76,72 +94,78 @@ int test3(){
 	int ret = 0;
 	int stat;
 	long long ver;
-	std::map<std::string,std::string>  data;
+	
 	x->clear();
 	x->put(&std::string("Hell"),&std::string("ff"));
 	x->put(&std::string("Hell2"),&std::string("f2"));
 	x->put(&std::string("Hell3"),&std::string("f3"));
-	print_map(x->getBulk());
-	std::cout << "ok"<<std::endl;
 
+	std::map<std::string,std::string>  bulk;
+
+	x->getBulk(&bulk);
+	print_map(&bulk);
+
+	std::map<std::string,std::string>  data;
 	data["Hell4"] = "f4";
 	data["Hell5"] = "f5";
 	data["Hell6"] = "f6";
 	x->putAll(&data);
-	print_map(x->getBulk());
+	bulk.clear();
+	x->getBulk(&bulk);
+	print_map(&bulk);
 	
 
 	return ret;
 }
+
+void smallTest(){
+	RemoteCache *x = new RemoteCache();
+	x->put(&std::string("Hell"),&std::string("hi"));
+
+	std::string resp;
+	x->get(&resp, &std::string("Hell"));
+	std::cout << resp << std::endl;
+
+	x->clear();
+	resp.clear();
+	x->putIfAbsent(&std::string("Hell"),&std::string("hi2"));
+	x->get(&resp, &std::string("Hell"));
+	std::cout << resp << std::endl;
+
+	resp.clear();
+	x->replace(&std::string("Hell"),&std::string("hi3"));
+	x->get(&resp, &std::string("Hell"));
+	std::cout << resp << std::endl;
+
+
+
+}
+
 int main(){
 
-	
-	/*
-	RemoteCache *x = new RemoteCache();
-	//x->print_info();
-	x->ping();
-	std::string value;
-	for(int i = 0;i<10; i++){
-		value +="žž ";
+	RMMap x;
+	x["a"] = "b";
+	std::cout<< x["a"]<<std::flush<<std::endl;
 
-	}
-	x->put("Hell",value.c_str());
-	std::cout<< "r "<< x->containsKey("Hell")<<std::endl;
-	
-	std::cout<< "r "<< x->remove("Hell")<<std::endl;
-	std::cout<< "r "<< x->remove("Hell")<<std::endl;
-	std::cout<< "r "<< x->containsKey("Hell")<<std::endl;
-	std::cout<< "r "<< x->containsKey("Hell")<<std::endl;
-	x->clear();*/
+
 	if(!test1()){
 		std::cout<< "Test 1: OK "<<std::flush<<std::endl;	
+	}else{
+		std::cout<< "Test 1: failed "<<std::flush<<std::endl;	
 	}
 	if(!test2()){
 		std::cout<< "Test 2: OK "<<std::endl;	
+	}else{
+		std::cout<< "Test 2: failed "<<std::flush<<std::endl;	
 	}
 	if(!test3()){
 		std::cout<< "Test 3: OK "<<std::endl;	
+	}else{
+		std::cout<< "Test 3: failed "<<std::flush<<std::endl;	
 	}
-	/*response  x;
-	std::string s = "aa";
-	x.data = &s;
-	s +="xx";
-	*(x.data) += "ff";
-	std::cout<< *x.data<<std::endl;	
+	
 
-	std::map<std::string,std::string> m;
-	m["b"] = "g";
-	std::cout<< m[std::string("b")]<<std::endl;	
-	x.bulk = &m;
-	std::cout<< (*x.bulk)[std::string("b")]<<std::endl;*/
-	//std::cout<< *x.data<<std::endl;
-	/*RemoteCache *x = new RemoteCache();
-	int ret = 0;
-	x->putIfAbsent(std::string("Hell"),std::string("aa"));
-	std::cerr << x->get(std::string("Hell"))<<std::flush<<std::endl;
-	if(x->get(std::string("Hell")) != std::string("aa")){
-		std::cerr << "Error #1 in test1" <<std::endl;
-		ret = 1;
-	}*/
+	//smallTest();
+
 	return 0;
 }
