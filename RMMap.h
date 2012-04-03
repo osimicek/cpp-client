@@ -12,7 +12,7 @@ public:
 	RemoteCache RC; 
 
 	RMMap();
-	u_int size() const;
+	u_int size();
 	std::string &operator[](const std::string &key);
 	RMMap& operator= ( const std::map<std::string,std::string>& x );
 

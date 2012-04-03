@@ -6,10 +6,12 @@ RMMap::RMMap(){
 }
 
 
-u_int RMMap::size() const{
+u_int RMMap::size(){
         //stahni_data();
-        //return std::map<string,string>::size();
-        return 5;
+        std::map<std::string,std::string> bulk;
+        RC.getBulk(&bulk);
+
+        return bulk.size();
  }
 
 std::string &RMMap::operator[](const std::string &key)

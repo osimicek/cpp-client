@@ -147,7 +147,7 @@ int main(){
 	std::string k ="a";
 	x[k] = "b";
 	RemoteCache c = RemoteCache();
-	c.put(&std::string("b"),&std::string("hi"));
+	c.put(&std::string("a"),&std::string("hi"));
 
 	std::cout<< x.size() <<std::flush<<std::endl;
 	std::cout<< "x[k] "<<x[k] <<std::flush<<std::endl;
