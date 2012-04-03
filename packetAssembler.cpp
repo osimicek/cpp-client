@@ -119,23 +119,19 @@ int PacketAssembler::createPutIfAbsent(const char *key,const char *value,int lif
     return createPutIfAbsent(&tmp_key,&tmp_value,lifespan,idle);
 }
 
-int PacketAssembler::createPutIfAbsent(std::string *key, std::string *value,int lifespan, int idle){
-    std::string  *s_key, *s_value;
-    s_key = key;
-    s_value = value;
-
+int PacketAssembler::createPutIfAbsent(const std::string *key, std::string *value,int lifespan, int idle){
     createBase(0x09,0x05);      
 
                   
-    packet += encode_varlong((*s_key).length()); // key len
-    packet += (*s_key); //key
+    packet += encode_varlong((*key).length()); // key len
+    packet += *key; //key
             
     packet += (char)lifespan; //Life span
     packet += (char)idle; //Max idle
 
 
-    packet += encode_varlong((*s_value).length()); // key len
-    packet += (*s_value); //key
+    packet += encode_varlong((*value).length()); // key len
+    packet += *value; //key
 
     transporter->send(packet.c_str(),packet.length(),&state);
     return state;   
@@ -147,21 +143,17 @@ int PacketAssembler::createReplace(const char *key,const char *value,int lifespa
     return createReplace(&tmp_key,&tmp_value,lifespan,idle);
 }
 
-int PacketAssembler::createReplace(std::string *key, std::string *value,int lifespan, int idle){
-    std::string  *s_key, *s_value;
-    s_key = key;
-    s_value = value;
-
+int PacketAssembler::createReplace(const std::string *key, std::string *value,int lifespan, int idle){
     createBase(0x09,0x07);      
                   
-    packet += encode_varlong((*s_key).length()); // key len
-    packet += (*s_key); //key
+    packet += encode_varlong((*key).length()); // key len
+    packet += *key; //key
             
     packet += (char)lifespan; //Life span
     packet += (char)idle; //Max idle
 
-    packet += encode_varlong((*s_value).length()); // key len
-    packet += (*s_value); //key
+    packet += encode_varlong((*value).length()); // key len
+    packet += *value; //key
 
     transporter->send(packet.c_str(),packet.length(),&state);
     return state;   
@@ -173,24 +165,20 @@ int PacketAssembler::createReplaceWithVersion(const char *key,const char *value,
     return createReplaceWithVersion(&tmp_key,&tmp_value,version,lifespan,idle);
 }
 
-int PacketAssembler::createReplaceWithVersion(std::string *key, std::string *value, long long version,int lifespan, int idle){
-    std::string  *s_key, *s_value;
-    s_key = key;
-    s_value = value;
-
+int PacketAssembler::createReplaceWithVersion(const std::string *key, std::string *value, long long version,int lifespan, int idle){
     createBase(0x09,0x09);      
 
                   
-    packet += encode_varlong((*s_key).length()); // key len
-    packet += (*s_key); //key
+    packet += encode_varlong((*key).length()); // key len
+    packet += *key; //key
             
     packet += (char)lifespan; //Life span
     packet += (char)idle; //Max idle
  
     packet += encode_version(version); //version
 
-    packet += encode_varlong((*s_value).length()); // key len
-    packet += (*s_value); //key
+    packet += encode_varlong((*value).length()); // key len
+    packet += *value; //key
 
     transporter->send(packet.c_str(),packet.length(),&state);
     return state;   
@@ -204,7 +192,7 @@ int PacketAssembler::createGet(const char *value,const char *key){
 	return state; // state of this packet
 }
 
-int PacketAssembler::createGet(std::string *value, std::string *key){
+int PacketAssembler::createGet(std::string *value, const std::string *key){
     createBase(0x09,0x03);      
 
     packet += encode_varlong((*key).length()); // key len
@@ -223,7 +211,7 @@ int PacketAssembler::createRemove(const char *key){
     return createRemove(&tmp_key);
 }
 
-int PacketAssembler::createRemove(std::string *key){
+int PacketAssembler::createRemove(const std::string *key){
     createBase(0x09,0x0b);
           
     packet += encode_varlong((*key).length()); // key len
@@ -243,7 +231,7 @@ int PacketAssembler::createRemoveWithVersion(const char *key,long long version){
     return createRemoveWithVersion(&tmp_key,version);
 }
 
-int PacketAssembler::createRemoveWithVersion(std::string *key, long long version){
+int PacketAssembler::createRemoveWithVersion(const std::string *key, long long version){
     createBase(0x09,0x0d);      
 
     packet += encode_varlong((*key).length()); // key len
@@ -255,7 +243,7 @@ int PacketAssembler::createRemoveWithVersion(std::string *key, long long version
     return state;       
 }
 
-int PacketAssembler::createContainsKey(std::string *key){
+int PacketAssembler::createContainsKey(const std::string *key){
     createBase(0x09,0x0f);      
 
     packet += encode_varlong((*key).length()); // key len
@@ -273,7 +261,7 @@ int PacketAssembler::createGetWithVersion(const char *value,const char *key,long
     return state; // state of this packet
 }
 
-int PacketAssembler::createGetWithVersion(std::string *value,std::string *key,long long *version){
+int PacketAssembler::createGetWithVersion(std::string *value,const std::string *key,long long *version){
     createBase(0x09,0x11);      
 
     packet += encode_varlong((*key).length()); // key len
@@ -292,7 +280,7 @@ int PacketAssembler::createGetBulk(std::map<std::string,std::string> *bulk, int 
     packet += encode_varint(count);//entry count
     response resp;
     resp.bulk = bulk;
-    
+
 
     transporter->send(packet.c_str(),packet.length(),&state,&resp); 
     return state;

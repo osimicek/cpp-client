@@ -5,7 +5,7 @@ CC= g++ -Wall
 
 
 ALL:  packetParser.o transporter.o packetAssembler.o remoteCache.o RMMap.o test1.o 		
-	$(CC)  packetParser.o transporter.o packetAssembler.o remoteCache.o test1.o -o test1
+	$(CC)  packetParser.o transporter.o packetAssembler.o remoteCache.o RMMap.o test1.o -o test1
 
 
 run:

@@ -57,7 +57,7 @@ int RemoteCache::putIfAbsent(const char *key,const char *value,int lifespan, int
 }
 
 
-int RemoteCache::putIfAbsent(std::string *key,std::string *value,int lifespan, int idle){
+int RemoteCache::putIfAbsent(const std::string *key,std::string *value,int lifespan, int idle){
     PacketAssembler *PA = new PacketAssembler(transporter);
 
     return PA->createPutIfAbsent(key,value,lifespan,idle);
@@ -70,7 +70,7 @@ int RemoteCache::replace(const char *key,const char *value,int lifespan, int idl
 }
 
 
-int RemoteCache::replace(std::string *key,std::string *value,int lifespan, int idle){
+int RemoteCache::replace(const std::string *key,std::string *value,int lifespan, int idle){
     PacketAssembler *PA = new PacketAssembler(transporter);
 
     return PA->createReplace(key,value,lifespan,idle);
@@ -83,7 +83,7 @@ int RemoteCache::replaceWithVersion(const char *key,const char *value, long long
 }
 
 
-int RemoteCache::replaceWithVersion(std::string *key,std::string *value, long long version,int lifespan, int idle){
+int RemoteCache::replaceWithVersion(const std::string *key,std::string *value, long long version,int lifespan, int idle){
     /**
     * Replaces the given value only if its version matches the supplied version.
     *
@@ -100,17 +100,17 @@ int RemoteCache::replaceWithVersion(std::string *key,std::string *value, long lo
 int RemoteCache::get(const char* value, const char *key){
     std::string tmp_key(key);
     std::string val; //zmenit
+    int ret;
 
-    get(&val,&tmp_key);
+    ret = get(&val,&tmp_key);
     value = (val.c_str());
-    return 0;
+    return ret;
 }
 
-int RemoteCache::get(std::string *value, std::string *key){
+int RemoteCache::get(std::string *value, const std::string *key){
     PacketAssembler *PA = new PacketAssembler(transporter);
-
-    PA->createGet(value, key);
-    return 0;
+    //std::cout << *key << *value <<std::flush<<std::endl;
+    return PA->createGet(value, key);
 }
 
 int RemoteCache::remove(const char *key){
@@ -118,7 +118,7 @@ int RemoteCache::remove(const char *key){
     return remove(&tmp_key);
 }
 
-int RemoteCache::remove(std::string *key){
+int RemoteCache::remove(const std::string *key){
     PacketAssembler *PA = new PacketAssembler(transporter);
 
     return PA->createRemove(key);
@@ -129,7 +129,7 @@ int RemoteCache::removeWithVersion(const char *key, long long version){
     return removeWithVersion(&tmp_key,version);
 }
 
-int RemoteCache::removeWithVersion(std::string *key, long long version){
+int RemoteCache::removeWithVersion(const std::string *key, long long version){
     /**
     * Removes the given entry only if its version matches the supplied version.
     *
@@ -148,7 +148,7 @@ int RemoteCache::containsKey(const char *key){
     return containsKey(&tmp_key);
 }
 
-int RemoteCache::containsKey(std::string *key){
+int RemoteCache::containsKey(const std::string *key){
     PacketAssembler *PA = new PacketAssembler(transporter);
 
     return PA->createContainsKey(key);
@@ -157,16 +157,18 @@ int RemoteCache::containsKey(std::string *key){
 int RemoteCache::getWithVersion(const char *value, const char *key,long long *version){
     std::string tmp_key(key);
     std::string val;  //zmenit
-    getWithVersion(&val,&tmp_key,version);
+    int ret;
+
+    ret = getWithVersion(&val,&tmp_key,version);
     value = (val.c_str());
-    return 0;
+    return ret;
 }
 
-int RemoteCache::getWithVersion(std::string *value,std::string *key,long long *version){
+int RemoteCache::getWithVersion(std::string *value,const std::string *key,long long *version){
     PacketAssembler *PA = new PacketAssembler(transporter);
 
-    PA->createGetWithVersion(value,key,version);
-    return 0;
+    return PA->createGetWithVersion(value,key,version);
+    
 }
 
 int RemoteCache::getBulk(std::map<std::string,std::string> *bulk,int count){
@@ -178,8 +180,8 @@ int RemoteCache::getBulk(std::map<std::string,std::string> *bulk,int count){
     */
     PacketAssembler *PA = new PacketAssembler(transporter);
 
-    PA->createGetBulk(bulk,count);    
-    return 0;
+    return PA->createGetBulk(bulk,count);    
+    
 }
 int RemoteCache::getBulk(std::map<std::string,std::string> *bulk){
     /**
@@ -187,9 +189,9 @@ int RemoteCache::getBulk(std::map<std::string,std::string> *bulk){
     *
     * @return returns Map of string
     */
+
+    return getBulk(bulk,0);
     
-    getBulk(bulk,0);
-    return 0;
 }
 
 void RemoteCache::stats(){
