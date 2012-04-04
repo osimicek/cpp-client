@@ -2,6 +2,9 @@
 #include "remoteCache.h"
 #include "RMMap.h"
 
+
+
+
 void print_map(std::map<std::string,std::string>  *data){
 	std::map<std::string,std::string>::iterator pos;
 	std::cout << "Bulk:" <<std::endl;
@@ -147,13 +150,14 @@ int main(){
 	std::string k ="a";
 	x[k] = "b";
 	RemoteCache c = RemoteCache();
-	c.put(&std::string("a"),&std::string("hi"));
-
+	//c.put(&std::string("a"),&std::string("hi"));
+	//k = x[k];
 	std::cout<< x.size() <<std::flush<<std::endl;
 	std::cout<< "x[k] "<<x[k] <<std::flush<<std::endl;
+	//std::cout<< x[k] <<std::flush<<std::endl;
 	std::cout<< "*** end of RMMap test"<<std::flush<<std::endl;
 
-
+/*
 	if(!test1()){
 		std::cout<< "Test 1: OK "<<std::flush<<std::endl;	
 	}else{
@@ -169,7 +173,7 @@ int main(){
 	}else{
 		std::cout<< "Test 3: failed "<<std::flush<<std::endl;	
 	}
-	
+	*/
 
 	//smallTest();
 

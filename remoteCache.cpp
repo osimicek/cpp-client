@@ -111,6 +111,8 @@ int RemoteCache::get(std::string *value, const std::string *key){
     PacketAssembler *PA = new PacketAssembler(transporter);
     //std::cout << *key << *value <<std::flush<<std::endl;
     return PA->createGet(value, key);
+    //std::cout << "gva "<< *key << " "<<*value<< " | "<<value <<std::endl;
+    //return 1;
 }
 
 int RemoteCache::remove(const char *key){

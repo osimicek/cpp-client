@@ -1,5 +1,13 @@
 #include "RMMap.h"
 
+std::ostream & operator << (std::ostream& s, RMItem & i)
+{
+	std::cout<< "<<"<<(std::string)i <<std::flush<<std::endl;
+   	s << (std::string)i;
+    return s;
+}
+
+
 RMMap::RMMap(){
 	RC = RemoteCache();
 
@@ -14,11 +22,10 @@ u_int RMMap::size(){
         return bulk.size();
  }
 
-std::string &RMMap::operator[](const std::string &key)
+RMItem &RMMap::operator[](const std::string &key)
  {
- 	x.clear();
-  	RC.get(&x,&key);
-  	return x;
+ 	RMItem *x = new RMItem(*this,key);
+  	return *x;
       //return std::map<string,string>
  }
 /*
@@ -36,10 +43,10 @@ void RMMap::clear()
  	RC.clear();
 }
 
- RMMap& RMMap::operator= ( const std::map<std::string,std::string>& x ){
+/* RMMap& RMMap::operator= ( const std::map<std::string,std::string>& x ){
  	std::cout<< "used ="<<std::flush<<std::endl;
  	return (*this);	
- }
+ }*/
 
 int RMMap::erase (const std::string &key ){
 	int ret;
@@ -47,3 +54,39 @@ int RMMap::erase (const std::string &key ){
 	if(ret == 0) return 1;
 	return 0;
 }
+
+std::string *RMMap::get(const std::string *key){
+	std::string *value = new std::string();
+	//std::cout << "key "<<*key<<std::endl;
+	RC.get(value,key);
+	//std::cout << "val "<<*value <<std::endl;
+	return value;
+
+}
+void RMMap::set(const std::string *key,const std::string *value){
+	RC.put(key,value);		
+
+}
+
+
+
+
+RMItem::RMItem(RMMap &m,const std::string &kk):	rm_map(m),key(kk){
+	
+}
+
+
+RMItem::operator std::string(){
+	//std::cout<< "pretypovani"<<std::flush<<std::endl; 
+	return *rm_map.get(&key); 
+}
+std::string &RMItem::get(){ 
+	return *rm_map.get(&key); 
+}
+
+RMItem &RMItem::operator=(const std::string &value)
+{
+    rm_map.set(&key, &value);
+    return *this;
+}
+
