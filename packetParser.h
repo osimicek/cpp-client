@@ -20,10 +20,6 @@
 
 #include <sys/time.h>//time for ping
 
-
-
-class Transporter;
-
 typedef struct {
     union {
         std::string *data;
@@ -31,12 +27,18 @@ typedef struct {
     };
 } response;
 
+#include "transporter.h"
+
+class Transporter;
+
+
+
 class PacketParser{
 	public:
-    Transporter *transporter;
+    Transporter &transporter;
     int sock;
   
-    PacketParser(int s);
+    PacketParser(int s,Transporter &t);
     int read_data(int *state,long long *data, response *resp);
     
     private:

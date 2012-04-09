@@ -1,396 +1,209 @@
-2012-04-01 18:55:39,083 INFO  (main) [org.infinispan.server.core.Main$] ISPN005001: Start main with args: -r, hotrod
-2012-04-01 18:55:39,790 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] Loading lifecycle SPI class: org.infinispan.server.memcached.LifecycleCallbacks@4dd36dfe
-2012-04-01 18:55:39,797 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] Loading lifecycle SPI class: org.infinispan.server.core.LifecycleCallbacks@506f9b8e
-2012-04-01 18:55:39,799 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] Loading lifecycle SPI class: org.infinispan.server.hotrod.LifecycleCallbacks@5a676437
-2012-04-01 18:55:40,176 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] No module command extensions to load
-2012-04-01 18:55:40,931 DEBUG (InfinispanServer-Main) [org.infinispan.manager.DefaultCacheManager] Started cache manager Infinispan-Cluster on null
-2012-04-01 18:55:41,119 DEBUG (InfinispanServer-Main) [org.infinispan.server.hotrod.HotRodServer] Starting server with basic settings: host=127.0.0.1, port=11222, masterThreads=-1, workerThreads=40, idleTimeout=-1, tcpNoDelay=true, sendBufSize=0, recvBufSize=0
-2012-04-01 18:55:41,823 DEBUG (InfinispanServer-Main) [org.infinispan.interceptors.InterceptorChain] Interceptor chain size: 6
-2012-04-01 18:55:41,823 DEBUG (InfinispanServer-Main) [org.infinispan.interceptors.InterceptorChain] Interceptor chain is: 
+2012-04-07 13:30:29,370 INFO  (main) [org.infinispan.server.core.Main$] ISPN005001: Start main with args: -r, hotroh, -r, hotrod, -p, 11223, -c, ./distrib.xml
+2012-04-07 13:30:29,590 DEBUG (InfinispanServer-Main) [org.infinispan.util.FileLookup] Unable to find file ./distrib.xml in classpath; searching for this file on the filesystem instead.
+2012-04-07 13:30:29,705 DEBUG (InfinispanServer-Main) [org.infinispan.config.InfinispanConfiguration] Using schema schema/infinispan-config-5.1.xsd
+2012-04-07 13:30:30,005 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] Loading lifecycle SPI class: org.infinispan.server.memcached.LifecycleCallbacks@26d66426
+2012-04-07 13:30:30,023 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] Loading lifecycle SPI class: org.infinispan.server.core.LifecycleCallbacks@6b86f247
+2012-04-07 13:30:30,025 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] Loading lifecycle SPI class: org.infinispan.server.hotrod.LifecycleCallbacks@722b9406
+2012-04-07 13:30:30,171 DEBUG (InfinispanServer-Main) [org.infinispan.util.ModuleProperties] No module command extensions to load
+2012-04-07 13:30:30,176 DEBUG (InfinispanServer-Main) [org.infinispan.manager.DefaultCacheManager] Started cache manager luceneDemoCluster on null
+2012-04-07 13:30:30,188 DEBUG (InfinispanServer-Main) [org.infinispan.server.hotrod.HotRodServer] Externally facing address is 127.0.0.1:11223
+2012-04-07 13:30:30,259 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Trying to lookup TransactionManager for JBoss AS 7
+2012-04-07 13:30:30,263 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Failed to perform a lookup for [java:jboss/TransactionManager (JBoss AS 7)]
+2012-04-07 13:30:30,263 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Trying to lookup TransactionManager for JBoss AS 4 ~ 6, JRun4
+2012-04-07 13:30:30,263 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Failed to perform a lookup for [java:/TransactionManager (JBoss AS 4 ~ 6, JRun4)]
+2012-04-07 13:30:30,264 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Trying to lookup TransactionManager for Resin 3.x
+2012-04-07 13:30:30,264 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Failed to perform a lookup for [java:comp/TransactionManager (Resin 3.x)]
+2012-04-07 13:30:30,264 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Trying to lookup TransactionManager for Sun Glassfish
+2012-04-07 13:30:30,264 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Failed to perform a lookup for [java:appserver/TransactionManager (Sun Glassfish)]
+2012-04-07 13:30:30,265 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Trying to lookup TransactionManager for Borland, Sun
+2012-04-07 13:30:30,265 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Failed to perform a lookup for [java:pm/TransactionManager (Borland, Sun)]
+2012-04-07 13:30:30,265 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Trying to lookup TransactionManager for BEA WebLogic
+2012-04-07 13:30:30,265 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Failed to perform a lookup for [javax.transaction.TransactionManager (BEA WebLogic)]
+2012-04-07 13:30:30,265 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Trying to lookup TransactionManager for Resin, Orion, JOnAS (JOTM)
+2012-04-07 13:30:30,266 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Failed to perform a lookup for [java:comp/UserTransaction (Resin, Orion, JOnAS (JOTM))]
+2012-04-07 13:30:30,266 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Trying WebSphere 5.1: com.ibm.ws.Transaction.TransactionManagerFactory
+2012-04-07 13:30:30,268 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Trying WebSphere 5.0: com.ibm.ejs.jts.jta.TransactionManagerFactory
+2012-04-07 13:30:30,269 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Trying WebSphere 4: com.ibm.ejs.jts.jta.JTSXA
+2012-04-07 13:30:30,270 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] Couldn't find any WebSphere TransactionManager factory class, neither for WebSphere version 5.1 nor 5.0 nor 4
+2012-04-07 13:30:30,276 WARN  (InfinispanServer-Main) [org.infinispan.transaction.lookup.GenericTransactionManagerLookup] ISPN000104: Falling back to DummyTransactionManager from Infinispan
+2012-04-07 13:30:30,646 INFO  (InfinispanServer-Main) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] ISPN000078: Starting JGroups Channel
+2012-04-07 13:30:30,647 INFO  (InfinispanServer-Main) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] ISPN000088: Unable to use any JGroups configuration mechanisms provided in properties {}. Using default JGroups configuration!
+2012-04-07 13:30:30,731 DEBUG (InfinispanServer-Main) [org.jgroups.conf.ClassConfigurator] Using jg-magic-map.xml as magic number file and jg-protocol-ids.xml for protocol IDs
+2012-04-07 13:30:31,133 DEBUG (InfinispanServer-Main) [org.jgroups.stack.Configurator] set property UDP.bind_addr to default value /192.168.1.7
+2012-04-07 13:30:31,135 DEBUG (InfinispanServer-Main) [org.jgroups.stack.Configurator] set property UDP.diagnostics_addr to default value /224.0.75.75
+2012-04-07 13:30:31,220 DEBUG (InfinispanServer-Main) [org.jgroups.protocols.FRAG2] received CONFIG event: {bind_addr=/192.168.1.7}
+2012-04-07 13:30:31,246 DEBUG (InfinispanServer-Main) [org.jgroups.protocols.UDP] sockets will use interface 192.168.1.7
+2012-04-07 13:30:31,252 WARN  (InfinispanServer-Main) [org.jgroups.protocols.UDP] send buffer of socket java.net.DatagramSocket@5d684e26 was set to 640KB, but the OS only allocated 131,07KB. This might lead to performance problems. Please set your max send buffer in the OS correctly (e.g. net.core.wmem_max on Linux)
+2012-04-07 13:30:31,252 WARN  (InfinispanServer-Main) [org.jgroups.protocols.UDP] receive buffer of socket java.net.DatagramSocket@5d684e26 was set to 20MB, but the OS only allocated 131,07KB. This might lead to performance problems. Please set your max receive buffer in the OS correctly (e.g. net.core.rmem_max on Linux)
+2012-04-07 13:30:31,252 WARN  (InfinispanServer-Main) [org.jgroups.protocols.UDP] send buffer of socket java.net.MulticastSocket@6ae2d0b2 was set to 640KB, but the OS only allocated 131,07KB. This might lead to performance problems. Please set your max send buffer in the OS correctly (e.g. net.core.wmem_max on Linux)
+2012-04-07 13:30:31,252 WARN  (InfinispanServer-Main) [org.jgroups.protocols.UDP] receive buffer of socket java.net.MulticastSocket@6ae2d0b2 was set to 25MB, but the OS only allocated 131,07KB. This might lead to performance problems. Please set your max receive buffer in the OS correctly (e.g. net.core.rmem_max on Linux)
+2012-04-07 13:30:31,253 DEBUG (InfinispanServer-Main) [org.jgroups.protocols.UDP] socket information:
+, mcast_addr=228.6.7.8:46655, bind_addr=/192.168.1.7, ttl=2
+sock: bound to 192.168.1.7:52180, receive buffer size=131071, send buffer size=131071
+mcast_sock: bound to 192.168.1.7:46655, send buffer size=131071, receive buffer size=131071
+2012-04-07 13:30:31,258 DEBUG (InfinispanServer-Main) [org.jgroups.protocols.pbcast.GMS] address=klerik-VirtualBox-62875, cluster=luceneDemoCluster, physical address=192.168.1.7:52180
+2012-04-07 13:30:31,259 DEBUG (InfinispanServer-Main) [org.jgroups.protocols.UDP] created unicast receiver thread 
+2012-04-07 13:30:31,259 DEBUG (InfinispanServer-Main) [org.jgroups.protocols.UDP] created multicast receiver thread 
+2012-04-07 13:30:31,313 DEBUG (InfinispanServer-Main) [org.jgroups.protocols.pbcast.GMS] election results: {klerik-VirtualBox-63562=1}
+2012-04-07 13:30:31,314 DEBUG (InfinispanServer-Main) [org.jgroups.protocols.pbcast.GMS] sending JOIN(klerik-VirtualBox-62875) to klerik-VirtualBox-63562
+2012-04-07 13:30:31,399 DEBUG (InfinispanServer-Main) [org.jgroups.protocols.pbcast.NAKACK] 
+[setDigest()]
+existing digest:  []
+new digest:       klerik-VirtualBox-63562: [23 (23)], klerik-VirtualBox-62875: [0 (0)]
+resulting digest: klerik-VirtualBox-62875: [0 (0)], klerik-VirtualBox-63562: [23 (23)]
+2012-04-07 13:30:31,400 DEBUG (InfinispanServer-Main) [org.jgroups.protocols.pbcast.GMS] klerik-VirtualBox-62875: view is [klerik-VirtualBox-63562|7] [klerik-VirtualBox-63562, klerik-VirtualBox-62875]
+2012-04-07 13:30:31,401 DEBUG (InfinispanServer-Main) [org.jgroups.protocols.FD_SOCK] VIEW_CHANGE received: [klerik-VirtualBox-63562, klerik-VirtualBox-62875]
+2012-04-07 13:30:31,405 DEBUG (FD_SOCK pinger,klerik-VirtualBox-62875) [org.jgroups.protocols.FD_SOCK] ping_dest is klerik-VirtualBox-63562, pingable_mbrs=[klerik-VirtualBox-63562, klerik-VirtualBox-62875]
+2012-04-07 13:30:31,413 DEBUG (InfinispanServer-Main) [org.jgroups.protocols.pbcast.STABLE] [ergonomics] setting max_bytes to 2MB (2 members)
+2012-04-07 13:30:31,416 DEBUG (InfinispanServer-Main) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] New view accepted: [klerik-VirtualBox-63562|7] [klerik-VirtualBox-63562, klerik-VirtualBox-62875]
+2012-04-07 13:30:31,417 INFO  (InfinispanServer-Main) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] ISPN000094: Received new cluster view: [klerik-VirtualBox-63562|7] [klerik-VirtualBox-63562, klerik-VirtualBox-62875]
+2012-04-07 13:30:31,419 INFO  (InfinispanServer-Main) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] ISPN000079: Cache local address is klerik-VirtualBox-62875, physical addresses are [192.168.1.7:52180]
+2012-04-07 13:30:31,419 DEBUG (InfinispanServer-Main) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] Waiting on view being accepted
+2012-04-07 13:30:31,446 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.TransactionTable] Min view id set to 7
+2012-04-07 13:30:31,458 DEBUG (InfinispanServer-Main) [org.infinispan.interceptors.InterceptorChain] Interceptor chain size: 9
+2012-04-07 13:30:31,459 DEBUG (InfinispanServer-Main) [org.infinispan.interceptors.InterceptorChain] Interceptor chain is: 
+	>> org.infinispan.interceptors.BatchingInterceptor
 	>> org.infinispan.interceptors.InvocationContextInterceptor
-	>> org.infinispan.interceptors.CacheMgmtInterceptor
+	>> org.infinispan.interceptors.StateTransferLockInterceptor
+	>> org.infinispan.interceptors.TxInterceptor
 	>> org.infinispan.interceptors.NotificationInterceptor
-	>> org.infinispan.interceptors.locking.NonTransactionalLockingInterceptor
+	>> org.infinispan.interceptors.locking.OptimisticLockingInterceptor
 	>> org.infinispan.interceptors.EntryWrappingInterceptor
+	>> org.infinispan.interceptors.ReplicationInterceptor
 	>> org.infinispan.interceptors.CallInterceptor
-2012-04-01 18:55:41,840 DEBUG (InfinispanServer-Main) [org.infinispan.CacheImpl] Started cache ___defaultcache on null
-2012-04-02 19:07:45,659 ERROR (HotRodServerWorker-1-6) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Connection reset by peer
-	at sun.nio.ch.FileDispatcher.read0(Native Method)
-	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
-	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
-	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
-	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:07:45,667 ERROR (HotRodServerWorker-1-6) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Broken pipe
-	at sun.nio.ch.FileDispatcher.write0(Native Method)
-	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
-	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
-	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
-	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
-	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
-	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
-	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
-	at org.jboss.netty.channel.Channels.write(Channels.java:632)
-	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
-	at org.jboss.netty.channel.Channels.write(Channels.java:611)
-	at org.jboss.netty.channel.Channels.write(Channels.java:578)
-	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
-	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
-	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:37:10,068 ERROR (HotRodServerWorker-1-16) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Connection reset by peer
-	at sun.nio.ch.FileDispatcher.read0(Native Method)
-	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
-	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
-	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
-	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:37:10,078 ERROR (HotRodServerWorker-1-16) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Broken pipe
-	at sun.nio.ch.FileDispatcher.write0(Native Method)
-	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
-	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
-	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
-	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
-	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
-	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
-	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
-	at org.jboss.netty.channel.Channels.write(Channels.java:632)
-	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
-	at org.jboss.netty.channel.Channels.write(Channels.java:611)
-	at org.jboss.netty.channel.Channels.write(Channels.java:578)
-	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
-	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
-	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:38:44,977 ERROR (HotRodServerWorker-1-19) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Connection reset by peer
-	at sun.nio.ch.FileDispatcher.read0(Native Method)
-	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
-	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
-	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
-	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:38:44,982 ERROR (HotRodServerWorker-1-19) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Broken pipe
-	at sun.nio.ch.FileDispatcher.write0(Native Method)
-	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
-	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
-	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
-	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
-	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
-	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
-	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
-	at org.jboss.netty.channel.Channels.write(Channels.java:632)
-	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
-	at org.jboss.netty.channel.Channels.write(Channels.java:611)
-	at org.jboss.netty.channel.Channels.write(Channels.java:578)
-	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
-	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
-	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:41:37,318 ERROR (HotRodServerWorker-1-22) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Connection reset by peer
-	at sun.nio.ch.FileDispatcher.read0(Native Method)
-	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
-	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
-	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
-	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:41:37,319 ERROR (HotRodServerWorker-1-22) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Broken pipe
-	at sun.nio.ch.FileDispatcher.write0(Native Method)
-	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
-	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
-	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
-	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
-	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
-	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
-	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
-	at org.jboss.netty.channel.Channels.write(Channels.java:632)
-	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
-	at org.jboss.netty.channel.Channels.write(Channels.java:611)
-	at org.jboss.netty.channel.Channels.write(Channels.java:578)
-	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
-	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
-	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:41:58,119 ERROR (HotRodServerWorker-1-25) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Connection reset by peer
-	at sun.nio.ch.FileDispatcher.read0(Native Method)
-	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
-	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
-	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
-	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:41:58,136 ERROR (HotRodServerWorker-1-25) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Broken pipe
-	at sun.nio.ch.FileDispatcher.write0(Native Method)
-	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
-	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
-	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
-	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
-	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
-	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
-	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
-	at org.jboss.netty.channel.Channels.write(Channels.java:632)
-	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
-	at org.jboss.netty.channel.Channels.write(Channels.java:611)
-	at org.jboss.netty.channel.Channels.write(Channels.java:578)
-	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
-	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
-	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:42:26,947 ERROR (HotRodServerWorker-1-28) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Connection reset by peer
-	at sun.nio.ch.FileDispatcher.read0(Native Method)
-	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
-	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
-	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
-	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:42:26,957 ERROR (HotRodServerWorker-1-28) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Broken pipe
-	at sun.nio.ch.FileDispatcher.write0(Native Method)
-	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
-	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
-	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
-	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
-	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
-	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
-	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
-	at org.jboss.netty.channel.Channels.write(Channels.java:632)
-	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
-	at org.jboss.netty.channel.Channels.write(Channels.java:611)
-	at org.jboss.netty.channel.Channels.write(Channels.java:578)
-	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
-	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
-	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:44:14,012 ERROR (HotRodServerWorker-1-31) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Connection reset by peer
-	at sun.nio.ch.FileDispatcher.read0(Native Method)
-	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
-	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
-	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
-	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:44:14,014 ERROR (HotRodServerWorker-1-31) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Broken pipe
-	at sun.nio.ch.FileDispatcher.write0(Native Method)
-	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
-	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
-	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
-	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
-	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
-	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
-	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
-	at org.jboss.netty.channel.Channels.write(Channels.java:632)
-	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
-	at org.jboss.netty.channel.Channels.write(Channels.java:611)
-	at org.jboss.netty.channel.Channels.write(Channels.java:578)
-	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
-	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
-	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:48:38,796 ERROR (HotRodServerWorker-1-34) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Connection reset by peer
-	at sun.nio.ch.FileDispatcher.read0(Native Method)
-	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
-	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
-	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
-	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:48:38,798 ERROR (HotRodServerWorker-1-34) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Broken pipe
-	at sun.nio.ch.FileDispatcher.write0(Native Method)
-	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
-	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
-	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
-	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
-	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
-	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
-	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
-	at org.jboss.netty.channel.Channels.write(Channels.java:632)
-	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
-	at org.jboss.netty.channel.Channels.write(Channels.java:611)
-	at org.jboss.netty.channel.Channels.write(Channels.java:578)
-	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
-	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
-	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:48:51,723 ERROR (HotRodServerWorker-1-37) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Connection reset by peer
-	at sun.nio.ch.FileDispatcher.read0(Native Method)
-	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
-	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
-	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
-	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:48:51,725 ERROR (HotRodServerWorker-1-37) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Broken pipe
-	at sun.nio.ch.FileDispatcher.write0(Native Method)
-	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
-	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
-	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
-	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
-	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
-	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
-	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
-	at org.jboss.netty.channel.Channels.write(Channels.java:632)
-	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
-	at org.jboss.netty.channel.Channels.write(Channels.java:611)
-	at org.jboss.netty.channel.Channels.write(Channels.java:578)
-	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
-	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
-	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:49:32,407 ERROR (HotRodServerWorker-1-40) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Connection reset by peer
-	at sun.nio.ch.FileDispatcher.read0(Native Method)
-	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:39)
-	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:251)
-	at sun.nio.ch.IOUtil.read(IOUtil.java:218)
-	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:254)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:321)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
-2012-04-02 19:49:32,408 ERROR (HotRodServerWorker-1-40) [org.infinispan.server.hotrod.HotRodDecoder] ISPN005009: Unexpected error before any request parameters read
-java.io.IOException: Broken pipe
-	at sun.nio.ch.FileDispatcher.write0(Native Method)
-	at sun.nio.ch.SocketDispatcher.write(SocketDispatcher.java:47)
-	at sun.nio.ch.IOUtil.writeFromNativeBuffer(IOUtil.java:122)
-	at sun.nio.ch.IOUtil.write(IOUtil.java:78)
-	at sun.nio.ch.SocketChannelImpl.write(SocketChannelImpl.java:352)
-	at org.jboss.netty.channel.socket.nio.SocketSendBufferPool$PooledSendBuffer.transferTo(SocketSendBufferPool.java:239)
-	at org.jboss.netty.channel.socket.nio.NioWorker.write0(NioWorker.java:470)
-	at org.jboss.netty.channel.socket.nio.NioWorker.writeFromUserCode(NioWorker.java:388)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.handleAcceptedSocket(NioServerSocketPipelineSink.java:137)
-	at org.jboss.netty.channel.socket.nio.NioServerSocketPipelineSink.eventSunk(NioServerSocketPipelineSink.java:76)
-	at org.jboss.netty.channel.Channels.write(Channels.java:632)
-	at org.jboss.netty.handler.codec.oneone.OneToOneEncoder.handleDownstream(OneToOneEncoder.java:70)
-	at org.jboss.netty.channel.Channels.write(Channels.java:611)
-	at org.jboss.netty.channel.Channels.write(Channels.java:578)
-	at org.jboss.netty.channel.AbstractChannel.write(AbstractChannel.java:251)
-	at org.infinispan.server.core.AbstractProtocolDecoder.exceptionCaught(AbstractProtocolDecoder.scala:261)
-	at org.jboss.netty.channel.Channels.fireExceptionCaught(Channels.java:432)
-	at org.jboss.netty.channel.socket.nio.NioWorker.read(NioWorker.java:331)
-	at org.jboss.netty.channel.socket.nio.NioWorker.processSelectedKeys(NioWorker.java:280)
-	at org.jboss.netty.channel.socket.nio.NioWorker.run(NioWorker.java:200)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1110)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:603)
-	at java.lang.Thread.run(Thread.java:679)
+2012-04-07 13:30:31,479 DEBUG (InfinispanServer-Main) [org.infinispan.cacheviews.CacheViewsManagerImpl] ___hotRodTopologyCache: Node klerik-VirtualBox-62875 is joining
+2012-04-07 13:30:31,722 DEBUG (OOB-2,klerik-VirtualBox-62875) [org.infinispan.statetransfer.BaseStateTransferManagerImpl] Applying new state from klerik-VirtualBox-63562: received 1 keys
+2012-04-07 13:30:31,743 DEBUG (OOB-3,klerik-VirtualBox-62875) [org.infinispan.statetransfer.ReplicatedStateTransferTask] Commencing state transfer 6 on node: klerik-VirtualBox-62875. Before start, data container had 1 entries
+2012-04-07 13:30:31,744 DEBUG (OOB-3,klerik-VirtualBox-62875) [org.infinispan.statetransfer.StateTransferLockImpl] Blocking new write commands for cache view 6
+2012-04-07 13:30:31,746 DEBUG (OOB-3,klerik-VirtualBox-62875) [org.infinispan.cacheviews.CacheViewsManagerImpl] ___hotRodTopologyCache: Committing cache view 6
+2012-04-07 13:30:31,746 DEBUG (OOB-3,klerik-VirtualBox-62875) [org.infinispan.statetransfer.StateTransferLockImpl] Unblocking write commands for cache view 6
+2012-04-07 13:30:31,747 DEBUG (OOB-3,klerik-VirtualBox-62875) [org.infinispan.statetransfer.BaseStateTransferTask] Node klerik-VirtualBox-62875 completed state transfer for view 6 in 4 milliseconds!
+2012-04-07 13:30:31,747 DEBUG (InfinispanServer-Main) [org.infinispan.CacheImpl] Started cache ___hotRodTopologyCache on klerik-VirtualBox-62875
+2012-04-07 13:30:31,825 DEBUG (InfinispanServer-Main) [org.infinispan.server.hotrod.HotRodServer] Map klerik-VirtualBox-62875 cluster address with 127.0.0.1:11223 server endpoint in address cache
+2012-04-07 13:30:31,886 DEBUG (InfinispanServer-Main) [org.infinispan.server.hotrod.HotRodServer] Starting server with basic settings: host=127.0.0.1, port=11223, masterThreads=-1, workerThreads=40, idleTimeout=-1, tcpNoDelay=true, sendBufSize=0, recvBufSize=0
+2012-04-07 13:30:31,922 DEBUG (InfinispanServer-Main) [org.infinispan.transaction.TransactionTable] Min view id set to 7
+2012-04-07 13:30:31,922 DEBUG (InfinispanServer-Main) [org.infinispan.interceptors.InterceptorChain] Interceptor chain size: 9
+2012-04-07 13:30:31,922 DEBUG (InfinispanServer-Main) [org.infinispan.interceptors.InterceptorChain] Interceptor chain is: 
+	>> org.infinispan.interceptors.BatchingInterceptor
+	>> org.infinispan.interceptors.InvocationContextInterceptor
+	>> org.infinispan.interceptors.StateTransferLockInterceptor
+	>> org.infinispan.interceptors.DistTxInterceptor
+	>> org.infinispan.interceptors.NotificationInterceptor
+	>> org.infinispan.interceptors.locking.OptimisticLockingInterceptor
+	>> org.infinispan.interceptors.EntryWrappingInterceptor
+	>> org.infinispan.interceptors.DistributionInterceptor
+	>> org.infinispan.interceptors.CallInterceptor
+2012-04-07 13:30:31,923 DEBUG (InfinispanServer-Main) [org.infinispan.cacheviews.CacheViewsManagerImpl] ___defaultcache: Node klerik-VirtualBox-62875 is joining
+2012-04-07 13:30:31,931 DEBUG (OOB-2,klerik-VirtualBox-62875) [org.infinispan.statetransfer.DistributedStateTransferTask] Commencing rehash 8 on node: klerik-VirtualBox-62875. Before start, data container had 0 entries
+2012-04-07 13:30:31,933 DEBUG (OOB-2,klerik-VirtualBox-62875) [org.infinispan.statetransfer.StateTransferLockImpl] Blocking new write commands for cache view 8
+2012-04-07 13:30:31,936 DEBUG (OOB-2,klerik-VirtualBox-62875) [org.infinispan.cacheviews.CacheViewsManagerImpl] ___defaultcache: Committing cache view 8
+2012-04-07 13:30:31,941 DEBUG (OOB-2,klerik-VirtualBox-62875) [org.infinispan.statetransfer.StateTransferLockImpl] Unblocking write commands for cache view 8
+2012-04-07 13:30:31,941 DEBUG (OOB-2,klerik-VirtualBox-62875) [org.infinispan.statetransfer.BaseStateTransferTask] Node klerik-VirtualBox-62875 completed state transfer for view 8 in 10 milliseconds!
+2012-04-07 13:30:31,942 DEBUG (InfinispanServer-Main) [org.infinispan.CacheImpl] Started cache ___defaultcache on klerik-VirtualBox-62875
+2012-04-07 13:31:05,671 INFO  (ShutdownHookThread) [org.infinispan.server.core.ShutdownHook] ISPN005002: Posting Shutdown Request to the server...
+2012-04-07 13:31:05,708 DEBUG (StopThread) [org.infinispan.server.hotrod.HotRodServer] Stopping server listening in 127.0.0.1:11223
+2012-04-07 13:31:05,722 DEBUG (StopThread) [org.infinispan.server.core.transport.NettyTransport] Channel group completely closed, release external resources
+2012-04-07 13:31:05,728 DEBUG (StopThread) [org.infinispan.server.hotrod.HotRodServer] Server stopped
+2012-04-07 13:31:05,728 DEBUG (StopThread) [org.infinispan.manager.DefaultCacheManager] Stopping cache manager luceneDemoCluster on klerik-VirtualBox-62875
+2012-04-07 13:31:05,728 DEBUG (StopThread) [org.infinispan.CacheImpl] Stopping cache ___hotRodTopologyCache on klerik-VirtualBox-62875
+2012-04-07 13:31:05,729 DEBUG (StopThread) [org.infinispan.transaction.TransactionTable] Wait for on-going transactions to finish for 30 seconds.
+2012-04-07 13:31:05,730 DEBUG (StopThread) [org.infinispan.CacheImpl] Stopping cache ___defaultcache on klerik-VirtualBox-62875
+2012-04-07 13:31:05,732 DEBUG (StopThread) [org.infinispan.transaction.TransactionTable] Wait for on-going transactions to finish for 30 seconds.
+2012-04-07 13:31:05,733 INFO  (StopThread) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] ISPN000080: Disconnecting and closing JGroups Channel
+2012-04-07 13:31:05,735 DEBUG (StopThread) [org.jgroups.protocols.pbcast.GMS] sending LEAVE request to klerik-VirtualBox-63562 (local_addr=klerik-VirtualBox-62875)
+2012-04-07 13:31:05,797 DEBUG (StopThread) [org.jgroups.protocols.UDP] multicast socket closed
+2012-04-07 13:31:05,798 DEBUG (multicast receiver,klerik-VirtualBox-62875) [org.jgroups.protocols.UDP] receiver socket is closed, exception=java.net.SocketException: Socket closed
+2012-04-07 13:31:05,798 DEBUG (multicast receiver,klerik-VirtualBox-62875) [org.jgroups.protocols.UDP] multicast receiver thread terminated
+2012-04-07 13:31:05,798 DEBUG (unicast receiver,klerik-VirtualBox-62875) [org.jgroups.protocols.UDP] receiver socket is closed, exception=java.net.SocketException: Socket closed
+2012-04-07 13:31:05,798 DEBUG (unicast receiver,klerik-VirtualBox-62875) [org.jgroups.protocols.UDP] unicast receiver thread terminated
+2012-04-07 13:31:06,116 DEBUG (FD_SOCK pinger,klerik-VirtualBox-62875) [org.jgroups.protocols.FD_SOCK] socket to klerik-VirtualBox-63562 was closed gracefully
+2012-04-07 13:31:06,121 DEBUG (StopThread) [org.jgroups.protocols.UDP] closing sockets and stopping threads
+2012-04-07 13:31:06,209 INFO  (StopThread) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] ISPN000082: Stopping the RpcDispatcher
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                2012-04-07 13:30:31,377 DEBUG (ViewHandler,klerik-VirtualBox-63562) [org.jgroups.protocols.pbcast.GMS] new=[klerik-VirtualBox-62875], suspected=[], leaving=[], new view: [klerik-VirtualBox-63562|7] [klerik-VirtualBox-63562, klerik-VirtualBox-62875]
+2012-04-07 13:30:31,377 DEBUG (ViewHandler,klerik-VirtualBox-63562) [org.jgroups.protocols.pbcast.STABLE] suspending message garbage collection
+2012-04-07 13:30:31,377 DEBUG (ViewHandler,klerik-VirtualBox-63562) [org.jgroups.protocols.pbcast.STABLE] resume task started, max_suspend_time=33000
+2012-04-07 13:30:31,378 DEBUG (Incoming-1,klerik-VirtualBox-63562) [org.jgroups.protocols.pbcast.NAKACK] 
+[setDigest()]
+existing digest:  klerik-VirtualBox-63562: [23 (23)]
+new digest:       klerik-VirtualBox-63562: [22 (22)], klerik-VirtualBox-62875: [0 (0)]
+resulting digest: klerik-VirtualBox-62875: [0 (0)], klerik-VirtualBox-63562: [23 (23)]
+2012-04-07 13:30:31,379 DEBUG (Incoming-1,klerik-VirtualBox-63562) [org.jgroups.protocols.pbcast.GMS] klerik-VirtualBox-63562: view is [klerik-VirtualBox-63562|7] [klerik-VirtualBox-63562, klerik-VirtualBox-62875]
+2012-04-07 13:30:31,379 DEBUG (Incoming-1,klerik-VirtualBox-63562) [org.jgroups.protocols.FD_SOCK] VIEW_CHANGE received: [klerik-VirtualBox-63562, klerik-VirtualBox-62875]
+2012-04-07 13:30:31,380 DEBUG (Incoming-1,klerik-VirtualBox-63562) [org.jgroups.protocols.pbcast.STABLE] [ergonomics] setting max_bytes to 2MB (2 members)
+2012-04-07 13:30:31,380 DEBUG (Incoming-1,klerik-VirtualBox-63562) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] New view accepted: [klerik-VirtualBox-63562|7] [klerik-VirtualBox-63562, klerik-VirtualBox-62875]
+2012-04-07 13:30:31,380 INFO  (Incoming-1,klerik-VirtualBox-63562) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] ISPN000094: Received new cluster view: [klerik-VirtualBox-63562|7] [klerik-VirtualBox-63562, klerik-VirtualBox-62875]
+2012-04-07 13:30:31,380 DEBUG (FD_SOCK pinger,klerik-VirtualBox-63562) [org.jgroups.protocols.FD_SOCK] ping_dest is klerik-VirtualBox-62875, pingable_mbrs=[klerik-VirtualBox-63562, klerik-VirtualBox-62875]
+2012-04-07 13:30:31,381 DEBUG (notification-thread-2) [org.infinispan.transaction.TransactionTable] View changed, recalculating minViewId
+2012-04-07 13:30:31,381 DEBUG (notification-thread-2) [org.infinispan.transaction.TransactionTable] View changed, recalculating minViewId
+2012-04-07 13:30:31,420 DEBUG (ViewHandler,klerik-VirtualBox-63562) [org.jgroups.protocols.pbcast.STABLE] resuming message garbage collection
+2012-04-07 13:30:31,626 DEBUG (OOB-1,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] ___hotRodTopologyCache: Node klerik-VirtualBox-62875 is joining
+2012-04-07 13:30:31,630 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] Installing new view CacheView{viewId=6, members=[klerik-VirtualBox-63562, klerik-VirtualBox-62875]} for cache ___hotRodTopologyCache
+2012-04-07 13:30:31,633 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.ReplicatedStateTransferTask] Commencing state transfer 6 on node: klerik-VirtualBox-63562. Before start, data container had 1 entries
+2012-04-07 13:30:31,633 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.StateTransferLockImpl] Blocking new write commands for cache view 6
+2012-04-07 13:30:31,633 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.BaseStateTransferManagerImpl] Pushing to nodes [klerik-VirtualBox-62875] 1 keys
+2012-04-07 13:30:31,738 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.BaseStateTransferTask] Node finished pushing data for cache views 6.
+2012-04-07 13:30:31,748 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] ___hotRodTopologyCache: Committing cache view 6
+2012-04-07 13:30:31,748 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.StateTransferLockImpl] Unblocking write commands for cache view 6
+2012-04-07 13:30:31,749 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.BaseStateTransferTask] Node klerik-VirtualBox-63562 completed state transfer for view 6 in 117 milliseconds!
+2012-04-07 13:30:31,749 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] Successfully installed view CacheView{viewId=6, members=[klerik-VirtualBox-63562, klerik-VirtualBox-62875]} for cache ___hotRodTopologyCache
+2012-04-07 13:30:31,925 DEBUG (OOB-1,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] ___defaultcache: Node klerik-VirtualBox-62875 is joining
+2012-04-07 13:30:31,925 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] Installing new view CacheView{viewId=8, members=[klerik-VirtualBox-63562, klerik-VirtualBox-62875]} for cache ___defaultcache
+2012-04-07 13:30:31,926 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.DistributedStateTransferTask] Commencing rehash 8 on node: klerik-VirtualBox-63562. Before start, data container had 20 entries
+2012-04-07 13:30:31,928 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.StateTransferLockImpl] Blocking new write commands for cache view 8
+2012-04-07 13:30:31,930 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.BaseStateTransferTask] Node finished pushing data for cache views 8.
+2012-04-07 13:30:31,943 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] ___defaultcache: Committing cache view 8
+2012-04-07 13:30:31,944 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.StateTransferLockImpl] Unblocking write commands for cache view 8
+2012-04-07 13:30:31,944 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.BaseStateTransferTask] Node klerik-VirtualBox-63562 completed state transfer for view 8 in 18 milliseconds!
+2012-04-07 13:30:31,944 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] Successfully installed view CacheView{viewId=8, members=[klerik-VirtualBox-63562, klerik-VirtualBox-62875]} for cache ___defaultcache
+2012-04-07 13:31:05,738 DEBUG (OOB-2,klerik-VirtualBox-63562) [org.jgroups.protocols.pbcast.GMS] received LEAVE_REQ for klerik-VirtualBox-62875 from klerik-VirtualBox-62875
+2012-04-07 13:31:05,763 DEBUG (Incoming-1,klerik-VirtualBox-63562) [org.infinispan.statetransfer.StateTransferLockImpl] Blocking new write commands because we'll soon start a state transfer
+2012-04-07 13:31:05,764 DEBUG (Incoming-1,klerik-VirtualBox-63562) [org.infinispan.statetransfer.StateTransferLockImpl] Blocking new write commands because we'll soon start a state transfer
+2012-04-07 13:31:05,764 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] Installing new view CacheView{viewId=9, members=[klerik-VirtualBox-63562]} for cache ___defaultcache
+2012-04-07 13:31:05,768 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.DistributedStateTransferTask] Commencing rehash 9 on node: klerik-VirtualBox-63562. Before start, data container had 20 entries
+2012-04-07 13:31:05,768 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.StateTransferLockImpl] Blocking new write commands for cache view 9
+2012-04-07 13:31:05,769 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.BaseStateTransferTask] Node finished pushing data for cache views 9.
+2012-04-07 13:31:05,769 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] ___defaultcache: Committing cache view 9
+2012-04-07 13:31:05,769 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.StateTransferLockImpl] Unblocking write commands for cache view 9
+2012-04-07 13:31:05,770 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.statetransfer.BaseStateTransferTask] Node klerik-VirtualBox-63562 completed state transfer for view 9 in 1 milliseconds!
+2012-04-07 13:31:05,770 DEBUG (CacheViewInstaller-6,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] Successfully installed view CacheView{viewId=9, members=[klerik-VirtualBox-63562]} for cache ___defaultcache
+2012-04-07 13:31:05,770 DEBUG (CacheViewInstaller-7,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] Installing new view CacheView{viewId=7, members=[klerik-VirtualBox-63562]} for cache ___hotRodTopologyCache
+2012-04-07 13:31:05,772 DEBUG (CacheViewInstaller-7,klerik-VirtualBox-63562) [org.infinispan.statetransfer.ReplicatedStateTransferTask] Commencing state transfer 7 on node: klerik-VirtualBox-63562. Before start, data container had 2 entries
+2012-04-07 13:31:05,772 DEBUG (CacheViewInstaller-7,klerik-VirtualBox-63562) [org.infinispan.statetransfer.StateTransferLockImpl] Blocking new write commands for cache view 7
+2012-04-07 13:31:05,772 DEBUG (CacheViewInstaller-7,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] ___hotRodTopologyCache: Committing cache view 7
+2012-04-07 13:31:05,772 DEBUG (CacheViewInstaller-7,klerik-VirtualBox-63562) [org.infinispan.statetransfer.StateTransferLockImpl] Unblocking write commands for cache view 7
+2012-04-07 13:31:05,772 DEBUG (CacheViewInstaller-7,klerik-VirtualBox-63562) [org.infinispan.statetransfer.BaseStateTransferTask] Node klerik-VirtualBox-63562 completed state transfer for view 7 in 0 milliseconds!
+2012-04-07 13:31:05,773 DEBUG (CacheViewInstaller-7,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] Successfully installed view CacheView{viewId=7, members=[klerik-VirtualBox-63562]} for cache ___hotRodTopologyCache
+2012-04-07 13:31:05,790 DEBUG (ViewHandler,klerik-VirtualBox-63562) [org.jgroups.protocols.pbcast.GMS] new=[], suspected=[], leaving=[klerik-VirtualBox-62875], new view: [klerik-VirtualBox-63562|8] [klerik-VirtualBox-63562]
+2012-04-07 13:31:05,792 DEBUG (Incoming-1,klerik-VirtualBox-63562) [org.jgroups.protocols.pbcast.GMS] klerik-VirtualBox-63562: view is [klerik-VirtualBox-63562|8] [klerik-VirtualBox-63562]
+2012-04-07 13:31:05,794 DEBUG (Incoming-1,klerik-VirtualBox-63562) [org.jgroups.protocols.pbcast.NAKACK] removed klerik-VirtualBox-62875 from xmit_table (not member anymore)
+2012-04-07 13:31:05,794 DEBUG (Incoming-1,klerik-VirtualBox-63562) [org.jgroups.protocols.FD_SOCK] VIEW_CHANGE received: [klerik-VirtualBox-63562]
+2012-04-07 13:31:05,797 DEBUG (FD_SOCK pinger,klerik-VirtualBox-63562) [org.jgroups.protocols.FD_SOCK] peer null closed socket gracefully
+2012-04-07 13:31:06,131 DEBUG (Incoming-1,klerik-VirtualBox-63562) [org.jgroups.protocols.pbcast.STABLE] [ergonomics] setting max_bytes to 1MB (1 members)
+2012-04-07 13:31:06,157 DEBUG (Incoming-1,klerik-VirtualBox-63562) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] New view accepted: [klerik-VirtualBox-63562|8] [klerik-VirtualBox-63562]
+2012-04-07 13:31:06,157 INFO  (Incoming-1,klerik-VirtualBox-63562) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] ISPN000094: Received new cluster view: [klerik-VirtualBox-63562|8] [klerik-VirtualBox-63562]
+2012-04-07 13:31:06,167 DEBUG (notification-thread-2) [org.infinispan.transaction.TransactionTable] View changed, recalculating minViewId
+2012-04-07 13:31:06,175 DEBUG (notification-thread-2) [org.infinispan.remoting.rpc.RpcManagerImpl] We're the only member in the cluster; Don't invoke remotely.
+2012-04-07 13:31:06,175 DEBUG (notification-thread-2) [org.infinispan.remoting.rpc.RpcManagerImpl] We're the only member in the cluster; Don't invoke remotely.
+2012-04-07 13:31:06,175 DEBUG (notification-thread-2) [org.infinispan.remoting.rpc.RpcManagerImpl] We're the only member in the cluster; Don't invoke remotely.
+2012-04-07 13:31:06,181 DEBUG (notification-thread-2) [org.infinispan.transaction.TransactionTable] View changed, recalculating minViewId
+2012-04-07 13:31:06,542 INFO  (ShutdownHookThread) [org.infinispan.server.core.ShutdownHook] ISPN005002: Posting Shutdown Request to the server...
+2012-04-07 13:31:06,556 DEBUG (StopThread) [org.infinispan.server.hotrod.HotRodServer] Stopping server listening in 127.0.0.1:11222
+2012-04-07 13:31:06,582 DEBUG (StopThread) [org.infinispan.server.core.transport.NettyTransport] Channel group completely closed, release external resources
+2012-04-07 13:31:06,594 DEBUG (StopThread) [org.infinispan.server.hotrod.HotRodServer] Server stopped
+2012-04-07 13:31:06,594 DEBUG (StopThread) [org.infinispan.manager.DefaultCacheManager] Stopping cache manager luceneDemoCluster on klerik-VirtualBox-63562
+2012-04-07 13:31:06,595 DEBUG (StopThread) [org.infinispan.CacheImpl] Stopping cache ___hotRodTopologyCache on klerik-VirtualBox-63562
+2012-04-07 13:31:06,598 DEBUG (StopThread) [org.infinispan.transaction.TransactionTable] Wait for on-going transactions to finish for 30 seconds.
+2012-04-07 13:31:06,600 DEBUG (CacheViewInstaller-7,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] Installing new view CacheView{viewId=8, members=[]} for cache ___hotRodTopologyCache
+2012-04-07 13:31:06,601 DEBUG (CacheViewInstaller-7,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] ___hotRodTopologyCache: Committing cache view 8
+2012-04-07 13:31:06,601 DEBUG (CacheViewInstaller-7,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] Successfully installed view CacheView{viewId=8, members=[]} for cache ___hotRodTopologyCache
+2012-04-07 13:31:06,602 DEBUG (StopThread) [org.infinispan.CacheImpl] Stopping cache ___defaultcache on klerik-VirtualBox-63562
+2012-04-07 13:31:06,602 DEBUG (StopThread) [org.infinispan.transaction.TransactionTable] Wait for on-going transactions to finish for 30 seconds.
+2012-04-07 13:31:06,603 DEBUG (CacheViewInstaller-7,klerik-VirtualBox-63562) [org.infinispan.cacheviews.CacheViewsManagerImpl] Installing new view CacheView{viewId=10, members=[]} for cache ___defaultcache
+2012-04-07 13:31:06,621 INFO  (StopThread) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] ISPN000080: Disconnecting and closing JGroups Channel
+2012-04-07 13:31:06,625 DEBUG (multicast receiver,klerik-VirtualBox-63562) [org.jgroups.protocols.UDP] receiver socket is closed, exception=java.net.SocketException: Socket closed
+2012-04-07 13:31:06,625 DEBUG (multicast receiver,klerik-VirtualBox-63562) [org.jgroups.protocols.UDP] multicast receiver thread terminated
+2012-04-07 13:31:06,626 DEBUG (StopThread) [org.jgroups.protocols.UDP] multicast socket closed
+2012-04-07 13:31:06,626 DEBUG (unicast receiver,klerik-VirtualBox-63562) [org.jgroups.protocols.UDP] receiver socket is closed, exception=java.net.SocketException: Socket closed
+2012-04-07 13:31:06,626 DEBUG (unicast receiver,klerik-VirtualBox-63562) [org.jgroups.protocols.UDP] unicast receiver thread terminated
+2012-04-07 13:31:06,627 DEBUG (StopThread) [org.jgroups.protocols.UDP] closing sockets and stopping threads
+2012-04-07 13:31:06,633 INFO  (StopThread) [org.infinispan.remoting.transport.jgroups.JGroupsTransport] ISPN000082: Stopping the RpcDispatcher

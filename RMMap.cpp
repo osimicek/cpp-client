@@ -68,6 +68,15 @@ void RMMap::set(const std::string *key,const std::string *value){
 
 }
 
+std::map<std::string,std::string>::iterator RMMap::begin(){
+	RC.getBulk(&bulk);	
+	return bulk.begin();	
+}
+
+std::map<std::string,std::string>::iterator RMMap::end(){
+	return bulk.end();	
+}
+
 
 
 

@@ -56,12 +56,12 @@ void PacketAssembler::createBase(long long msg_id, u_short op_code){
     packet += (char)0xa0; //HotRod request
     packet += encode_varlong(msg_id); //msg ID
 
-    packet += (char)0x0a; //version 10 or 11
+    packet += (char)transporter->hotrod_version; //version 10 or 11
     packet += (char)op_code; //op_code
     packet += (char)0x00; //cache name length
     packet += (char)0x00; //flags
-    packet += (char)0x01; //inteligence
-    packet += (char)0x00; //topology
+    packet += (char)0x03; //inteligence
+    packet += encode_varint(transporter->topology_id); //topology
     packet += (char)0x00; //transaction type
 
 }

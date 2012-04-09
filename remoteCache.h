@@ -11,7 +11,7 @@ class RemoteCache{
     
     Transporter *transporter;
   public:
-    RemoteCache(std::string,std::string);
+    RemoteCache(std::string,int);
     RemoteCache(std::string);
     RemoteCache(void);
     void stats(void);
@@ -41,6 +41,9 @@ class RemoteCache{
 
     int getBulk(std::map<std::string,std::string> *bulk);
     int getBulk(std::map<std::string,std::string> *bulk, int count);
+
+    void print_servers();
+    void close();
 };
 
 #endif

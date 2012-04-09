@@ -5,3 +5,10 @@ Run new Terminal
 Run new Terminal
 ~/make  
 ~/make run  #to run test
+
+
+Distribution servers
+Run new terminal
+~/make startservers  #to run distribution servers
+
+~/make kill  #to kill all java programs included servers

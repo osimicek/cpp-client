@@ -1,17 +1,17 @@
 #include "remoteCache.h"
 
-RemoteCache::RemoteCache(std::string parhost,std::string parport){
+RemoteCache::RemoteCache(std::string parhost,int parport){
 
     transporter = new Transporter(parhost,parport);
 }
 
 RemoteCache::RemoteCache(std::string parhost){
 
-    transporter = new Transporter(parhost,"11222");
+    transporter = new Transporter(parhost,11222);
 }
 
 RemoteCache::RemoteCache(){
-    transporter = new Transporter("127.0.0.1","11222");
+    transporter = new Transporter("127.0.0.1",11222);
 }
 
 int RemoteCache::ping(){
@@ -198,5 +198,21 @@ int RemoteCache::getBulk(std::map<std::string,std::string> *bulk){
 
 void RemoteCache::stats(){
     //std::cout << transporter->host<<":"<< transporter->port<<std::endl;
+
+}
+
+void RemoteCache::print_servers(){
+    std::cout << transporter->servers.size()<<std::endl; 
+    for(int i = 0;i<transporter->servers.size();i++){
+        std::cout << std::dec<<transporter->servers.front().host<<"/"<<transporter->servers.front().port<<std::endl;
+        transporter->servers.push(transporter->servers.front());
+        transporter->servers.pop();
+    } 
+    std::cout << transporter->servers.size()<<std::endl; 
+    return;
+}
+
+void RemoteCache::close(){
+    transporter->close_servers();
 
 }

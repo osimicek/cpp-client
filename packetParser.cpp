@@ -1,10 +1,12 @@
 #include "packetParser.h"
 
 int DEBUG = 0;
+int SERVERS_DEBUG = 0;
 
-PacketParser::PacketParser(int s)
+PacketParser::PacketParser(int s,Transporter &t):transporter(t)
 {
  	sock = s;
+ 
 }
 
 int PacketParser::decode_varint(){
@@ -53,6 +55,11 @@ int PacketParser::read_data(int *state,long long *data,response *resp){
   int status,op_code;
   int err_len, err_msg_counter;
   long long msg_id;
+  int topology_change = 0;
+  int topology_id = 0;
+  u_int num_key_own;
+  u_short hash_ver;
+  int hash_space, num_virtual, num_servers;
 
 
     //0-OK  1-Err
@@ -86,9 +93,105 @@ int PacketParser::read_data(int *state,long long *data,response *resp){
   *state = status;
 
   n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
-  buffer2[n] = '\0';
+  topology_change = buffer2[0];
   if(DEBUG){
     std::cout <<"* Topology change marker: "<< std::hex << buffer2[0]<<std::endl;
+  }
+  if(topology_change == 0x01){
+      int server_sum = 0;
+
+      topology_id = decode_varint();
+      transporter.topology_id = topology_id;
+
+      n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
+      num_key_own = buffer2[0];
+      num_key_own <<= 8;
+      n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
+      num_key_own |= buffer2[0];
+
+      n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
+      hash_ver= buffer2[0];
+
+      hash_space = decode_varint();
+      
+
+      num_servers = decode_varint();
+      server_sum = num_servers; // for horod 1.0
+
+      if(transporter.hotrod_version == 0x0b){ // added for hotrod 1.1
+        num_virtual = decode_varint();
+        server_sum = num_virtual;
+      }
+
+      if(SERVERS_DEBUG){
+        std::cout <<"** Topology ID: "<<std::dec<<topology_id<<std::endl;
+        std::cout <<"** Num key owners: "<<num_key_own<<std::endl;
+        std::cout <<"** Hash function version: "<<hash_ver<<std::endl;
+        std::cout <<"** Hash space size: "<<hash_space<<std::endl;
+        std::cout <<"** Num servers in topology: "<<num_servers<<std::endl;
+        if(transporter.hotrod_version == 0x0b){
+          std::cout <<"** Num virtual nodes owners: "<<num_virtual<<std::endl;
+        }
+      }
+      transporter.invalidate_servers();
+
+      int host_len;
+      u_int host_port;
+      u_int hash;
+      for(int i = 0; i<num_virtual;i++){
+        server s;
+        s.socket = 0;
+        s.used = 0;
+        s.valid = 1;
+
+        if(SERVERS_DEBUG){
+            std::cout <<"***";
+        } 
+        host_len = decode_varint();
+        for(int j = 0;j<host_len;j++){ //host name
+          n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
+          buffer2[n] = '\0';
+          s.host += buffer2[0];
+          if(SERVERS_DEBUG){
+            std::cout <<(char)buffer2[0];
+          }  
+
+        }
+        if(SERVERS_DEBUG){
+            std::cout <<"/";
+        } 
+        n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
+        host_port = buffer2[0];         //host port
+        host_port <<= 8;
+        n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
+        host_port |= (u_short)buffer2[0];
+        s.port = host_port;
+        if(SERVERS_DEBUG){
+          std::cout <<host_port;
+        }  
+
+        n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
+        hash = buffer2[0];
+        hash <<= 8;
+        n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
+        hash |= (u_short)buffer2[0];
+        hash <<= 8;
+        n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
+        hash |= (u_short)buffer2[0];
+        hash <<= 8;
+        n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
+        hash |= (u_short)buffer2[0];
+        s.hash = hash;
+        if(SERVERS_DEBUG){
+          std::cout <<"  "<<hash<<std::endl;
+        }  
+        transporter.update_servers(&s);
+        //s->port = 0;
+
+      }
+      transporter.del_invalid_servers();
+
+
   }
 
   if(status != 0x00) //chyba
@@ -111,14 +214,19 @@ int PacketParser::read_data(int *state,long long *data,response *resp){
         std::cerr <<"* Error Message Length: "<< std::hex << buffer2[0]<<std::endl;
       }
       err_len = (u_short)buffer2[0];
-
-      std::cout << "* ";
+      if(DEBUG){
+        std::cout << "* ";
+      }
+      
       for(err_msg_counter = 0;err_msg_counter < err_len; err_msg_counter++)
       {
       	
         n = recv(sock, buffer2, 1,0);  // cteni dat ze socketu
         buffer2[n] = '\0';
-        std::cout << (char*)buffer2;
+        if(DEBUG){
+          std::cout << (char*)buffer2;
+        }
+        
         //std::cout << n<<" ";
         //std::cout << buffer2<<" "<< std::hex << (u_short)buffer2[0]<<std::endl;
 
