@@ -151,13 +151,15 @@ function start() {
   	START_ARGS=( "${START_ARGS[@]}" "${JVM_ARGS[@]}" )
   fi
 
-  # Log4J config path needs path conversion in Cygwin
-  if $CYGWIN; then
-    LOG4J_CONFIG=`cygpath -w "${ISPN_HOME}/etc/log4j.xml"`
-  else
-    LOG4J_CONFIG=${ISPN_HOME}/etc/log4j.xml
-  fi 
-  START_ARGS=( "${START_ARGS[@]}" "-Dlog4j.configuration=file:///$LOG4J_CONFIG" )
+  if [ "x$LOG4J_CONFIG" = "x" ]; then
+    # Log4J config path needs path conversion in Cygwin
+    if $CYGWIN; then
+      LOG4J_CONFIG=`cygpath -w "file:///${ISPN_HOME}/etc/log4j.xml"`
+    else
+      LOG4J_CONFIG=file:///${ISPN_HOME}/etc/log4j.xml
+    fi 
+  fi
+  START_ARGS=( "${START_ARGS[@]}" "-Dlog4j.configuration=$LOG4J_CONFIG" )
 
   # Main class and its arguments
   START_ARGS=( "${START_ARGS[@]}" "$MAIN_CLASS" )
@@ -176,3 +178,12 @@ function start() {
   "${START_ARGS[@]}"
 }
 
+# Find port between 2000 and 65000
+function find_tcp_port(){
+  PORT=$(( 2000+( 100+( $(od -An -N2 -i /dev/random) )%(63000) )))
+  while :
+    do
+      (echo >/dev/tcp/localhost/$PORT) &>/dev/null &&  PORT=$(( 2000+( 100+( $(od -An -N2 -i /dev/random) )%(63000) ))) || break
+    done
+  echo "$PORT"
+}
