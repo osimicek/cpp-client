@@ -2,7 +2,7 @@
 
 
 Transport::Transport(std::string host, int port, TransportFactory &tF):transportFactory(tF)
-{
+{   
     this->host.assign(host);
     this->port = port;
     this->hash = 0;
@@ -11,6 +11,7 @@ Transport::Transport(std::string host, int port, TransportFactory &tF):transport
     this->valid = 1;
 
     int hotrod_version = transportFactory.get_hotrod_version();
+    // std::cout << "version  "<< hotrod_version << std::endl; 
     if(hotrod_version == VERSION_10){
         codec = new Codec10(*this);
     }else if(hotrod_version == VERSION_11){
@@ -70,14 +71,12 @@ void Transport::write_byte(short byte){
     packet += (char)byte;
 }
 
-void Transport::write_header(char op_code){
+void Transport::write_header(char op_code, const std::string *cache_name, int flags){
     int hotrod_version = transportFactory.get_hotrod_version();
     if(hotrod_version == VERSION_10){
-        ((Codec10 *) codec)->write_header(op_code);
-    }else if(hotrod_version == VERSION_11){
-        ((Codec11 *) codec)->write_header(op_code);
-    }else{
-        //return ERROR
+        ((Codec10 *) codec)->write_header(op_code, cache_name, flags);
+    }else{ //version 11
+        ((Codec11 *) codec)->write_header(op_code, cache_name, flags);
     }
 }
 
@@ -91,21 +90,22 @@ void Transport::write_array(const std::string *arr){
 int Transport::flush(){
     // sends data to server
     int status = 0;
-    std::cout << "_SOCKET " << this->_socket << std::endl;
+    // std::cout << "_SOCKET " << this->_socket << std::endl;
     if(this->_socket == 0){
         create_connection();
     }
-    std::cout << "PACKET " << (u_short)(this->packet.c_str()[3])<< " "<<this->packet.length()<<" "<<this->_socket << std::endl;
-    if(write(this->_socket, this->packet.c_str(), this->packet.length()) < 0)  // odeslani pozadavku na server 24
-    {
-        // std::cerr << "error zapis"<<std::endl;
-        if(this->_socket != 0){
+    for(int i=0; i<2; i++){
+        if(write(this->_socket, this->packet.c_str(), this->packet.length()) < 0)  // odeslani pozadavku na server 24
+        {
             status = create_connection();
-        }
-        if(status == 0){
-            return FAILED_TO_SEND;
+            if(status == 0){
+                return FAILED_TO_SEND;
+            }
+        }else{
+            break;
         }
     }
+    return NO_ERROR_STATUS;
 }
 
 
@@ -191,12 +191,11 @@ void Transport::read_array(std::string *arr){
 
 int Transport::read_header(){
     int hotrod_version = transportFactory.get_hotrod_version();
+    // std::cout << "version  "<< hotrod_version << std::endl; 
     if(hotrod_version == VERSION_10){
         return ((Codec10 *) codec)->read_header();
-    }else if(hotrod_version == VERSION_11){
+    }else{ //version 11
         return ((Codec11 *) codec)->read_header();
-    }else{
-        //return ERROR
     }
 }
 
@@ -210,13 +209,13 @@ int Transport::create_connection(){
 
   if((ret_socket = socket(PF_INET, SOCK_STREAM, 0)) < 0)  // vytvoreni socketu
   {
-    std::cerr << "error socket"<<std::endl;
+    if(DEBUG) std::cerr << "error socket"<<std::endl;
     return 0;//EXIT_FAILURE;
   }
 
   if((hptr = gethostbyname(this->host.c_str())) == NULL)  // preklad URL adresy
   {
-    std::cerr << "error host"<<std::endl;
+    if(DEBUG) std::cerr << "error host"<<std::endl;
     return 0;//EXIT_FAILURE;
   }
   
@@ -224,18 +223,13 @@ int Transport::create_connection(){
 
   if(connect(ret_socket, (struct sockaddr*) &sin, sizeof(sin)) < 0)  // navazani spojeni se serverem
   {
-    std::cerr << "error connect"<<std::endl;
+    if(DEBUG) std::cerr << "error connect"<<std::endl;
     return 0;//EXIT_FAILURE;
   }
   this->_socket = ret_socket;
   return ret_socket;
 
-    //std::cout << "cconnected"<<std::endl;
+
 }
 
 
-// void Transport::execute()
-// {
-//      std::cout << "G e" <<std::endl;
-//      AbstractOperation::execute();
-// }  

@@ -10,6 +10,8 @@ class AbstractOperation{
         int status;
         TransportFactory &transportFactory;
         Transport *transport;
+        const std::string *cache_name;
+        int flags;
         explicit AbstractOperation(TransportFactory &tF);
         int execute();
         virtual int execute_operation();
@@ -31,6 +33,13 @@ class PutOperation : public AbstractOperation{
         const std::string *value;
         int lifespan, idle;
         PutOperation(const std::string *value, TransportFactory &tF, const std::string *key, const std::string *cache_name, int flags, int lifespan, int idle);
+        virtual int execute_operation();
+
+};
+
+class ClearOperation : public AbstractOperation{
+    public:
+        ClearOperation(TransportFactory &tF, const std::string *cache_name, int flags);
         virtual int execute_operation();
 
 };

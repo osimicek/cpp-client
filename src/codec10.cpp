@@ -4,13 +4,13 @@
 // Codec10::Codec10(){}
 Codec10::Codec10(Transport &t):transport(t){}
 
-void Codec10::write_header(char op_code){
-     std::cout << "WRITE 10"<< std::endl;
-    write_header(op_code, 10);
+void Codec10::write_header(char op_code, const std::string *cache_name, int flags){
+    // std::cout <<"HEADER 10" << std::endl;
+    write_header(op_code, cache_name, flags, VERSION_10);
 }   
 
-void Codec10::write_header(char op_code, char version){
-    std::cout << "WRITE"<< version<< std::endl;
+void Codec10::write_header(char op_code, const std::string *cache_name, int flags, char version){
+    // std::cout << "WRITE"<< (int)version << " " <<(int)VERSION_10<< std::endl;
     struct timeval begin;
     gettimeofday(&begin, NULL);
     long long the_time;  
@@ -24,8 +24,8 @@ void Codec10::write_header(char op_code, char version){
 
     transport.write_char(version); //version 10 or 11
     transport.write_char(op_code); //op_code
-    transport.write_char(0x00); //cache name length
-    transport.write_char(0x00); //flags
+    transport.write_array(cache_name); //cache name length
+    transport.write_char(flags); //flags
     transport.write_char(CLIENT_INTELLIGENCE_HASH_DISTRIBUTION_AWARE); //inteligence
     transport.write_varint(transport.transportFactory.get_topology_id()); //topology
     //todo change once TX support is added
@@ -64,23 +64,15 @@ int Codec10::read_header(){
 
 int Codec10::check_for_errors_in_response_status(char status){
     if(status == NOT_PUT_REMOVED_REPLACED_STATUS){
-        if(DEBUG){
-            std::cerr <<"* Not put/remove/replaced: "<<std::endl;
-        }
         return status;
     } else if(status == KEY_DOES_NOT_EXIST_STATUS){
-        if(DEBUG){
-          std::cerr <<"* Key does not exist: "<<std::endl;
-        }
         return status; 
     }
 
     std::string error_msg;
 
     transport.read_array(&error_msg);
-    if(DEBUG){
-        std::cerr <<"* Error Message: "<< error_msg<<std::endl;
-    }
+    if(DEBUG) std::cerr <<"* Error Message: "<< error_msg<<std::endl;
     return status; 
 }
 
@@ -109,11 +101,7 @@ int Codec10::read_new_topology_if_present(){
         num_servers = transport.read_varint();
 
         transport.transportFactory.set_virtual_nodes_num(0); // rozdil ve verzich
-        if(transport.transportFactory.get_hotrod_version() == 0x0b){ // added for hotrod 1.1
-            num_virtual = transport.read_varint();
-            transport.transportFactory.set_virtual_nodes_num(num_virtual);
-            //num_servers = num_virtual;
-        }
+
 
       if(DEBUG){
         std::cout <<"** Topology ID: "<<std::dec<<topology_id<<" old: "<<transport.transportFactory.get_topology_id()<<std::endl;
@@ -121,9 +109,7 @@ int Codec10::read_new_topology_if_present(){
         std::cout <<"** Hash function version: "<<hash_ver<<std::endl;
         std::cout <<"** Hash space size: "<<hash_space<<std::endl;
         std::cout <<"** Num servers in topology: "<<num_servers<<std::endl;
-        if(transport.transportFactory.get_hotrod_version() == 0x0b){ //rozdil ve verzi
-          std::cout <<"** Num virtual nodes owners: "<<num_virtual<<std::endl;
-        }
+
       }
 
 
@@ -161,26 +147,20 @@ int Codec10::read_new_topology_if_present(){
         }
         t->valid = 1;
         t->hash = hash;
-        std::cout << transport.transportFactory.transports.size() << std::endl;
+        // std::cout << transport.transportFactory.transports.size() << std::endl;
         //s->port = 0;
 
       }
       transport.transportFactory.del_invalid_transports();
       transport.transportFactory.print_hash_bank();
       update_transport_bank();
-      // transport.transportFactory.print_hash_bank();
+      transport.transportFactory.print_hash_bank();
 
 
   }
 
 
 }
-
-
-// bool compareByLength(const std::pair<int,Transport*> a, const std::pair<int,Transport*> b)
-//   {
-//       return a.first < b.first;
-//   }
 
 void Codec10::update_transport_bank(){
   pthread_mutex_lock (&transport.transportFactory.mutex);
@@ -192,27 +172,17 @@ void Codec10::update_transport_bank(){
   for(int i = 0;i<transport.transportFactory.transports.size();i++){
         tmp_transport = transport.transportFactory.transports.front();
 
-        int nodeBaseHashCode = tmp_transport->hash;
-        int virtualNodeBaseHashCode = 0;
-        int virtualNodeHashCode = 0;
-        int virtual_nodes_num = transport.transportFactory.get_virtual_nodes_num();
-        for(int id=0; id < virtual_nodes_num or id == 0; id++){
-            virtualNodeBaseHashCode = 31 * id + nodeBaseHashCode;
-            virtualNodeHashCode = (MurmurHash3_x64_32( (const char *) &virtualNodeBaseHashCode, 4,9001) & INT_MAX);
-            
-            transport.transportFactory.hash_transport_bank.push_back((std::make_pair(virtualNodeHashCode,tmp_transport)));
-            transport.transportFactory.hash_vector.push_back(virtualNodeHashCode);
-           
+        int nodeHashCode = tmp_transport->hash;
 
-            // std::cout <<"\n\t"<<virtualNodeHashCode;
-           
-        }
-        // std::cout<< "xx"<<virtualNodeHashCode<<std::endl;
+        transport.transportFactory.hash_transport_bank.push_back((std::make_pair(nodeHashCode,tmp_transport)));
+        transport.transportFactory.hash_vector.push_back(nodeHashCode);
+ 
+
 
         transport.transportFactory.transports.push(tmp_transport);
         transport.transportFactory.transports.pop();        
   }
-  std::cout << "SIZE" << transport.transportFactory.hash_transport_bank.size() << std::endl; 
+  // std::cout << "SIZEee " << transport.transportFactory.hash_transport_bank.size() << std::endl; 
 
   
 

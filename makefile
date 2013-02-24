@@ -21,7 +21,8 @@ CPPFLAGS += -I./include
 # 						./include/nosjob/src/whalloc_amalgamation.o
 		
 
-hotrod_cli_lib_obj := include/murmur/MurmurHash3.o \
+hotrod_cli_lib_obj := 	include/murmur/MurmurHash2.o \
+						include/murmur/MurmurHash3.o \
 						src/packetParser.o\
 						src/transporter.o\
 						src/packetAssembler.o\
@@ -68,16 +69,32 @@ startservers:
 	 sleep 3
 	 ./infinispan/bin/startServer.sh -r hotrod -p 11228 -c ./infinispan/bin/distrib.xml &
 
+startservers10:
+	 ./infinispan-4.1.0.FINAL/bin/startServer.sh -r hotrod -p 11222 -c ./infinispan-4.1.0.FINAL/bin/distrib.xml &
+	 sleep 6
+	 ./infinispan-4.1.0.FINAL/bin/startServer.sh -r hotrod -p 11223 -c ./infinispan-4.1.0.FINAL/bin/distrib.xml &
+	 sleep 3
+	 ./infinispan-4.1.0.FINAL/bin/startServer.sh -r hotrod -p 11224 -c ./infinispan-4.1.0.FINAL/bin/distrib.xml &
+	 sleep 3
+	 ./infinispan-4.1.0.FINAL/bin/startServer.sh -r hotrod -p 11225 -c ./infinispan-4.1.0.FINAL/bin/distrib.xml &
+	 sleep 3
+	 ./infinispan-4.1.0.FINAL/bin/startServer.sh -r hotrod -p 11226 -c ./infinispan-4.1.0.FINAL/bin/distrib.xml &
+	 sleep 3
+	 ./infinispan-4.1.0.FINAL/bin/startServer.sh -r hotrod -p 11227 -c ./infinispan-4.1.0.FINAL/bin/distrib.xml &
+	 sleep 3
+	 ./infinispan-4.1.0.FINAL/bin/startServer.sh -r hotrod -p 11228 -c ./infinispan-4.1.0.FINAL/bin/distrib.xml &
+
 kill:
 	killall -9 -v java
 
 
 java:
-
 	cd ./java\ client/client/hotrod-client; ./compile.sh
 runjava:
 	cd ./java\ client/client/hotrod-client; ./run.sh #editovat cpp-client/java client/client/hotrod-client/src/main/java/org/infinispan/client/hotrod-client
-	
+
+java10:
+	cd ./java\ client-4.1.0.FINAL/client/hotrod-client; ./compile.sh	
 
 
 clean:							# smazani nezadoucich souboru

@@ -1,6 +1,6 @@
 #ifndef CONSTANTS_H_INCLUDED
 #define CONSTANTS_H_INCLUDED
-   const short DEBUG = 1;
+   const short DEBUG = 0;
 
    const char REQUEST_MAGIC = 0xA0;
    const char RESPONSE_MAGIC = 0xA1;
@@ -41,7 +41,7 @@
    const char ERROR_RESPONSE = 0x50;
 
    //response status
-   const char NO_ERROR_STATUS = 0x00;
+   const int NO_ERROR_STATUS = 0x00;
    const int INVALID_MAGIC_OR_MESSAGE_ID_STATUS = 0x81;
    const int REQUEST_PARSING_ERROR_STATUS = 0x84;
    const char NOT_PUT_REMOVED_REPLACED_STATUS = 0x01;

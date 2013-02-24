@@ -1,9 +1,9 @@
 #include "transportFactory.h"
 #include "constants.h"
 
-TransportFactory::TransportFactory(std::string host, int port)
+TransportFactory::TransportFactory(std::string host, int port, int version)
 {
-    hotrod_version = VERSION_11;
+    hotrod_version = version;
     topology_id = 0;
     virtual_nodes_num = 0;
     max_hash_size = 0;
@@ -13,15 +13,11 @@ TransportFactory::TransportFactory(std::string host, int port)
 
     if(hotrod_version == VERSION_10){
         consistentHash = new ConsistentHash10(*this);
-    }else if(hotrod_version == VERSION_11){
+    }else{ //version 11
         consistentHash = new ConsistentHash11(*this);
-    }else{
-        //return ERROR
     }
 
-    std::cout << "xx" << this<<std::endl;
     first_transport = create_transport(&host, port);
-    std::cout << "TF" <<std::endl;
 }  
 
 
@@ -37,11 +33,12 @@ int TransportFactory::get_topology_id(){
     return ret;
 }  
 
-void TransportFactory::set_hotrod_version(int id){
-    pthread_mutex_lock (&mutex_t_id);
-    hotrod_version = id;
-    pthread_mutex_unlock (&mutex_t_id);
-}
+// void TransportFactory::set_hotrod_version(int version){
+//     pthread_mutex_lock (&mutex_t_id);
+//     hotrod_version = version;
+//     pthread_mutex_unlock (&mutex_t_id);
+// }
+
 int TransportFactory::get_hotrod_version(){
     pthread_mutex_lock (&mutex_t_id);
     int ret = hotrod_version;
@@ -49,9 +46,9 @@ int TransportFactory::get_hotrod_version(){
     return ret;
 }  
 
-void TransportFactory::set_virtual_nodes_num(int id){
+void TransportFactory::set_virtual_nodes_num(int num){
     pthread_mutex_lock (&mutex_t_id);
-      virtual_nodes_num = id;
+      virtual_nodes_num = num;
     pthread_mutex_unlock (&mutex_t_id);
 }
 int TransportFactory::get_virtual_nodes_num (){
@@ -61,9 +58,9 @@ int TransportFactory::get_virtual_nodes_num (){
     return ret;
 }
 
-void TransportFactory::set_max_hash_size(int id){
+void TransportFactory::set_max_hash_size(int size){
     pthread_mutex_lock (&mutex_t_id);
-      max_hash_size = id;
+      max_hash_size = size;
     pthread_mutex_unlock (&mutex_t_id);
 }
 int TransportFactory::get_max_hash_size(){
@@ -73,9 +70,9 @@ int TransportFactory::get_max_hash_size(){
     return ret;
 }
 
-void TransportFactory::set_num_key_owners(int id){
+void TransportFactory::set_num_key_owners(int num){
     pthread_mutex_lock (&mutex_t_id);
-    num_key_owners = id;
+    num_key_owners = num;
     pthread_mutex_unlock (&mutex_t_id);
 }
 int TransportFactory::get_num_key_owners(){
@@ -85,13 +82,19 @@ int TransportFactory::get_num_key_owners(){
     return ret;
 }
 
+Transport *TransportFactory::get_transport(){
+    if(hotrod_version == VERSION_10){
+        return ((ConsistentHash10 *) consistentHash)->get_transport();
+    }else{ //version 11
+        return ((ConsistentHash11 *) consistentHash)->get_transport();
+    }
+} 
+
 Transport *TransportFactory::get_transport(const std::string *key){
     if(hotrod_version == VERSION_10){
         return ((ConsistentHash10 *) consistentHash)->get_transport(key);
-    }else if(hotrod_version == VERSION_11){
+    }else{ //version 11
         return ((ConsistentHash11 *) consistentHash)->get_transport(key);
-    }else{
-        //return ERROR
     }
 } 
 
@@ -116,13 +119,16 @@ Transport * TransportFactory::get_transport(std::string *host, int port){
   return ret_transport;
 }
 
+void TransportFactory::release_transport(Transport * transport){
+  pthread_mutex_lock (&mutex);
+  transport->used = 0;
+  pthread_mutex_unlock (&mutex);
+}
+
 Transport * TransportFactory::create_transport(std::string *host, int port){
   Transport *transport = new Transport(*host, port, *this);
-  std::string key;
-  key.append(*host);
   pthread_mutex_lock (&mutex);
   this->transports.push(transport);
-  //this->hostport_transport.push_back((std::make_pair("", *transport)));
   pthread_mutex_unlock (&mutex);
   return transport;
 }
@@ -161,7 +167,6 @@ void TransportFactory::del_invalid_transports(){
 }
 
 void TransportFactory::print_hash_bank(){
-  std::cout << "START "<< transports.size() <<std::endl;
     for(int i=0; i < this->hash_transport_bank.size(); i++){
 
       std::cout << i << "  "<< this->hash_transport_bank[i].first<<"  "<<this->hash_transport_bank[i].second->port<<std::endl;

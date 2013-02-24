@@ -2,6 +2,7 @@
 #define CODEC10_H_INCLUDED
 
 #include "transport.h"
+#include <murmur/MurmurHash2.h>
 #include <murmur/MurmurHash3.h>
 #include <limits.h>
 #include "constants.h"
@@ -16,12 +17,12 @@ class Codec10{
         Transport &transport;
         // Codec10();
         Codec10(Transport &t);
-        void write_header(char op_code, char version);
-        void write_header(char op_code);
+        void write_header(char op_code, const std::string *cache_name, int flags, char version);
+        void write_header(char op_code, const std::string *cache_name, int flags);
         int read_header();
         int check_for_errors_in_response_status(char status);
-        int read_new_topology_if_present();
-        void update_transport_bank();
+        virtual int read_new_topology_if_present();
+        virtual void update_transport_bank();
 };
 
 #endif

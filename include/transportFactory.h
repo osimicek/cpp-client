@@ -32,20 +32,22 @@ class TransportFactory{
         int num_key_owners;
         void *consistentHash;
 
-        explicit TransportFactory(std::string, int);
+        explicit TransportFactory(std::string host, int port, int version);
         void execute();
         void set_topology_id(int id);
         int get_topology_id();
-        void set_hotrod_version(int id);
+        // void set_hotrod_version(int version);
         int get_hotrod_version();
-        void set_virtual_nodes_num(int id);
+        void set_virtual_nodes_num(int num);
         int get_virtual_nodes_num();
-        void set_max_hash_size(int id);
+        void set_max_hash_size(int size);
         int get_max_hash_size();
-        void set_num_key_owners(int id);
+        void set_num_key_owners(int num);
         int get_num_key_owners();
+        Transport *get_transport();
         Transport *get_transport(const std::string *key);
         Transport * get_transport(std::string *host, int port);
+        void release_transport(Transport * transport);
         Transport * create_transport(std::string *host, int port);
         void invalidate_transports();
         void del_invalid_transports();

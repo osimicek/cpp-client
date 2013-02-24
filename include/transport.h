@@ -38,7 +38,7 @@ class Transport{
 
         std::string packet;
         Transport(std::string, int, TransportFactory &tF);
-        void write_header(char op_code);
+        void write_header(char op_code, const std::string *cache_name, int flags);
         void write_version(long long value);
         void write_varint(int value);
         void write_varlong(long long value);

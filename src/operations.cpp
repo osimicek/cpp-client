@@ -3,18 +3,14 @@
 
 AbstractOperation::AbstractOperation(TransportFactory &tF):transportFactory(tF)
 {
-     std::cout << "AO" <<std::endl;
 }    
 int AbstractOperation::execute()
 {
-     std::cout << "A e" <<std::endl;
      return execute_operation();
 } 
 
 int AbstractOperation::execute_operation()
 {
-     std::cout << "A eO" <<std::endl;
-
 }  
 
 
@@ -23,21 +19,27 @@ GetOperation::GetOperation(std::string *value, TransportFactory &tF, const std::
 {    
      this->key = key;
      this->value = value;
+     this->cache_name = cache_name;
+     this->flags = flags;
 }   
 
 int GetOperation::execute_operation()
-{
+{   
     transport = transportFactory.get_transport(key);
     if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
 
-    transport->write_header(GET_REQUEST);
+    transport->write_header(GET_REQUEST, cache_name, flags);
     transport->write_array(key);
-    transport->flush();
-    status = transport->read_header();
-    if(status == NO_ERROR_STATUS){
-        transport->read_array(value);
-        std::cout << *value << std::endl;
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
     }
+
+    if(status = transport->read_header() == NO_ERROR_STATUS){
+        transport->read_array(value);
+        if(DEBUG)std::cout << *value << std::endl;
+    }
+    transportFactory.release_transport(transport);
     return status;
     
 }  
@@ -48,19 +50,47 @@ PutOperation::PutOperation(const std::string *value, TransportFactory &tF, const
      this->value = value;
      this->lifespan = lifespan;
      this->idle = idle;
+     this->cache_name = cache_name;
+     this->flags = flags;
 }   
 
 int PutOperation::execute_operation()
 {
     transport = transportFactory.get_transport(key);
     if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
-
-    transport->write_header(PUT_REQUEST);
+    transport->write_header(PUT_REQUEST, cache_name, flags);
     transport->write_array(key);
     transport->write_varint(this->lifespan); //lifespan
     transport->write_varint(this->idle); //idle
     transport->write_array(value);
-    transport->flush();
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
+    }
+    
     status = transport->read_header();
+    transportFactory.release_transport(transport);
+    return status;
+}  
+
+
+ClearOperation::ClearOperation(TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+{    
+     this->cache_name = cache_name;
+     this->flags = flags;
+}   
+
+int ClearOperation::execute_operation()
+{
+    transport = transportFactory.get_transport();
+    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+    transport->write_header(CLEAR_REQUEST, cache_name, flags);
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
+    }
+    
+    status = transport->read_header();
+    transportFactory.release_transport(transport);
     return status;
 }  

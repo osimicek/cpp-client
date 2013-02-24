@@ -1,23 +1,46 @@
 #include <remoteCache2.h>
 
-RemoteCache2::RemoteCache2(std::string host,int port){
-    init(host, port);
+RemoteCacheConfig::RemoteCacheConfig(){
+    version = 11;
+    lifespan = 0;
+    idle = 0;
+    flags = 0x00;
+    cache_name = "";
+    host = "127.0.0.1";
+    port = 11222;
+}
+
+
+RemoteCache2::RemoteCache2(RemoteCacheConfig* remote_cache_config){
+    init(remote_cache_config);
+}
+
+RemoteCache2::RemoteCache2(std::string host, int port){
+    RemoteCacheConfig remote_cache_config;
+    remote_cache_config.host = host;
+    remote_cache_config.host = port;
+    init(&remote_cache_config);
 }
 
 RemoteCache2::RemoteCache2(std::string host){
-
-    init(host,11222);
+    RemoteCacheConfig remote_cache_config;
+    remote_cache_config.host = host;
+    init(&remote_cache_config);
 }
 
 RemoteCache2::RemoteCache2(){
-    init("127.0.0.1",11222);
+    RemoteCacheConfig remote_cache_config;
+    init(&remote_cache_config);
 }
 
-void RemoteCache2::init(std::string host,int port){
+void RemoteCache2::init(RemoteCacheConfig* remote_cache_config){
     srand (time(NULL));
-    transportFactory = new TransportFactory(host,port);
-    transportFactory->set_hotrod_version(11);
-    flags = 0x00;
+    transportFactory = new TransportFactory(remote_cache_config->host, remote_cache_config->port, remote_cache_config->version);
+
+    lifespan = remote_cache_config->lifespan;
+    idle = remote_cache_config->idle;
+    flags = remote_cache_config->flags;
+    cache_name = remote_cache_config->cache_name;
 }
 
 int RemoteCache2::ping(){
@@ -31,8 +54,8 @@ int RemoteCache2::ping(long long *value){
 }
 
 int RemoteCache2::clear(){
-    // PacketAssembler *PA = new PacketAssembler(transporter);
-    // return PA->createClear();
+    ClearOperation *clearOperation = new ClearOperation(*transportFactory, &cache_name, flags);
+    return clearOperation->execute();
 }
 int RemoteCache2::put(const char *key,const char *value,int lifespan, int idle){
     std::string tmp_key(key);
@@ -42,9 +65,8 @@ int RemoteCache2::put(const char *key,const char *value,int lifespan, int idle){
 
 
 int RemoteCache2::put(const std::string *key,const std::string *value,int lifespan, int idle){
-    // PacketAssembler *PA = new PacketAssembler(transporter);
-    // std::cout <<"Ok2 "<<std::flush;
-    // return PA->createPut(key,value,lifespan,idle);
+    if(lifespan < 0){lifespan = this->lifespan;}
+    if(idle < 0){idle = this->idle;}
     PutOperation *putOperation = new PutOperation(value, *transportFactory, key, &cache_name, flags, lifespan, idle);
     return putOperation->execute();
 }
@@ -166,11 +188,7 @@ int RemoteCache2::get(const char* value, const char *key){
 }
 
 int RemoteCache2::get(std::string *value, const std::string *key){
-    // PacketAssembler *PA = new PacketAssembler(transporter);
-    // //std::cout << *key << *value <<std::flush<<std::endl;
-    // return PA->createGet(value, key);
-    //std::cout << "gva "<< *key << " "<<*value<< " | "<<value <<std::endl;
-    //return 1;
+
     GetOperation *getOperation = new GetOperation(value, *transportFactory, key, &cache_name, flags);
     return getOperation->execute();
     

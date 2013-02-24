@@ -3,6 +3,7 @@
 #include <remoteCache2.h>
 #include <RMMap.h>
 #include <murmur/MurmurHash3.h>
+#include <murmur/MurmurHash2.h>
 
 
 
@@ -27,7 +28,7 @@ void print_rmmap(RMMap  *data){
 }
 
 int test1(){
-	RemoteCache x = RemoteCache();
+	RemoteCache2 x = RemoteCache2();
     x.clear();
 	std::string resp;
 
@@ -52,7 +53,7 @@ int test1(){
 		std::cerr << "Error #2 in test1" <<std::endl;
 		ret = 1;
 	}
-	resp.clear();
+	 resp.clear();
 
     std::string s4 = std::string("cc");
 	x.replace(&s1,&s4);
@@ -70,7 +71,7 @@ int test1(){
 
 
 int test2(){
-	RemoteCache x = RemoteCache();
+	RemoteCache2 x = RemoteCache2();
     x.clear();
 	std::string resp;
 	int ret = 0;
@@ -116,7 +117,7 @@ int test2(){
 
 int test3(){
     std::cout <<"ok"<<std::endl;
-	RemoteCache x = RemoteCache();
+	RemoteCache2 x = RemoteCache2();
     x.clear();
 	int ret = 0;
 	int stat;
@@ -148,7 +149,7 @@ int test3(){
 }
 
 void smallTest(){
-	RemoteCache x = RemoteCache();
+	RemoteCache2 x = RemoteCache2();
 	x.put(&std::string("Hell"),&std::string("hi"));
 
 /*	std::string resp;
@@ -177,7 +178,7 @@ void loopTest(){
 	print_rmmap(&x);
 
 	
-	RemoteCache c = RemoteCache();
+	RemoteCache2 c = RemoteCache2();
 	while(1){
 		
 		c.put(&std::string("a"),&std::string("hi"));
@@ -192,7 +193,7 @@ void loopTest(){
 }
 
 void putAllTest(){
-	RemoteCache x = RemoteCache();
+	RemoteCache2 x = RemoteCache2();
 	std::map<std::string,std::string>  data;
 	data["Test1"] = "Sample text #1";
 	data["Test2"] = "Sample text #2";
@@ -249,7 +250,45 @@ void putAllTest(){
 
 }
 
+// int MurmurHash2(void * payload) {
+//       int M = 0x5bd1e995;
+//        int R = 24;
+//       int H = -1;
+//       int h = H;
+//       int len = payload.length;
+//       int offset = 0;
+//       while (len >= 4) {
+//          int k = payload[offset];
+//          k |= payload[offset + 1] << 8;
+//          k |= payload[offset + 2] << 16;
+//          k |= payload[offset + 3] << 24;
 
+//          k *= M;
+//          k ^= k >>> R;
+//          k *= M;
+//          h *= M;
+//          h ^= k;
+
+//          len -= 4;
+//          offset += 4;
+//       }
+
+//       switch (len) {
+//          case 3:
+//             h ^= payload[offset + 2] << 16;
+//          case 2:
+//             h ^= payload[offset + 1] << 8;
+//          case 1:
+//             h ^= payload[offset];
+//             h *= M;
+//       }
+
+//       h ^= h >>> 13;
+//       h *= M;
+//       h ^= h >>> 15;
+
+//       return h;
+//    }
 
 
 
@@ -267,7 +306,7 @@ int main(){
    
 
  //    std::string resp;
-	// RemoteCache x = RemoteCache();
+	// RemoteCache2 x = RemoteCache2();
  //    std::string name(key);
  //    x.put(&name, &name);
  //    std::cout<< "????"<<resp<<std::flush<<std::endl;   
@@ -302,12 +341,11 @@ int main(){
    
 
     std::string resp;
-  RemoteCache2 x = RemoteCache2();
+    RemoteCacheConfig remote_cache_config;
+    remote_cache_config.cache_name = "";
+    remote_cache_config.version = 11;
+    RemoteCache2 x = RemoteCache2(&remote_cache_config);
     std::string name(key);
-    //x.put(&name, &name);
-    std::cout<< "????"<<resp<<std::flush<<std::endl;   
-    //x.clear();
-    //x.get(&resp, &name);
 
 
     std::string k("key");
@@ -324,26 +362,31 @@ int main(){
     std::cout << "RESP " << v << std::endl;
 
 
-
+    // x.clear();
     //x.put(&name, &name);
     x.close();
 
-    uint tes;
-    int cis;
-    cis = MurmurHash3_x64_32( (const char *) key, 5,9001 );
-    std::cout<<std::dec<< "&&&"<<cis<<std::flush<<std::endl;  
-    std::cout<<std::dec<< "&&&"<<cis%2147483647<<std::flush<<std::endl;   
-    std::cout<<std::dec<< "&&&"<<cis%INT_MAX<<std::flush<<std::endl;   
+    // uint tes;
+    // int cis;
+    // cis = MurmurHash3_x64_32( (const char *) key, 7,9001 );
+    // std::cout<<std::dec<< "&&&"<<cis<<std::flush<<std::endl;  
+    // std::cout<<std::dec<< "&&&"<<cis%2147483647<<std::flush<<std::endl;   
+    // std::cout<<std::dec<< "&&&"<<cis%INT_MAX<<std::flush<<std::endl;   
 
 
-    int murmur = MurmurHash3_x64_32(key,7,9001);
+    // int murmur = MurmurHash3_x64_32(key,7,9001);
+    // std::cout<<std::dec<< "MUR "<<(murmur & INT_MAX) <<std::flush<<std::endl;  
+
+    // cis = MurmurHash3_x64_32( (const char *) key, 7,9001 );
+    // std::cout<<std::dec<< "&&&"<<cis<<std::flush<<std::endl;  
+    // std::cout<<std::dec<< "&&&"<<cis%2147483647<<std::flush<<std::endl;   
+    // std::cout<<std::dec<< "&&&"<<cis%INT_MAX<<std::flush<<std::endl;   
 
 
+    // int murmur2 = MurmurHash2(key,7,9001);
+    // std::cout<<std::dec<< "MUR2 "<<(murmur2 & INT_MAX) <<std::flush<<std::endl; 
 
-      std::cout<<std::dec<< "MUR "<<(murmur & INT_MAX) <<std::flush<<std::endl;  
-
-
-
+    //test1();
 
 
 
