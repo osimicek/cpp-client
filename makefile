@@ -23,10 +23,6 @@ CPPFLAGS += -I./include
 
 hotrod_cli_lib_obj := 	include/murmur/MurmurHash2.o \
 						include/murmur/MurmurHash3.o \
-						src/packetParser.o\
-						src/transporter.o\
-						src/packetAssembler.o\
-						src/remoteCache.o\
 						src/RMItem.o\
 						src/RMMap.o\
 						src/transport.o\
@@ -94,13 +90,14 @@ runjava:
 	cd ./java\ client/client/hotrod-client; ./run.sh #editovat cpp-client/java client/client/hotrod-client/src/main/java/org/infinispan/client/hotrod-client
 
 java10:
-	cd ./java\ client-4.1.0.FINAL/client/hotrod-client; ./compile.sh	
+	cd ./java\ client/client/hotrod-client; ./compile.sh	
 
 
 clean:							# smazani nezadoucich souboru
 	rm -f *~
 	rm -f *.o
 	rm -f src/*.o
+	rm -f include/murmur/*.o
 	rm -f test1
 
 pack:

@@ -20,7 +20,9 @@ void Codec10::write_header(char op_code, const std::string *cache_name, int flag
 
     transport.packet.clear(); //clear packet 
     transport.write_char(REQUEST_MAGIC); //HotRod request
-    transport.write_varlong(1);//encode_varlong(the_time); //msg ID
+    transport.write_varlong(transport.transportFactory.get_and_inc_message_id());//encode_varlong(the_time); //msg ID
+
+
 
     transport.write_char(version); //version 10 or 11
     transport.write_char(op_code); //op_code
@@ -53,7 +55,6 @@ int Codec10::read_header(){
     received_op_code = transport.read_byte();
 
     status = transport.read_byte();
-
     read_new_topology_if_present();
 
     if (received_op_code == ERROR_RESPONSE) {

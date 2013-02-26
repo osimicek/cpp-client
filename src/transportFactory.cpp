@@ -7,6 +7,7 @@ TransportFactory::TransportFactory(std::string host, int port, int version)
     topology_id = 0;
     virtual_nodes_num = 0;
     max_hash_size = 0;
+    message_id = 1;
     pthread_mutex_init(&mutex, NULL);
     pthread_mutex_init(&mutex_t_id, NULL);
 
@@ -32,6 +33,15 @@ int TransportFactory::get_topology_id(){
     pthread_mutex_unlock (&mutex_t_id);
     return ret;
 }  
+
+int TransportFactory::get_and_inc_message_id( ){
+    pthread_mutex_lock (&mutex_t_id);
+    int ret = message_id;
+    message_id++;
+    pthread_mutex_unlock (&mutex_t_id);
+    return ret;
+}
+
 
 // void TransportFactory::set_hotrod_version(int version){
 //     pthread_mutex_lock (&mutex_t_id);

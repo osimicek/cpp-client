@@ -11,29 +11,29 @@ RemoteCacheConfig::RemoteCacheConfig(){
 }
 
 
-RemoteCache2::RemoteCache2(RemoteCacheConfig* remote_cache_config){
+RemoteCache::RemoteCache(RemoteCacheConfig* remote_cache_config){
     init(remote_cache_config);
 }
 
-RemoteCache2::RemoteCache2(std::string host, int port){
+RemoteCache::RemoteCache(std::string host, int port){
     RemoteCacheConfig remote_cache_config;
     remote_cache_config.host = host;
     remote_cache_config.host = port;
     init(&remote_cache_config);
 }
 
-RemoteCache2::RemoteCache2(std::string host){
+RemoteCache::RemoteCache(std::string host){
     RemoteCacheConfig remote_cache_config;
     remote_cache_config.host = host;
     init(&remote_cache_config);
 }
 
-RemoteCache2::RemoteCache2(){
+RemoteCache::RemoteCache(){
     RemoteCacheConfig remote_cache_config;
     init(&remote_cache_config);
 }
 
-void RemoteCache2::init(RemoteCacheConfig* remote_cache_config){
+void RemoteCache::init(RemoteCacheConfig* remote_cache_config){
     srand (time(NULL));
     transportFactory = new TransportFactory(remote_cache_config->host, remote_cache_config->port, remote_cache_config->version);
 
@@ -43,31 +43,29 @@ void RemoteCache2::init(RemoteCacheConfig* remote_cache_config){
     cache_name = remote_cache_config->cache_name;
 }
 
-int RemoteCache2::ping(){
-    // long long tmp;
-    // return ping(&tmp);
+int RemoteCache::ping(){
+    PingOperation *pingOperation = new PingOperation(*transportFactory, &cache_name, flags);
+    return pingOperation->execute();
 }
 
-int RemoteCache2::ping(long long *value){
-    // PacketAssembler *PA = new PacketAssembler(transporter);
-    // return PA->createPing(value);
-}
 
-int RemoteCache2::clear(){
+
+int RemoteCache::clear(){
     ClearOperation *clearOperation = new ClearOperation(*transportFactory, &cache_name, flags);
     return clearOperation->execute();
 }
-int RemoteCache2::put(const char *key,const char *value,int lifespan, int idle){
+int RemoteCache::put(const char *key,const char *value,int lifespan, int idle){
     std::string tmp_key(key);
     std::string tmp_value(value);
     return put(&tmp_key,&tmp_value,lifespan,idle);
 }
 
 
-int RemoteCache2::put(const std::string *key,const std::string *value,int lifespan, int idle){
+int RemoteCache::put(const std::string *key,const std::string *value,int lifespan, int idle){
+    std::string prev_value;
     if(lifespan < 0){lifespan = this->lifespan;}
     if(idle < 0){idle = this->idle;}
-    PutOperation *putOperation = new PutOperation(value, *transportFactory, key, &cache_name, flags, lifespan, idle);
+    PutOperation *putOperation = new PutOperation(value, key, &prev_value, *transportFactory, &cache_name, flags, lifespan, idle);
     return putOperation->execute();
 }
 
@@ -83,7 +81,7 @@ static void *print_message_function( void * t_a)
     // return (void * )(t_args->RC->put(t_args->key,t_args->value,t_args->lifespan,t_args->idle));
 }
 
-int RemoteCache2::putAllAsync(std::map<std::string,std::string> *data,int lifespan, int idle){
+int RemoteCache::putAllAsync(std::map<std::string,std::string> *data,int lifespan, int idle){
     // int max_threads = 10;
     // std::map<std::string,std::string>::iterator pos;
     // int *rets = new int[data->size()];
@@ -119,7 +117,7 @@ int RemoteCache2::putAllAsync(std::map<std::string,std::string> *data,int lifesp
     return 0;
 }
 
-int RemoteCache2::putAll(std::map<std::string,std::string> *data,int lifespan, int idle){
+int RemoteCache::putAll(std::map<std::string,std::string> *data,int lifespan, int idle){
     std::map<std::string,std::string>::iterator pos;
 
     for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
@@ -130,40 +128,44 @@ int RemoteCache2::putAll(std::map<std::string,std::string> *data,int lifespan, i
     return 0;
 }
 
-int RemoteCache2::putIfAbsent(const char *key,const char *value,int lifespan, int idle){
+int RemoteCache::putIfAbsent(const char *key,const char *value,int lifespan, int idle){
     std::string tmp_key(key);
     std::string tmp_value(value);
     return putIfAbsent(&tmp_key,&tmp_value,lifespan,idle);
 }
 
 
-int RemoteCache2::putIfAbsent(const std::string *key,std::string *value,int lifespan, int idle){
-    // PacketAssembler *PA = new PacketAssembler(transporter);
-
-    // return PA->createPutIfAbsent(key,value,lifespan,idle);
+int RemoteCache::putIfAbsent(const std::string *key,std::string *value,int lifespan, int idle){
+    std::string prev_value;
+    if(lifespan < 0){lifespan = this->lifespan;}
+    if(idle < 0){idle = this->idle;}
+    PutIfAbsentOperation *putIfAbsentOperation = new PutIfAbsentOperation(value, key, &prev_value, *transportFactory, &cache_name, flags, lifespan, idle);
+    return putIfAbsentOperation->execute();
 }
 
-int RemoteCache2::replace(const char *key,const char *value,int lifespan, int idle){
+int RemoteCache::replace(const char *key,const char *value,int lifespan, int idle){
     std::string tmp_key(key);
     std::string tmp_value(value);
     return replace(&tmp_key,&tmp_value,lifespan,idle);
 }
 
 
-int RemoteCache2::replace(const std::string *key,std::string *value,int lifespan, int idle){
-    // PacketAssembler *PA = new PacketAssembler(transporter);
-
-    // return PA->createReplace(key,value,lifespan,idle);
+int RemoteCache::replace(const std::string *key,std::string *value,int lifespan, int idle){
+    std::string prev_value;
+    if(lifespan < 0){lifespan = this->lifespan;}
+    if(idle < 0){idle = this->idle;}
+    ReplaceOperation *replaceOperation = new ReplaceOperation(value, key, &prev_value, *transportFactory, &cache_name, flags, lifespan, idle);
+    return replaceOperation->execute();
 }
 
-int RemoteCache2::replaceWithVersion(const char *key,const char *value, long long version,int lifespan, int idle){
+int RemoteCache::replaceWithVersion(const char *key,const char *value, long long version,int lifespan, int idle){
     std::string tmp_key(key);
     std::string tmp_value(value);
     return replaceWithVersion(&tmp_key,&tmp_value, version,lifespan,idle);
 }
 
 
-int RemoteCache2::replaceWithVersion(const std::string *key,std::string *value, long long version,int lifespan, int idle){
+int RemoteCache::replaceWithVersion(const std::string *key, const std::string *value, long long version,int lifespan, int idle){
     /**
     * Replaces the given value only if its version matches the supplied version.
     *
@@ -173,44 +175,46 @@ int RemoteCache2::replaceWithVersion(const std::string *key,std::string *value, 
     *                for the operation to succeed
     * @return 0 if the value has been replaced
     */
-    // PacketAssembler *PA = new PacketAssembler(transporter);
-
-    // return PA->createReplaceWithVersion(key,value,version,lifespan,idle);
+    std::string prev_value;
+    if(lifespan < 0){lifespan = this->lifespan;}
+    if(idle < 0){idle = this->idle;}
+    ReplaceIfUnmodifiedOperation *replaceIfUnmodifiedOperation = new ReplaceIfUnmodifiedOperation(value, key, &prev_value, version, *transportFactory, &cache_name, flags, lifespan, idle);
+    return replaceIfUnmodifiedOperation->execute();
 }
-int RemoteCache2::get(const char* value, const char *key){
+int RemoteCache::get(const char* value, const char *key){
     std::string tmp_key(key);
     std::string val; //zmenit
     int ret;
 
     ret = get(&val,&tmp_key);
-    value = (val.c_str());
+    value = (val.c_str()); //nakopirovat
     return ret;
 }
 
-int RemoteCache2::get(std::string *value, const std::string *key){
+int RemoteCache::get(std::string *value, const std::string *key){
 
-    GetOperation *getOperation = new GetOperation(value, *transportFactory, key, &cache_name, flags);
+    GetOperation *getOperation = new GetOperation(value, key, *transportFactory, &cache_name, flags);
     return getOperation->execute();
     
 }
 
-int RemoteCache2::remove(const char *key){
+int RemoteCache::remove(const char *key){
     std::string tmp_key(key);
     return remove(&tmp_key);
 }
 
-int RemoteCache2::remove(const std::string *key){
-    // PacketAssembler *PA = new PacketAssembler(transporter);
-
-    // return PA->createRemove(key);
+int RemoteCache::remove(const std::string *key){
+    std::string prev_value;
+    RemoveOperation *removeOperation = new RemoveOperation(&prev_value, key, *transportFactory, &cache_name, flags);
+    return removeOperation->execute();
 }
 
-int RemoteCache2::removeWithVersion(const char *key, long long version){
+int RemoteCache::removeWithVersion(const char *key, long long version){
     std::string tmp_key(key);
     return removeWithVersion(&tmp_key,version);
 }
 
-int RemoteCache2::removeWithVersion(const std::string *key, long long version){
+int RemoteCache::removeWithVersion(const std::string *key, long long version){
     /**
     * Removes the given entry only if its version matches the supplied version.
     *
@@ -219,52 +223,50 @@ int RemoteCache2::removeWithVersion(const std::string *key, long long version){
     *                for the operation to succeed
     * @return 0 if the value has been removed
     */
-    // PacketAssembler *PA = new PacketAssembler(transporter);
-
-    // return PA->createRemoveWithVersion(key,version);
+    std::string prev_value;
+    RemoveIfUnmodifiedOperation *removeIfUnmodifiedOperation = new RemoveIfUnmodifiedOperation(&prev_value, key, version, *transportFactory, &cache_name, flags);
+    return removeIfUnmodifiedOperation->execute();
+    
 }
 
-int RemoteCache2::containsKey(const char *key){
+int RemoteCache::containsKey(const char *key){
     std::string tmp_key(key);
     return containsKey(&tmp_key);
 }
 
-int RemoteCache2::containsKey(const std::string *key){
-    // PacketAssembler *PA = new PacketAssembler(transporter);
-
-    // return PA->createContainsKey(key);
+int RemoteCache::containsKey(const std::string *key){
+    ContainsKeyOperation *containsKeyOperation = new ContainsKeyOperation(key, *transportFactory, &cache_name, flags);
+    return containsKeyOperation->execute();
 }
 
-int RemoteCache2::getWithVersion(const char *value, const char *key,long long *version){
+int RemoteCache::getWithVersion(const char *value, const char *key,long long *version){
     std::string tmp_key(key);
     std::string val;  //zmenit
     int ret;
 
     ret = getWithVersion(&val,&tmp_key,version);
-    value = (val.c_str());
+    value = (val.c_str()); //nakopirovat
     return ret;
 }
 
-int RemoteCache2::getWithVersion(std::string *value,const std::string *key,long long *version){
-    // PacketAssembler *PA = new PacketAssembler(transporter);
-
-    // return PA->createGetWithVersion(value,key,version);
+int RemoteCache::getWithVersion(std::string *value,const std::string *key,long long *version){
+    GetWithVersionOperation *getWithVersionOperation = new GetWithVersionOperation(value, key, version, *transportFactory, &cache_name, flags);
+    return getWithVersionOperation->execute();
     
 }
 
-int RemoteCache2::getBulk(std::map<std::string,std::string> *bulk,int count){
+int RemoteCache::getBulk(std::map<std::string,std::string> *bulk,int count){
     /**
     * Bulk get operations, returns all the entries within the remote cache.
     *
     * @param count maximal number of returned entries
     * @return returns Map of string
     */
-    // PacketAssembler *PA = new PacketAssembler(transporter);
-
-    // return PA->createGetBulk(bulk,count);    
+    GetBulkOperation *getBulkOperation = new GetBulkOperation(bulk, count, *transportFactory, &cache_name, flags);
+    return getBulkOperation->execute();  
     
 }
-int RemoteCache2::getBulk(std::map<std::string,std::string> *bulk){
+int RemoteCache::getBulk(std::map<std::string,std::string> *bulk){
     /**
     * Bulk get operations, returns all the entries within the remote cache.
     *
@@ -275,11 +277,12 @@ int RemoteCache2::getBulk(std::map<std::string,std::string> *bulk){
     
 }
 
-void RemoteCache2::stats(){
-    //Not implemented
+int RemoteCache::stats(std::map<std::string,std::string> *stats){
+    StatsOperation *statsOperation = new StatsOperation(stats, *transportFactory, &cache_name, flags);
+    return statsOperation->execute();  
 }
 
-void RemoteCache2::print_servers(){
+void RemoteCache::print_servers(){
     // std::cout << transporter->servers.size()<<std::endl; 
     // for(int i = 0;i<transporter->servers.size();i++){
     //     std::cout << std::dec<<transporter->servers.front().host<<"/"<<transporter->servers.front().port<<"  hash:"<<transporter->servers.front().hash<<std::endl;
@@ -290,7 +293,7 @@ void RemoteCache2::print_servers(){
     // return;
 }
 
-void RemoteCache2::close(){
+void RemoteCache::close(){
     // transporter->close_servers();
 
 }

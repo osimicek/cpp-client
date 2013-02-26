@@ -1,5 +1,4 @@
 #include <string>
-#include <remoteCache.h>
 #include <remoteCache2.h>
 #include <RMMap.h>
 #include <murmur/MurmurHash3.h>
@@ -19,16 +18,16 @@ void print_map(std::map<std::string,std::string>  *data){
     }
 }
 
-void print_rmmap(RMMap  *data){
-	RMMap::iterator pos;
-	std::cout << "RMMap:" <<std::endl;
-    for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
-        std::cout << "key: \"" << pos->first << "\" "<< "value: " << pos->second << std::endl;
-    }
-}
+// void print_rmmap(RMMap  *data){
+// 	RMMap::iterator pos;
+// 	std::cout << "RMMap:" <<std::endl;
+//     for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
+//         std::cout << "key: \"" << pos->first << "\" "<< "value: " << pos->second << std::endl;
+//     }
+// }
 
 int test1(){
-	RemoteCache2 x = RemoteCache2();
+	RemoteCache x = RemoteCache();
     x.clear();
 	std::string resp;
 
@@ -71,18 +70,19 @@ int test1(){
 
 
 int test2(){
-	RemoteCache2 x = RemoteCache2();
+	RemoteCache x = RemoteCache();
     x.clear();
 	std::string resp;
 	int ret = 0;
 	int stat;
-	long long ver;
+	long long ver = 0;
     x.put(&std::string("Hell"), &std::string("cc"));
 	x.getWithVersion(&resp, &std::string("Hell"),&ver);
 	if(resp != std::string("cc")){
 		std::cerr << "Error #1 in test2 "<< resp<<std::endl;
 		ret = 1;
 	}
+  std::cerr << "ver "<<ver<<std::endl;
 	resp.clear();
 	if((stat = x.replaceWithVersion("Hell","dd",ver++))){
 		std::cerr << "Error #2 in test2   stat:"<<stat <<std::endl;
@@ -117,7 +117,7 @@ int test2(){
 
 int test3(){
     std::cout <<"ok"<<std::endl;
-	RemoteCache2 x = RemoteCache2();
+	RemoteCache x = RemoteCache();
     x.clear();
 	int ret = 0;
 	int stat;
@@ -149,7 +149,7 @@ int test3(){
 }
 
 void smallTest(){
-	RemoteCache2 x = RemoteCache2();
+	RemoteCache x = RemoteCache();
 	x.put(&std::string("Hell"),&std::string("hi"));
 
 /*	std::string resp;
@@ -171,29 +171,29 @@ void smallTest(){
 */
 }
 
-void loopTest(){
-	RMMap x;
-	std::string k ="a";
-	x[k] = "b";
-	print_rmmap(&x);
+// void loopTest(){
+// 	RMMap x;
+// 	std::string k ="a";
+// 	x[k] = "b";
+// 	print_rmmap(&x);
 
 	
-	RemoteCache2 c = RemoteCache2();
-	while(1){
+// 	RemoteCache c = RemoteCache();
+// 	while(1){
 		
-		c.put(&std::string("a"),&std::string("hi"));
-		std::string ret;
-		c.get(&ret,&std::string("a"));
-		std::cout<< ret<<std::flush<<std::endl;
-		c.print_servers();
-		//c.close();
-		sleep(2);
-	}
+// 		c.put(&std::string("a"),&std::string("hi"));
+// 		std::string ret;
+// 		c.get(&ret,&std::string("a"));
+// 		std::cout<< ret<<std::flush<<std::endl;
+// 		c.print_servers();
+// 		//c.close();
+// 		sleep(2);
+// 	}
 
-}
+// }
 
 void putAllTest(){
-	RemoteCache2 x = RemoteCache2();
+	RemoteCache x = RemoteCache();
 	std::map<std::string,std::string>  data;
 	data["Test1"] = "Sample text #1";
 	data["Test2"] = "Sample text #2";
@@ -306,7 +306,7 @@ int main(){
    
 
  //    std::string resp;
-	// RemoteCache2 x = RemoteCache2();
+	// RemoteCache x = RemoteCache();
  //    std::string name(key);
  //    x.put(&name, &name);
  //    std::cout<< "????"<<resp<<std::flush<<std::endl;   
@@ -344,27 +344,28 @@ int main(){
     RemoteCacheConfig remote_cache_config;
     remote_cache_config.cache_name = "";
     remote_cache_config.version = 11;
-    RemoteCache2 x = RemoteCache2(&remote_cache_config);
+    RemoteCache x = RemoteCache(&remote_cache_config);
     std::string name(key);
 
 
-    std::string k("key");
-    std::string v("value");
-    x.get(&v, &k);
-    v = "value";
+  //   std::string k("key");
+  //   std::string v("value");
+  //   x.get(&v, &k);
+  //   v = "value";
 
-    for(int i=0; i<1; i++){
-    x.put(&k, &v);
-    v.clear();
-    x.get(&v, &k);
-  }
+  //   for(int i=0; i<1; i++){
+  //   x.put(&k, &v);
+  //   v.clear();
+  //   x.get(&v, &k);
+  // }
 
-    std::cout << "RESP " << v << std::endl;
+  //   std::cout << "RESP " << v << std::endl;
 
 
-    // x.clear();
-    //x.put(&name, &name);
-    x.close();
+  //   // x.clear();
+  //   //x.put(&name, &name);
+  //   x.ping();
+    // x.close();
 
     // uint tes;
     // int cis;
@@ -386,7 +387,15 @@ int main(){
     // int murmur2 = MurmurHash2(key,7,9001);
     // std::cout<<std::dec<< "MUR2 "<<(murmur2 & INT_MAX) <<std::flush<<std::endl; 
 
-    //test1();
+
+    // std::cout<<std::dec<< test1() <<std::flush<<std::endl; 
+    // std::cout<<std::dec<< test2() <<std::flush<<std::endl; 
+    // std::cout<<std::dec<< test3() <<std::flush<<std::endl; 
+
+    std::map<std::string,std::string>  bulk;
+
+    x.stats(&bulk);
+    print_map(&bulk);
 
 
 

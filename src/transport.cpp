@@ -71,6 +71,14 @@ void Transport::write_byte(short byte){
     packet += (char)byte;
 }
 
+void Transport::write_8bytes(long long value){
+    std::cerr <<std::hex<< " "<< value<< std::endl;
+    for(int k=0; k<8; k++){
+        write_char((char) (((long long)0xff00000000000000 &  value ) >> 56 ));
+        value <<= 8;
+    }
+}
+
 void Transport::write_header(char op_code, const std::string *cache_name, int flags){
     int hotrod_version = transportFactory.get_hotrod_version();
     if(hotrod_version == VERSION_10){
@@ -165,6 +173,15 @@ int Transport::read_4bytes(){
     for(int k=0; k<4; k++){
           data <<= 8;
           data |= (((int)0x000000ff) & read_byte());
+    }
+    return data;
+}
+
+long long Transport::read_8bytes(){
+    long long data = 0;
+    for(int k=0; k<8; k++){
+          data <<= 8;
+          data |= (((long long)0x00000000000000ff) & read_byte());
     }
     return data;
 }

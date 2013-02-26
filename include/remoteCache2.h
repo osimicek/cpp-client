@@ -7,11 +7,11 @@
 #include <operations.h>
 #include <map>
 #include <pthread.h>
-class RemoteCache2;
+class RemoteCache;
 
 static void *print_message_function(void *);
 // typedef struct {
-//     RemoteCache2 * RC;
+//     RemoteCache * RC;
 //     const std::string *key;
 //     const std::string *value;
 //     int lifespan;
@@ -33,7 +33,7 @@ class RemoteCacheConfig{
 
 };
 
-class RemoteCache2{
+class RemoteCache{
   private:
     TransportFactory *transportFactory;
     int lifespan;
@@ -41,14 +41,13 @@ class RemoteCache2{
     int flags;
     std::string cache_name;
   public:
-    RemoteCache2(RemoteCacheConfig* remote_cache_config);
-    RemoteCache2(std::string host, int port);
-    RemoteCache2(std::string host);
-    RemoteCache2(void);
+    RemoteCache(RemoteCacheConfig* remote_cache_config);
+    RemoteCache(std::string host, int port);
+    RemoteCache(std::string host);
+    RemoteCache(void);
     void init(RemoteCacheConfig* remote_cache_config);
-    void stats(void);
+    int stats(std::map<std::string,std::string> *stats);
     int ping();
-    int ping(long long *value);
     int clear();
     int put(const std::string *key,const std::string *value,int lifespan=-1, int idle=-1);
     int put(const char *key,const char *value,int lifespan=-1, int idle=-1);
@@ -58,7 +57,7 @@ class RemoteCache2{
     int putIfAbsent(const char *key,const char *value,int lifespan=-1, int idle=-1);
     int replace(const std::string *key,std::string *value,int lifespan=-1, int idle=-1);
     int replace(const char *key,const char *value,int lifespan=-1, int idle=-1);
-    int replaceWithVersion(const std::string *key,std::string *value,long long version,int lifespan=-1, int idle=-1);
+    int replaceWithVersion(const std::string *key,const std::string *value,long long version,int lifespan=-1, int idle=-1);
     int replaceWithVersion(const char *key,const char *value,long long version,int lifespan=-1, int idle=-1);
     int remove(const char *key);
     int remove(const std::string *key);

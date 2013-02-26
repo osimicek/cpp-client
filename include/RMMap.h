@@ -2,7 +2,7 @@
 #define RM_H_INCLUDED
 #include <string>
 #include <iostream>
-#include <remoteCache.h>
+#include <remoteCache2.h>
 #include <RMItem.h>
 #include <map>
 

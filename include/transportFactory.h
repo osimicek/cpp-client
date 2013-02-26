@@ -14,26 +14,27 @@
 class Transport;
 
 class TransportFactory{
-    public:
-        Transport *first_transport; //smazat
-
-
-        pthread_mutex_t mutex, mutex_t_id;
-
-        std::queue<Transport*> transports; // predelat na vektor <std::string, Transport>
-        int transports_queue_possition;
-        //std::vector<std::pair<std::string, Transport> > hostport_transport; //host+port: transport
-        std::vector<std::pair<int, Transport*> > hash_transport_bank;
-        std::vector<int> hash_vector; // for binary search of index
+    private:
+        int message_id;
         int hotrod_version;
         int topology_id;
         int virtual_nodes_num;
         int max_hash_size;
         int num_key_owners;
+    public:
+        Transport *first_transport; //smazat
+
+
+        pthread_mutex_t mutex, mutex_t_id;
+        std::queue<Transport*> transports; 
+        std::vector<std::pair<int, Transport*> > hash_transport_bank;
+        std::vector<int> hash_vector; // for binary search of index
+        
         void *consistentHash;
 
         explicit TransportFactory(std::string host, int port, int version);
         void execute();
+        int get_and_inc_message_id();
         void set_topology_id(int id);
         int get_topology_id();
         // void set_hotrod_version(int version);

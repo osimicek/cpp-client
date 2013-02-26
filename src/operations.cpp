@@ -3,22 +3,29 @@
 
 AbstractOperation::AbstractOperation(TransportFactory &tF):transportFactory(tF)
 {
+    this->flags = 0x00;
 }    
 int AbstractOperation::execute()
 {
      return execute_operation();
 } 
 
-int AbstractOperation::execute_operation()
+int AbstractOperation::execute_operation(){}  
+
+void AbstractOperation::return_possible_prev_value(std::string *prev_value)
 {
-}  
+    if(this->flags & 0x0001){
+        transport->read_array(prev_value);
+    }
+} 
 
 
 
-GetOperation::GetOperation(std::string *value, TransportFactory &tF, const std::string *key, const std::string *cache_name, int flags):AbstractOperation(tF)
+
+GetOperation::GetOperation(std::string *value, const std::string *key, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
 {    
-     this->key = key;
      this->value = value;
+     this->key = key;
      this->cache_name = cache_name;
      this->flags = flags;
 }   
@@ -35,7 +42,8 @@ int GetOperation::execute_operation()
         return status;
     }
 
-    if(status = transport->read_header() == NO_ERROR_STATUS){
+    status = transport->read_header();
+    if(status == NO_ERROR_STATUS){
         transport->read_array(value);
         if(DEBUG)std::cout << *value << std::endl;
     }
@@ -44,21 +52,141 @@ int GetOperation::execute_operation()
     
 }  
 
-PutOperation::PutOperation(const std::string *value, TransportFactory &tF, const std::string *key, const std::string *cache_name, int flags, int lifespan, int idle):AbstractOperation(tF)
+GetWithVersionOperation::GetWithVersionOperation(std::string *value, const std::string *key, long long *version, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
 {    
-     this->key = key;
+     this->version = version;
      this->value = value;
-     this->lifespan = lifespan;
-     this->idle = idle;
+     this->key = key;
      this->cache_name = cache_name;
      this->flags = flags;
 }   
 
-int PutOperation::execute_operation()
+int GetWithVersionOperation::execute_operation()
+{   
+    transport = transportFactory.get_transport(key);
+    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+
+    transport->write_header(GET_WITH_VERSION, cache_name, flags);
+    transport->write_array(key);
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
+    }
+
+    status = transport->read_header();
+    if(status == NO_ERROR_STATUS){
+        *version = transport->read_8bytes();
+        transport->read_array(value);
+        if(DEBUG)std::cout << *value << std::endl;
+    }
+    transportFactory.release_transport(transport);
+    return status;
+    
+}  
+
+RemoveOperation::RemoveOperation(std::string *prev_value, const std::string *key, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+{   
+    this->prev_value = prev_value;
+    this->key = key; 
+    this->cache_name = cache_name;
+    this->flags = flags;
+}   
+
+int RemoveOperation::execute_operation()
+{   
+    transport = transportFactory.get_transport(key);
+    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+
+    transport->write_header(REMOVE_REQUEST, cache_name, flags);
+    transport->write_array(key);
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
+    }
+
+    status = transport->read_header();
+    if(status == NO_ERROR_STATUS){
+        return_possible_prev_value(prev_value);
+        if(DEBUG)std::cout << *prev_value << std::endl;
+    }
+    transportFactory.release_transport(transport);
+    return status; 
+}  
+
+RemoveIfUnmodifiedOperation::RemoveIfUnmodifiedOperation(std::string *prev_value, const std::string *key, long long version, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+{   
+    
+    this->version = version;
+    this->prev_value = prev_value;
+    this->key = key; 
+    this->cache_name = cache_name;
+    this->flags = flags;
+}   
+
+int RemoveIfUnmodifiedOperation::execute_operation()
+{   
+    transport = transportFactory.get_transport(key);
+    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+
+    transport->write_header(REMOVE_IF_UNMODIFIED_REQUEST, cache_name, flags);
+    transport->write_array(key);
+    transport->write_8bytes(version);
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
+    }
+
+    status = transport->read_header();
+    if(status == NO_ERROR_STATUS){
+        return_possible_prev_value(prev_value);
+        if(DEBUG)std::cout << *prev_value << std::endl;
+    }
+    transportFactory.release_transport(transport);
+    return status; 
+} 
+
+ContainsKeyOperation::ContainsKeyOperation(const std::string *key, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+{    
+     this->key = key;
+     this->cache_name = cache_name;
+     this->flags = flags;
+}   
+
+int ContainsKeyOperation::execute_operation()
+{   
+    transport = transportFactory.get_transport(key);
+    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+
+    transport->write_header(REMOVE_REQUEST, cache_name, flags);
+    transport->write_array(key);
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
+    }
+
+    status = transport->read_header();
+
+    transportFactory.release_transport(transport);
+    return status;
+    
+} 
+
+PutBasedOperation::PutBasedOperation(const std::string *value, const std::string *key, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):AbstractOperation(tF)
+{    
+    this->value = value; 
+    this->key = key; 
+    this->prev_value = prev_value;
+    this->lifespan = lifespan;
+    this->idle = idle;
+    this->cache_name = cache_name;
+    this->flags = flags;
+}   
+
+int PutBasedOperation::execute_operation(int op_code)
 {
     transport = transportFactory.get_transport(key);
     if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
-    transport->write_header(PUT_REQUEST, cache_name, flags);
+    transport->write_header(op_code, cache_name, flags);
     transport->write_array(key);
     transport->write_varint(this->lifespan); //lifespan
     transport->write_varint(this->idle); //idle
@@ -69,6 +197,104 @@ int PutOperation::execute_operation()
     }
     
     status = transport->read_header();
+    if(status == NO_ERROR_STATUS){
+        return_possible_prev_value(prev_value);
+        if(DEBUG)std::cout << *prev_value << std::endl;
+    }
+
+    transportFactory.release_transport(transport);
+    return status;
+}  
+
+PutOperation::PutOperation(const std::string *value, const std::string *key, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):PutBasedOperation(value, key, prev_value, tF, cache_name, flags, lifespan, idle)
+{ }   
+
+int PutOperation::execute_operation()
+{
+    PutBasedOperation::execute_operation(PUT_REQUEST);
+}  
+
+PutIfAbsentOperation::PutIfAbsentOperation(const std::string *value, const std::string *key, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):PutBasedOperation(value, key, prev_value, tF, cache_name, flags, lifespan, idle)
+{ }   
+
+int PutIfAbsentOperation::execute_operation()
+{
+    PutBasedOperation::execute_operation(PUT_IF_ABSENT_REQUEST);
+}  
+
+ReplaceOperation::ReplaceOperation(const std::string *value, const std::string *key, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):PutBasedOperation(value, key, prev_value, tF, cache_name, flags, lifespan, idle)
+{ }   
+
+int ReplaceOperation::execute_operation()
+{
+    PutBasedOperation::execute_operation(REPLACE_REQUEST);
+}  
+
+ReplaceIfUnmodifiedOperation::ReplaceIfUnmodifiedOperation(const std::string *value, const std::string *key, std::string *prev_value, long long version, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):AbstractOperation(tF)
+{    
+    this->version = version; 
+    this->value = value; 
+    this->key = key; 
+    this->prev_value = prev_value;
+    this->lifespan = lifespan;
+    this->idle = idle;
+    this->cache_name = cache_name;
+    this->flags = flags;
+}   
+
+int ReplaceIfUnmodifiedOperation::execute_operation()
+{
+
+    transport = transportFactory.get_transport(key);
+    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+    transport->write_header(REPLACE_IF_UNMODIFIED_REQUEST, cache_name, flags);
+    transport->write_array(key);
+    transport->write_varint(this->lifespan); //lifespan
+    transport->write_varint(this->idle); //idle
+    transport->write_8bytes(version);
+    transport->write_array(value);
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
+    }
+    status = transport->read_header();
+    if(status == NO_ERROR_STATUS){
+        return_possible_prev_value(prev_value);
+        if(DEBUG)std::cout << *prev_value << std::endl;
+    }
+    transportFactory.release_transport(transport);
+    return status;
+}
+
+GetBulkOperation::GetBulkOperation(std::map<std::string,std::string> *bulk, int count, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+{    
+     this->bulk = bulk;
+     this->count = count;
+     this->cache_name = cache_name;
+     this->flags = flags;
+}   
+
+int GetBulkOperation::execute_operation()
+{
+    transport = transportFactory.get_transport();
+    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+    transport->write_header(BULK_GET_REQUEST, cache_name, flags);
+    transport->write_varint(count);
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
+    }
+    
+    status = transport->read_header();
+    std::string key, value;
+    if(status == NO_ERROR_STATUS){
+        while(transport->read_byte()){
+            transport->read_array(&key);
+            transport->read_array(&value);
+            (*bulk)[key] = value;
+        }
+    }
+
     transportFactory.release_transport(transport);
     return status;
 }  
@@ -94,3 +320,61 @@ int ClearOperation::execute_operation()
     transportFactory.release_transport(transport);
     return status;
 }  
+
+PingOperation::PingOperation(TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+{    
+     this->cache_name = cache_name;
+     this->flags = flags;
+}   
+
+int PingOperation::execute_operation()
+{
+    transport = transportFactory.get_transport();
+    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+    transport->write_header(PING_REQUEST, cache_name, flags);
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
+    }
+    
+    status = transport->read_header();
+    transportFactory.release_transport(transport);
+    return status;
+} 
+
+
+StatsOperation::StatsOperation(std::map<std::string,std::string> *stats, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+{    
+     this->stats = stats;
+     this->cache_name = cache_name;
+     this->flags = flags;
+}   
+
+int StatsOperation::execute_operation()
+{
+    std::cout << "ok" <<std::endl;
+    transport = transportFactory.get_transport();
+    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+    transport->write_header(STATS_REQUEST, cache_name, flags);
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
+    }
+        std::cout << "ok"<< status <<std::endl;
+    status = transport->read_header();
+     std::cout << "ok" <<std::endl;
+    std::string name, value;
+
+    if(status == NO_ERROR_STATUS){
+        int count = transport->read_varint();
+        std::cout << count <<std::endl;
+        for(int i=0; i<count; i++){
+            transport->read_array(&name);
+            transport->read_array(&value);
+            (*stats)[name] = value;
+        }
+    }
+
+    transportFactory.release_transport(transport);
+    return status;
+} 

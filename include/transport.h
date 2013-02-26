@@ -45,12 +45,14 @@ class Transport{
         void write_char(char value);
         void write_array(const std::string *arr);
         void write_byte(short byte);
+        void write_8bytes(long long value);
         int flush();
         int read_varint();
         long long read_varlong();
         char read_byte();
         int read_2bytes();
         int read_4bytes();
+        long long read_8bytes();
         void read_array(std::string *arr);
         int read_header();
         int check_for_errors_in_response_status(char status);
