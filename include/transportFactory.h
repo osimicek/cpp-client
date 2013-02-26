@@ -3,6 +3,7 @@
 #include "transport.h"
 #include "consistentHash10.h"
 #include "consistentHash11.h"
+#include "consistentHash12.h"
 
 #include <iostream>
 #include <queue>

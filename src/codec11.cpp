@@ -1,4 +1,6 @@
+#define DONT_INCLUDE_CODEC12  //circular dependency
 #include "codec11.h"
+#undef DONT_INCLUDE_CODEC12  //circular dependency
 
 
 Codec11::Codec11(Transport &t):Codec10(t){
@@ -33,11 +35,9 @@ int Codec11::read_new_topology_if_present(){
         num_servers = transport.read_varint();
 
         transport.transportFactory.set_virtual_nodes_num(0); // rozdil ve verzich
-        if(transport.transportFactory.get_hotrod_version() == 0x0b){ // added for hotrod 1.1
-            num_virtual = transport.read_varint();
-            transport.transportFactory.set_virtual_nodes_num(num_virtual);
-            //num_servers = num_virtual;
-        }
+        num_virtual = transport.read_varint();
+        transport.transportFactory.set_virtual_nodes_num(num_virtual);
+
 
       if(DEBUG){
         std::cout <<"** Topology ID: "<<std::dec<<topology_id<<" old: "<<transport.transportFactory.get_topology_id()<<std::endl;

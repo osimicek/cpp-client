@@ -1,6 +1,8 @@
 #define DONT_INCLUDE_CODEC11  //circular dependency
+#define DONT_INCLUDE_CODEC12  //circular dependency
 #include "codec10.h"
 #undef DONT_INCLUDE_CODEC11  //circular dependency
+#undef DONT_INCLUDE_CODEC12  //circular dependency
 // Codec10::Codec10(){}
 Codec10::Codec10(Transport &t):transport(t){}
 

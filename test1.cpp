@@ -343,7 +343,7 @@ int main(){
     std::string resp;
     RemoteCacheConfig remote_cache_config;
     remote_cache_config.cache_name = "";
-    remote_cache_config.version = 11;
+    remote_cache_config.version = 12;
     RemoteCache x = RemoteCache(&remote_cache_config);
     std::string name(key);
 

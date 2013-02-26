@@ -17,7 +17,7 @@ Transport::Transport(std::string host, int port, TransportFactory &tF):transport
     }else if(hotrod_version == VERSION_11){
         codec = new Codec11(*this);
     }else{
-        //return ERROR
+        codec = new Codec12(*this);
     }
 
     //((Codec11 *) codec)->write_header(20);
@@ -83,8 +83,10 @@ void Transport::write_header(char op_code, const std::string *cache_name, int fl
     int hotrod_version = transportFactory.get_hotrod_version();
     if(hotrod_version == VERSION_10){
         ((Codec10 *) codec)->write_header(op_code, cache_name, flags);
-    }else{ //version 11
+    }else if(hotrod_version == VERSION_11){
         ((Codec11 *) codec)->write_header(op_code, cache_name, flags);
+    }else{
+        ((Codec12 *) codec)->write_header(op_code, cache_name, flags);
     }
 }
 
@@ -211,8 +213,10 @@ int Transport::read_header(){
     // std::cout << "version  "<< hotrod_version << std::endl; 
     if(hotrod_version == VERSION_10){
         return ((Codec10 *) codec)->read_header();
-    }else{ //version 11
+    }else if(hotrod_version == VERSION_11){
         return ((Codec11 *) codec)->read_header();
+    }else{
+        return ((Codec12 *) codec)->read_header();
     }
 }
 

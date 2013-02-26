@@ -19,6 +19,7 @@
 
 #include "codec10.h"
 #include "codec11.h"
+#include "codec12.h"
 
 #include "codec.h"
 

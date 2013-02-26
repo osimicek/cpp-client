@@ -28,9 +28,10 @@ hotrod_cli_lib_obj := 	include/murmur/MurmurHash2.o \
 						src/transport.o\
 						src/codec10.o\
 						src/codec11.o\
-						src/codec.o\
+						src/codec12.o\
 						src/consistentHash10.o\
 						src/consistentHash11.o\
+						src/consistentHash12.o\
 						src/transportFactory.o\
 						src/operations.o\
 						src/remoteCache2.o\

@@ -14,8 +14,10 @@ TransportFactory::TransportFactory(std::string host, int port, int version)
 
     if(hotrod_version == VERSION_10){
         consistentHash = new ConsistentHash10(*this);
-    }else{ //version 11
+    }else if(hotrod_version == VERSION_11){
         consistentHash = new ConsistentHash11(*this);
+    }else{
+        consistentHash = new ConsistentHash12(*this);
     }
 
     first_transport = create_transport(&host, port);
@@ -94,17 +96,21 @@ int TransportFactory::get_num_key_owners(){
 
 Transport *TransportFactory::get_transport(){
     if(hotrod_version == VERSION_10){
-        return ((ConsistentHash10 *) consistentHash)->get_transport();
-    }else{ //version 11
+        return ((ConsistentHash10 *) consistentHash)->get_transport(); 
+    }else if(hotrod_version == VERSION_11){
         return ((ConsistentHash11 *) consistentHash)->get_transport();
+    }else{
+        return ((ConsistentHash12 *) consistentHash)->get_transport();
     }
 } 
 
 Transport *TransportFactory::get_transport(const std::string *key){
     if(hotrod_version == VERSION_10){
         return ((ConsistentHash10 *) consistentHash)->get_transport(key);
-    }else{ //version 11
+    }else if(hotrod_version == VERSION_11){
         return ((ConsistentHash11 *) consistentHash)->get_transport(key);
+    }else{
+        return ((ConsistentHash12 *) consistentHash)->get_transport(key);
     }
 } 
 

@@ -1,12 +1,13 @@
 #ifndef CONSTANTS_H_INCLUDED
 #define CONSTANTS_H_INCLUDED
-   const short DEBUG = 0;
+   const short DEBUG = 1;
 
    const char REQUEST_MAGIC = 0xA0;
    const char RESPONSE_MAGIC = 0xA1;
 
    const char VERSION_10 = 10;
    const char VERSION_11 = 11;
+   const char VERSION_12 = 12;
 
    //requests
    const char PUT_REQUEST = 0x01;
