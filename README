@@ -1,14 +1,19 @@
+1 server
 Run new Terminal
 ~/make starts  #to run infinispan server
 
-
-Run new Terminal
-~/make  
-~/make run  #to run test
-
+or
 
 Distribution servers
 Run new terminal
 ~/make startservers  #to run distribution servers
 
-~/make kill  #to kill all java programs included servers
+~/make kill  #to kill all java programs (servers)
+
+
+Client
+Run new Terminal
+~/make  
+~/make run  #to run test
+
+
