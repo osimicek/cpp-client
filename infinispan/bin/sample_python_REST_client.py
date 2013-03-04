@@ -36,4 +36,3 @@ except:
 
 ## For more information on usage see http://community.jboss.org/wiki/InfinispanRESTserver
 
-

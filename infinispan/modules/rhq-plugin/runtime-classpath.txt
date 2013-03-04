@@ -1,0 +1,1 @@
+$ISPN_HOME/lib/log4j-1.2.16.jar:$ISPN_HOME/lib/commons-collections-3.2.1.jar:$ISPN_HOME/lib/jcip-annotations-1.0.jar

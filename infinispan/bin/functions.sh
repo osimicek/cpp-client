@@ -52,6 +52,8 @@ function add_classpath() {
       fi
     elif [[ -f "$E" && "$E" =~ \.([Jj][Aa][Rr]|[Zz][Ii][Pp])$ ]]; then
       CLASSPATH="$CLASSPATH:$E"
+    elif [[ -f "$E" && "$E" =~ /runtime-classpath\.txt$ ]]; then
+      CLASSPATH=$CLASSPATH:`eval echo $(<$E)`
     fi
 
     if [[ "$CLASSPATH" =~ ^: ]]; then
@@ -178,12 +180,16 @@ function start() {
   "${START_ARGS[@]}"
 }
 
-# Find port between 2000 and 65000
+# Find port between 2000 and 65000 (can be overridden by ISPN_JMX_PORT)
 function find_tcp_port(){
-  PORT=$(( 2000+( 100+( $(od -An -N2 -i /dev/random) )%(63000) )))
-  while :
-    do
-      (echo >/dev/tcp/localhost/$PORT) &>/dev/null &&  PORT=$(( 2000+( 100+( $(od -An -N2 -i /dev/random) )%(63000) ))) || break
-    done
-  echo "$PORT"
+  if [[ "x${ISPN_JMX_PORT}" == "x" ]]; then
+    PORT=$(( 2000+( 100+( $(od -An -N2 -i /dev/random) )%(63000) )))
+    while :
+      do
+        (echo >/dev/tcp/localhost/$PORT) &>/dev/null &&  PORT=$(( 2000+( 100+( $(od -An -N2 -i /dev/random) )%(63000) ))) || break
+      done
+    echo "$PORT"
+  else
+    echo "$ISPN_JMX_PORT"
+  fi
 }

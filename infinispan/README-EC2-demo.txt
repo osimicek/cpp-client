@@ -78,4 +78,3 @@ Possible issues
 * If using S3_Ping you can check the cluster member details by using a utility such as s3sync see s3sync.net
 * Make sure you are using the right version of jgroups: the one shipped with Infinispan. 2.6 or lower doesn't have s3_ping.
 
-

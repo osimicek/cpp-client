@@ -24,8 +24,8 @@
 
 <infinispan
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="urn:infinispan:config:5.1 http://www.infinispan.org/schemas/infinispan-config-5.1.xsd"
-      xmlns="urn:infinispan:config:5.1">
+      xsi:schemaLocation="urn:infinispan:config:5.2 http://www.infinispan.org/schemas/infinispan-config-5.2.xsd"
+      xmlns="urn:infinispan:config:5.2">
 
    <!--
       ******************************************************************************************************************
@@ -116,24 +116,30 @@
          Enables collection of global JMX statistics, and allows you to customize the JMX domain name under which
          MBeans are registered.
       -->
-      <globalJmxStatistics 
+      <globalJmxStatistics
             enabled="true" 
             jmxDomain="org.infinispan" 
             cacheManagerName="SampleCacheManager"/>
+     <!--
+        Defines the site needed for Infinispan 's cross-site (x-site) replication.
+     -->
+     <!--
+     <site local="LON"/>
+     -->
 
-      <!--
-         If the transport is omitted, there is no way to create distributed or clustered caches.
-         There is no added cost to defining a transport and not creating a cache that uses one, since the transport
-         is created and initialized lazily.  By default, the JGroupsTransport is used.
+     <!--
+        If the transport is omitted, there is no way to create distributed or clustered caches.
+        There is no added cost to defining a transport and not creating a cache that uses one, since the transport
+        is created and initialized lazily.  By default, the JGroupsTransport is used.
 
-         Note that the JGroups transport uses sensible defaults if no configuration property is defined.
+        Note that the JGroups transport uses sensible defaults if no configuration property is defined.
 
-         See:
+        See:
 
-            http://community.jboss.org/wiki/ClusteredConfigurationQuickStart
-            http://docs.jboss.org/infinispan/5.0/apidocs/org/infinispan/remoting/transport/jgroups/JGroupsTransport.html
+           http://community.jboss.org/wiki/ClusteredConfigurationQuickStart
+           http://docs.jboss.org/infinispan/5.0/apidocs/org/infinispan/remoting/transport/jgroups/JGroupsTransport.html
 
-      -->
+     -->
       <transport 
             clusterName="infinispan-cluster" 
             machineId="m1" 
@@ -255,12 +261,12 @@
       <clustering mode="replication">
 
          <!--
-            Defines whether to retrieve state on startup.  This is only valud for 'replication' mode.
+            Configures how state is transferred between the nodes
          -->
-         <stateRetrieval
+         <stateTransfer
             timeout="240000"
             fetchInMemoryState="false"
-            alwaysProvideInMemoryState="false"
+            chunkSize="10000"
          />
 
          <!--
@@ -279,6 +285,21 @@
          />
          -->
       </clustering>
+
+
+      <!--
+       When x-site replication is used, configures the site and caches where this (default) cache backs up the data.
+      -->
+      <!--
+        <sites>
+            <backups>
+                <backup site="NYC" strategy="SYNC" backupFailurePolicy="IGNORE" timeout="12003"/>
+                <backup site="SFO" strategy="ASYNC"/>
+            </backups>
+            <backupFor remoteCache="someCache" remoteSite="SFO"/>
+        </sites>
+      -->
+
 
    </default>
 
