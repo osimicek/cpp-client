@@ -8,6 +8,7 @@ TransportFactory::TransportFactory(std::string host, int port, int version)
     virtual_nodes_num = 0;
     max_hash_size = 0;
     message_id = 1;
+    hash_ver = 1;
     pthread_mutex_init(&mutex, NULL);
     pthread_mutex_init(&mutex_t_id, NULL);
 

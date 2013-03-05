@@ -12,10 +12,26 @@ Metadata::Metadata(){
 AbstractOperation::AbstractOperation(TransportFactory &tF):transportFactory(tF)
 {
     this->flags = 0x00;
+    this->key = NULL;
 }    
 int AbstractOperation::execute()
 {
-     return execute_operation();
+    int state;
+    for(int i=0; i<3; i++){
+        if(key != NULL){
+            transport = transportFactory.get_transport(key);
+        }else{
+            transport = transportFactory.get_transport();
+        }
+        if(transport == NULL){
+            state =  FAILED_TO_CHOOSE_TRANSPORT;
+        }else{
+            state = execute_operation();
+            transportFactory.release_transport(transport);
+            if(status != FAILED_TO_SEND) break;
+        }
+    }
+    return state;
 } 
 
 int AbstractOperation::execute_operation(){}  
@@ -39,14 +55,11 @@ GetOperation::GetOperation(std::string *value, const std::string *key, Transport
 }   
 
 int GetOperation::execute_operation()
-{   
-    transport = transportFactory.get_transport(key);
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+{  
 
     transport->write_header(GET_REQUEST, cache_name, flags);
     transport->write_array(key);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
 
@@ -55,7 +68,6 @@ int GetOperation::execute_operation()
         transport->read_array(value);
         if(DEBUG)std::cout << *value << std::endl;
     }
-    transportFactory.release_transport(transport);
     return status;
     
 }  
@@ -70,14 +82,11 @@ GetWithVersionOperation::GetWithVersionOperation(std::string *value, const std::
 }   
 
 int GetWithVersionOperation::execute_operation()
-{   
-    transport = transportFactory.get_transport(key);
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+{  
 
     transport->write_header(GET_WITH_VERSION, cache_name, flags);
     transport->write_array(key);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
 
@@ -87,7 +96,6 @@ int GetWithVersionOperation::execute_operation()
         transport->read_array(value);
         if(DEBUG)std::cout << *value << std::endl;
     }
-    transportFactory.release_transport(transport);
     return status;
     
 }  
@@ -103,14 +111,11 @@ GetWithMetadataOperation::GetWithMetadataOperation(std::string *value, Metadata 
 }   
 
 int GetWithMetadataOperation::execute_operation()
-{   
-    transport = transportFactory.get_transport(key);
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+{  
 
     transport->write_header(GET_WITH_METADATA, cache_name, flags);
     transport->write_array(key);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
     char flag; 
@@ -145,7 +150,6 @@ int GetWithMetadataOperation::execute_operation()
         transport->read_array(value);
         if(DEBUG)std::cout << *value << std::endl;
     }
-    transportFactory.release_transport(transport);
     return status;
     
 }  
@@ -159,14 +163,11 @@ RemoveOperation::RemoveOperation(std::string *prev_value, const std::string *key
 }   
 
 int RemoveOperation::execute_operation()
-{   
-    transport = transportFactory.get_transport(key);
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+{  
 
     transport->write_header(REMOVE_REQUEST, cache_name, flags);
     transport->write_array(key);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
 
@@ -175,7 +176,6 @@ int RemoveOperation::execute_operation()
         return_possible_prev_value(prev_value);
         if(DEBUG)std::cout << *prev_value << std::endl;
     }
-    transportFactory.release_transport(transport);
     return status; 
 }  
 
@@ -190,15 +190,12 @@ RemoveIfUnmodifiedOperation::RemoveIfUnmodifiedOperation(std::string *prev_value
 }   
 
 int RemoveIfUnmodifiedOperation::execute_operation()
-{   
-    transport = transportFactory.get_transport(key);
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+{  
 
     transport->write_header(REMOVE_IF_UNMODIFIED_REQUEST, cache_name, flags);
     transport->write_array(key);
     transport->write_8bytes(version);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
 
@@ -207,7 +204,6 @@ int RemoveIfUnmodifiedOperation::execute_operation()
         return_possible_prev_value(prev_value);
         if(DEBUG)std::cout << *prev_value << std::endl;
     }
-    transportFactory.release_transport(transport);
     return status; 
 } 
 
@@ -219,20 +215,15 @@ ContainsKeyOperation::ContainsKeyOperation(const std::string *key, TransportFact
 }   
 
 int ContainsKeyOperation::execute_operation()
-{   
-    transport = transportFactory.get_transport(key);
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+{  
 
     transport->write_header(REMOVE_REQUEST, cache_name, flags);
     transport->write_array(key);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
 
     status = transport->read_header();
-
-    transportFactory.release_transport(transport);
     return status;
     
 } 
@@ -248,17 +239,13 @@ PutBasedOperation::PutBasedOperation(const std::string *value, const std::string
     this->flags = flags;
 }   
 
-int PutBasedOperation::execute_operation(int op_code)
-{
-    transport = transportFactory.get_transport(key);
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+int PutBasedOperation::execute_operation(int op_code){
     transport->write_header(op_code, cache_name, flags);
     transport->write_array(key);
     transport->write_varint(this->lifespan); //lifespan
     transport->write_varint(this->idle); //idle
     transport->write_array(value);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
     
@@ -267,8 +254,6 @@ int PutBasedOperation::execute_operation(int op_code)
         return_possible_prev_value(prev_value);
         if(DEBUG)std::cout << *prev_value << std::endl;
     }
-
-    transportFactory.release_transport(transport);
     return status;
 }  
 
@@ -310,9 +295,6 @@ ReplaceIfUnmodifiedOperation::ReplaceIfUnmodifiedOperation(const std::string *va
 
 int ReplaceIfUnmodifiedOperation::execute_operation()
 {
-
-    transport = transportFactory.get_transport(key);
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
     transport->write_header(REPLACE_IF_UNMODIFIED_REQUEST, cache_name, flags);
     transport->write_array(key);
     transport->write_varint(this->lifespan); //lifespan
@@ -320,7 +302,6 @@ int ReplaceIfUnmodifiedOperation::execute_operation()
     transport->write_8bytes(version);
     transport->write_array(value);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
     status = transport->read_header();
@@ -328,7 +309,6 @@ int ReplaceIfUnmodifiedOperation::execute_operation()
         return_possible_prev_value(prev_value);
         if(DEBUG)std::cout << *prev_value << std::endl;
     }
-    transportFactory.release_transport(transport);
     return status;
 }
 
@@ -342,12 +322,9 @@ GetBulkOperation::GetBulkOperation(std::map<std::string,std::string> *bulk, int 
 
 int GetBulkOperation::execute_operation()
 {
-    transport = transportFactory.get_transport();
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
     transport->write_header(BULK_GET_REQUEST, cache_name, flags);
     transport->write_varint(count);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
     
@@ -360,8 +337,6 @@ int GetBulkOperation::execute_operation()
             (*bulk)[key] = value;
         }
     }
-
-    transportFactory.release_transport(transport);
     return status;
 }  
 
@@ -375,12 +350,9 @@ BulkKeysGetOperation::BulkKeysGetOperation(std::vector<std::string> *keys, int s
 
 int BulkKeysGetOperation::execute_operation()
 {
-    transport = transportFactory.get_transport();
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
     transport->write_header(BULK_GET_KEYS_REQUEST, cache_name, flags);
     transport->write_varint(scope);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
     
@@ -392,8 +364,6 @@ int BulkKeysGetOperation::execute_operation()
             keys->push_back(key);
         }
     }
-
-    transportFactory.release_transport(transport);
     return status;
 }  
 
@@ -406,16 +376,12 @@ ClearOperation::ClearOperation(TransportFactory &tF, const std::string *cache_na
 
 int ClearOperation::execute_operation()
 {
-    transport = transportFactory.get_transport();
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
     transport->write_header(CLEAR_REQUEST, cache_name, flags);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
     
     status = transport->read_header();
-    transportFactory.release_transport(transport);
     return status;
 }  
 
@@ -427,16 +393,12 @@ PingOperation::PingOperation(TransportFactory &tF, const std::string *cache_name
 
 int PingOperation::execute_operation()
 {
-    transport = transportFactory.get_transport();
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
     transport->write_header(PING_REQUEST, cache_name, flags);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
     
     status = transport->read_header();
-    transportFactory.release_transport(transport);
     return status;
 } 
 
@@ -451,11 +413,8 @@ StatsOperation::StatsOperation(std::map<std::string,std::string> *stats, Transpo
 int StatsOperation::execute_operation()
 {
     std::cout << "ok" <<std::endl;
-    transport = transportFactory.get_transport();
-    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
     transport->write_header(STATS_REQUEST, cache_name, flags);
     if(status = transport->flush() != NO_ERROR_STATUS){
-        transportFactory.release_transport(transport);
         return status;
     }
         std::cout << "ok"<< status <<std::endl;
@@ -472,7 +431,5 @@ int StatsOperation::execute_operation()
             (*stats)[name] = value;
         }
     }
-
-    transportFactory.release_transport(transport);
     return status;
 } 

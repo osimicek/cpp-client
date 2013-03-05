@@ -2,6 +2,8 @@
 #define CONSTANTS_H_INCLUDED
    const short DEBUG = 1;
 
+   const int MAX_EXECUTE_REPEAT = 3;
+
    const char REQUEST_MAGIC = 0xA0;
    const char RESPONSE_MAGIC = 0xA1;
 

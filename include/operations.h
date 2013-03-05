@@ -20,6 +20,7 @@ class AbstractOperation{
         TransportFactory &transportFactory;
         Transport *transport;
         const std::string *cache_name;
+        const std::string *key;
         int flags;
         void  return_possible_prev_value(std::string *prev_value);
         explicit AbstractOperation(TransportFactory &tF);
@@ -31,7 +32,6 @@ class AbstractOperation{
 
 class GetOperation : public AbstractOperation{
     public:
-        const std::string *key;
         std::string *value;
         GetOperation(std::string *value, const std::string *key, TransportFactory &tF, const std::string *cache_name, int flags);
         virtual int execute_operation();
@@ -39,7 +39,6 @@ class GetOperation : public AbstractOperation{
 
 class GetWithVersionOperation : public AbstractOperation{
     public:
-        const std::string *key;
         std::string *value;
         long long *version;
         GetWithVersionOperation(std::string *value, const std::string *key, long long *version, TransportFactory &tF, const std::string *cache_name, int flags);
@@ -48,7 +47,6 @@ class GetWithVersionOperation : public AbstractOperation{
 
 class GetWithMetadataOperation : public AbstractOperation{
     public:
-        const std::string *key;
         std::string *value;
         Metadata *meta;
         GetWithMetadataOperation(std::string *value, Metadata *meta, const std::string *key, TransportFactory &tF, const std::string *cache_name, int flags);
@@ -57,14 +55,12 @@ class GetWithMetadataOperation : public AbstractOperation{
 
 class ContainsKeyOperation : public AbstractOperation{
     public:
-        const std::string *key;
         ContainsKeyOperation(const std::string *key, TransportFactory &tF, const std::string *cache_name, int flags);
         virtual int execute_operation();
 };
 
 class RemoveOperation : public AbstractOperation{
     public:
-        const std::string *key;
         std::string *prev_value;
         RemoveOperation(std::string *prev_value, const std::string *key, TransportFactory &tF, const std::string *cache_name, int flags);
         virtual int execute_operation();
@@ -72,7 +68,6 @@ class RemoveOperation : public AbstractOperation{
 
 class RemoveIfUnmodifiedOperation : public AbstractOperation{
     public:
-        const std::string *key;
         std::string *prev_value;
         long long version;
         RemoveIfUnmodifiedOperation(std::string *prev_value, const std::string *key, long long version, TransportFactory &tF, const std::string *cache_name, int flags);
@@ -81,7 +76,6 @@ class RemoveIfUnmodifiedOperation : public AbstractOperation{
 
 class PutBasedOperation : public AbstractOperation{
     public:
-        const std::string *key;
         const std::string *value;
         std::string *prev_value;
         int lifespan, idle;
@@ -110,7 +104,6 @@ class ReplaceOperation : public PutBasedOperation{
 
 class ReplaceIfUnmodifiedOperation : public AbstractOperation{
     public:
-        const std::string *key;
         const std::string *value;
         std::string *prev_value;
         long long version;
