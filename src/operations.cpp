@@ -17,7 +17,7 @@ AbstractOperation::AbstractOperation(TransportFactory &tF):transportFactory(tF)
 int AbstractOperation::execute()
 {
     int state;
-    for(int i=0; i<3; i++){
+    for(int i=0; i<MAX_EXECUTE_REPEAT; i++){
         if(key != NULL){
             transport = transportFactory.get_transport(key);
         }else{

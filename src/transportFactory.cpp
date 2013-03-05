@@ -9,6 +9,7 @@ TransportFactory::TransportFactory(std::string host, int port, int version)
     max_hash_size = 0;
     message_id = 1;
     hash_ver = 1;
+    num_key_owners = 1;
     pthread_mutex_init(&mutex, NULL);
     pthread_mutex_init(&mutex_t_id, NULL);
 
