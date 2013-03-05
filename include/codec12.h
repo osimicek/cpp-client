@@ -16,7 +16,7 @@
     class Codec12  : public Codec11{
         public:
             Codec12(Transport &t);
-            void write_header(short op_code, const std::string *cache_name, int flags);
+            virtual void write_header(short op_code, const std::string *cache_name, int flags);
             using Codec11::read_new_topology_if_present;
             using Codec11::update_transport_bank;
     };

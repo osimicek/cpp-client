@@ -3,8 +3,16 @@
 #include "codec10.h"
 #undef DONT_INCLUDE_CODEC11  //circular dependency
 #undef DONT_INCLUDE_CODEC12  //circular dependency
-// Codec10::Codec10(){}
-Codec10::Codec10(Transport &t):transport(t){}
+
+
+Codec::Codec(Transport &t):transport(t){}
+void Codec::write_header(char op_code, const std::string *cache_name, int flags){}   
+int Codec::read_header(){}
+
+///////////////////////////////////////////////
+
+
+Codec10::Codec10(Transport &t):Codec(t){}
 
 void Codec10::write_header(char op_code, const std::string *cache_name, int flags){
     // std::cout <<"HEADER 10" << std::endl;
@@ -12,7 +20,7 @@ void Codec10::write_header(char op_code, const std::string *cache_name, int flag
 }   
 
 void Codec10::write_header(char op_code, const std::string *cache_name, int flags, char version){
-    // std::cout << "WRITE"<< (int)version << " " <<(int)VERSION_10<< std::endl;
+     // std::cout << "WRITE"<< (int)version << " " <<(int)VERSION_10<< std::endl;
     struct timeval begin;
     gettimeofday(&begin, NULL);
     long long the_time;  
@@ -97,6 +105,7 @@ int Codec10::read_new_topology_if_present(){
         transport.transportFactory.set_num_key_owners(num_key_own);
 
         hash_ver = transport.read_byte();
+        transport.transportFactory.set_hash_ver(hash_ver);
 
         hash_space = transport.read_varint();
         transport.transportFactory.set_max_hash_size(hash_space);
@@ -143,13 +152,13 @@ int Codec10::read_new_topology_if_present(){
           std::cout <<std::dec << " + " << hash<< std::endl;
         }  
         // std::cout<<std::endl;
-        Transport *t = transport.transportFactory.get_transport(&host, port);
+        Transport *t = transport.transportFactory.get_transport(&host, port, hash);
         if(t == NULL){
             // std::cout << "create " << port << std::endl;
-            t = transport.transportFactory.create_transport(&host, port);
+            t = transport.transportFactory.create_transport(&host, port, hash);
         }
         t->valid = 1;
-        t->hash = hash;
+
         // std::cout << transport.transportFactory.transports.size() << std::endl;
         //s->port = 0;
 

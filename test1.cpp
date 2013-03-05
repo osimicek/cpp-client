@@ -343,27 +343,26 @@ int main(){
     std::string resp;
     RemoteCacheConfig remote_cache_config;
     remote_cache_config.cache_name = "";
-    remote_cache_config.version = 12;
+    remote_cache_config.version = 10;
     RemoteCache x = RemoteCache(&remote_cache_config);
     std::string name(key);
 
 
-  //   std::string k("key");
-  //   std::string v("value");
-  //   x.get(&v, &k);
-  //   v = "value";
-
-  //   for(int i=0; i<1; i++){
-  //   x.put(&k, &v);
-  //   v.clear();
-  //   x.get(&v, &k);
-  // }
-
-  //   std::cout << "RESP " << v << std::endl;
+    std::string k("key");
+    std::string v("value");
+    k = key;
+    x.get(&v, &k);
+    v = "value";
 
 
-  //   // x.clear();
-  //   //x.put(&name, &name);
+    x.put(&k, &v);
+    v.clear();
+    x.get(&v, &k);
+
+
+    std::cout << "RESP " << v << std::endl;
+
+
   //   x.ping();
     // x.close();
 
@@ -384,7 +383,7 @@ int main(){
     // std::cout<<std::dec<< "&&&"<<cis%INT_MAX<<std::flush<<std::endl;   
 
 
-    // int murmur2 = MurmurHash2(key,7,9001);
+    // int murmur2 = MurmurHash3_x64_32(key,7,9001);
     // std::cout<<std::dec<< "MUR2 "<<(murmur2 & INT_MAX) <<std::flush<<std::endl; 
 
 

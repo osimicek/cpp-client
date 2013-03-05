@@ -21,7 +21,7 @@
 #include "codec11.h"
 #include "codec12.h"
 
-#include "codec.h"
+// #include "codec.h"
 
 class TransportFactory;
 
@@ -33,7 +33,7 @@ class Transport{
         int used;
         int _socket;
         int valid;
-        void *codec;
+        Codec *codec;
 
         TransportFactory &transportFactory;
 

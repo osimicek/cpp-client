@@ -69,12 +69,12 @@ int Codec11::read_new_topology_if_present(){
         hash = transport.read_4bytes();
         if(DEBUG) std::cout <<std::dec << " + " << hash<< std::endl; 
  
-        Transport *t = transport.transportFactory.get_transport(&host, port);
+        Transport *t = transport.transportFactory.get_transport(&host, port, hash);
         if(t == NULL){
-            t = transport.transportFactory.create_transport(&host, port);
+            t = transport.transportFactory.create_transport(&host, port, hash);
         }
         t->valid = 1;
-        t->hash = hash;
+
         // std::cout << transport.transportFactory.transports.size() << std::endl;
         //s->port = 0;
 
@@ -82,7 +82,7 @@ int Codec11::read_new_topology_if_present(){
       transport.transportFactory.del_invalid_transports();
       transport.transportFactory.print_hash_bank();
       update_transport_bank();
-      // transport.transportFactory.print_hash_bank();
+       transport.transportFactory.print_hash_bank();
 
   }
 
@@ -106,7 +106,7 @@ void Codec11::update_transport_bank(){
         for(int id=0; id < virtual_nodes_num or id == 0; id++){
             virtualNodeBaseHashCode = 31 * id + nodeBaseHashCode;
             virtualNodeHashCode = (MurmurHash3_x64_32( (const char *) &virtualNodeBaseHashCode, 4,9001) & INT_MAX);
-            
+            virtualNodeHashCode = transport.transportFactory.get_hash( (const char *) &virtualNodeBaseHashCode, 4);
             transport.transportFactory.hash_transport_bank.push_back((std::make_pair(virtualNodeHashCode,tmp_transport)));
             transport.transportFactory.hash_vector.push_back(virtualNodeHashCode);
  

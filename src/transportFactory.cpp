@@ -20,7 +20,7 @@ TransportFactory::TransportFactory(std::string host, int port, int version)
         consistentHash = new ConsistentHash12(*this);
     }
 
-    first_transport = create_transport(&host, port);
+    first_transport = create_transport(&host, port, 0);
 }  
 
 
@@ -94,6 +94,26 @@ int TransportFactory::get_num_key_owners(){
     return ret;
 }
 
+void TransportFactory::set_hash_ver(int ver){
+    pthread_mutex_lock (&mutex_t_id);
+    hash_ver = ver;
+    pthread_mutex_unlock (&mutex_t_id);
+}
+int TransportFactory::get_hash_ver(){
+    pthread_mutex_lock (&mutex_t_id);
+    int ret = hash_ver;
+    pthread_mutex_unlock (&mutex_t_id);
+    return ret;
+}
+
+int TransportFactory::get_hash(const char* key, int length){
+    if(hash_ver == 1){
+        return MurmurHash2( key, length, 9001) & INT_MAX;
+    }else{
+      return MurmurHash3_x64_32( key, length, 9001) & INT_MAX;
+    }
+}
+
 Transport *TransportFactory::get_transport(){
     if(hotrod_version == VERSION_10){
         return ((ConsistentHash10 *) consistentHash)->get_transport(); 
@@ -114,7 +134,7 @@ Transport *TransportFactory::get_transport(const std::string *key){
     }
 } 
 
-Transport * TransportFactory::get_transport(std::string *host, int port){
+Transport * TransportFactory::get_transport(std::string *host, int port, int hash){
   pthread_mutex_lock (&mutex);
   Transport *transport, *ret_transport;
   ret_transport = NULL;
@@ -126,7 +146,7 @@ Transport * TransportFactory::get_transport(std::string *host, int port){
         transport = this->transports.front();
         this->transports.push(transport);
         this->transports.pop();
-        if(transport->port == port and transport->host == *host){
+        if(transport->port == port and transport->host == *host and transport->hash == hash){
             ret_transport = transport;
         }
        
@@ -141,8 +161,9 @@ void TransportFactory::release_transport(Transport * transport){
   pthread_mutex_unlock (&mutex);
 }
 
-Transport * TransportFactory::create_transport(std::string *host, int port){
+Transport * TransportFactory::create_transport(std::string *host, int port, int hash){
   Transport *transport = new Transport(*host, port, *this);
+  transport->hash = hash;
   pthread_mutex_lock (&mutex);
   this->transports.push(transport);
   pthread_mutex_unlock (&mutex);

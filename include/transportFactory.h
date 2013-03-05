@@ -5,6 +5,9 @@
 #include "consistentHash11.h"
 #include "consistentHash12.h"
 
+#include <murmur/MurmurHash2.h>
+#include <murmur/MurmurHash3.h>
+
 #include <iostream>
 #include <queue>
 #include <algorithm>
@@ -22,6 +25,7 @@ class TransportFactory{
         int virtual_nodes_num;
         int max_hash_size;
         int num_key_owners;
+        int hash_ver;
     public:
         Transport *first_transport; //smazat
 
@@ -46,11 +50,14 @@ class TransportFactory{
         int get_max_hash_size();
         void set_num_key_owners(int num);
         int get_num_key_owners();
+        void set_hash_ver(int ver);
+        int get_hash_ver();
+        int get_hash(const char* key, int length);
         Transport *get_transport();
         Transport *get_transport(const std::string *key);
-        Transport * get_transport(std::string *host, int port);
+        Transport * get_transport(std::string *host, int port, int hash);
         void release_transport(Transport * transport);
-        Transport * create_transport(std::string *host, int port);
+        Transport * create_transport(std::string *host, int port, int hash);
         void invalidate_transports();
         void del_invalid_transports();
         void print_hash_bank();
