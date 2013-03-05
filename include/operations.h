@@ -6,6 +6,14 @@
 #include <map>
 #include <iostream>
 
+class Metadata{
+    public:
+        char flag; 
+        int lifespan, maxidle;
+        long long version, created, lastused;
+        Metadata();
+};
+
 class AbstractOperation{
     public:
         int status;
@@ -35,6 +43,15 @@ class GetWithVersionOperation : public AbstractOperation{
         std::string *value;
         long long *version;
         GetWithVersionOperation(std::string *value, const std::string *key, long long *version, TransportFactory &tF, const std::string *cache_name, int flags);
+        virtual int execute_operation();
+};
+
+class GetWithMetadataOperation : public AbstractOperation{
+    public:
+        const std::string *key;
+        std::string *value;
+        Metadata *meta;
+        GetWithMetadataOperation(std::string *value, Metadata *meta, const std::string *key, TransportFactory &tF, const std::string *cache_name, int flags);
         virtual int execute_operation();
 };
 
@@ -110,6 +127,15 @@ class GetBulkOperation : public AbstractOperation{
         GetBulkOperation(std::map<std::string,std::string> *bulk, int count, TransportFactory &tF, const std::string *cache_name, int flags);
         virtual int execute_operation();
 };
+
+class BulkKeysGetOperation : public AbstractOperation{
+    public:
+        int scope;
+        std::vector<std::string> *keys;
+        BulkKeysGetOperation(std::vector<std::string> *keys, int scope, TransportFactory &tF, const std::string *cache_name, int flags);
+        virtual int execute_operation();
+};
+
 
 class ClearOperation : public AbstractOperation{
     public:

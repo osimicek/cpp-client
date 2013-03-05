@@ -23,6 +23,8 @@
    const char STATS_REQUEST = 0x15;
    const char PING_REQUEST = 0x17;
    const char BULK_GET_REQUEST = 0x19;
+   const char GET_WITH_METADATA = 0x1B;
+   const char BULK_GET_KEYS_REQUEST = 0x1D;
 
 
    //responses
@@ -39,6 +41,8 @@
    const char STATS_RESPONSE = 0x16;
    const char PING_RESPONSE = 0x18;
    const char BULK_GET_RESPONSE = 0x1A;
+   const char GET_WITH_METADATA_RESPONSE = 0x1C;
+   const char BULK_GET_KEYS_RESPONSE = 0x1E;
    const char ERROR_RESPONSE = 0x50;
 
    //response status
@@ -56,6 +60,9 @@
    const char CLIENT_INTELLIGENCE_BASIC = 0x01;
    const char CLIENT_INTELLIGENCE_TOPOLOGY_AWARE = 0x02;
    const char CLIENT_INTELLIGENCE_HASH_DISTRIBUTION_AWARE = 0x03;
+
+   const char INFINITE_LIFESPAN = 0x01;
+   const char INFINITE_MAXIDLE = 0x02;
 
    // server side errors
    const int INVALID_SERVER_MAGIC = 0x50; //server send bad MAGIC

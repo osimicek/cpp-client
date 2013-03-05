@@ -156,12 +156,12 @@ long long Transport::read_varlong(){
 
 }
 
-char Transport::read_byte(){
+int Transport::read_byte(){
     int n;
     char loaded_data[1]; 
     n = recv(this->_socket, loaded_data, 1,0);
    // std::cout << std::hex <<"hex " <<(u_short)loaded_data[0] << std::endl;
-    return loaded_data[0];
+    return ((int)0x000000ff) & loaded_data[0];
 }
 
 int Transport::read_2bytes(){

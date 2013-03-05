@@ -343,7 +343,7 @@ int main(){
     std::string resp;
     RemoteCacheConfig remote_cache_config;
     remote_cache_config.cache_name = "";
-    remote_cache_config.version = 10;
+    remote_cache_config.version = 12;
     RemoteCache x = RemoteCache(&remote_cache_config);
     std::string name(key);
 
@@ -355,7 +355,7 @@ int main(){
     v = "value";
 
 
-    x.put(&k, &v);
+    x.put(&k, &v, 1000, 1000);
     v.clear();
     x.get(&v, &k);
 
@@ -395,8 +395,18 @@ int main(){
 
     x.stats(&bulk);
     print_map(&bulk);
-
+    Metadata meta;
+    x.getWithMetadata(&v, &meta, &k);
+    std::cout<<std::dec<<meta.created<<std::endl;
 
 
 	return 0;
 }
+
+
+
+    // std::vector<std::string>  keys;
+    // x.keySet(&keys);
+    // for(int t=0;t<keys.size();++t){
+    //         std::cout<<keys.at(t)<<std::endl;
+    // }

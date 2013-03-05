@@ -1,5 +1,13 @@
 #include "operations.h"
 
+Metadata::Metadata(){
+    flag = -1;
+    lifespan = -1;
+    maxidle = -1;
+    version = -1;
+    created = -1;
+    lastused = -1;
+}
 
 AbstractOperation::AbstractOperation(TransportFactory &tF):transportFactory(tF)
 {
@@ -76,6 +84,64 @@ int GetWithVersionOperation::execute_operation()
     status = transport->read_header();
     if(status == NO_ERROR_STATUS){
         *version = transport->read_8bytes();
+        transport->read_array(value);
+        if(DEBUG)std::cout << *value << std::endl;
+    }
+    transportFactory.release_transport(transport);
+    return status;
+    
+}  
+
+
+GetWithMetadataOperation::GetWithMetadataOperation(std::string *value, Metadata *meta, const std::string *key, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+{    
+     this->value = value;
+     this->key = key;
+     this->meta = meta;
+     this->cache_name = cache_name;
+     this->flags = flags;
+}   
+
+int GetWithMetadataOperation::execute_operation()
+{   
+    transport = transportFactory.get_transport(key);
+    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+
+    transport->write_header(GET_WITH_METADATA, cache_name, flags);
+    transport->write_array(key);
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
+    }
+    char flag; 
+    int lifespan, maxidle;
+    long long version, created, lastused;
+    status = transport->read_header();
+    if(status == NO_ERROR_STATUS){
+        flag = transport->read_byte();
+        if(DEBUG)std::cout << "* flag " <<(int) flag<<" - "<<(int) flags << std::endl;
+        meta->flag = flag;
+        
+        if(!(flag & INFINITE_LIFESPAN)){
+            created = transport->read_8bytes();
+            if(DEBUG)std::cout << "* created " << created << std::endl;
+            meta->created = created;
+            lifespan = transport->read_varint();
+            if(DEBUG)std::cout << "* lifespan " << lifespan << std::endl;
+            meta->lifespan = lifespan;
+        }
+
+        if(!(flag & INFINITE_MAXIDLE)){
+            lastused = transport->read_8bytes();
+            if(DEBUG)std::cout << "* lastused " << lastused << std::endl;
+            meta->lastused = lastused;
+            maxidle = transport->read_varint();
+            if(DEBUG)std::cout << "* maxidle " << maxidle << std::endl;
+            meta->maxidle = maxidle;
+        }
+        version = transport->read_8bytes();
+        if(DEBUG)std::cout << "* version " << version << std::endl;
+        meta->version = version;
         transport->read_array(value);
         if(DEBUG)std::cout << *value << std::endl;
     }
@@ -292,6 +358,38 @@ int GetBulkOperation::execute_operation()
             transport->read_array(&key);
             transport->read_array(&value);
             (*bulk)[key] = value;
+        }
+    }
+
+    transportFactory.release_transport(transport);
+    return status;
+}  
+
+BulkKeysGetOperation::BulkKeysGetOperation(std::vector<std::string> *keys, int scope, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+{    
+     this->keys = keys;
+     this->scope = scope;
+     this->cache_name = cache_name;
+     this->flags = flags;
+}   
+
+int BulkKeysGetOperation::execute_operation()
+{
+    transport = transportFactory.get_transport();
+    if(transport == NULL) return FAILED_TO_CHOOSE_TRANSPORT;
+    transport->write_header(BULK_GET_KEYS_REQUEST, cache_name, flags);
+    transport->write_varint(scope);
+    if(status = transport->flush() != NO_ERROR_STATUS){
+        transportFactory.release_transport(transport);
+        return status;
+    }
+    
+    status = transport->read_header();
+    std::string key;
+    if(status == NO_ERROR_STATUS){
+        while(transport->read_byte()){
+            transport->read_array(&key);
+            keys->push_back(key);
         }
     }
 

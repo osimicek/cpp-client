@@ -50,7 +50,7 @@ class Transport{
         int flush();
         int read_varint();
         long long read_varlong();
-        char read_byte();
+        int read_byte();
         int read_2bytes();
         int read_4bytes();
         long long read_8bytes();
