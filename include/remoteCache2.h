@@ -65,10 +65,10 @@ class RemoteCache{
     int removeWithVersion(const std::string *key, long long version);
     int containsKey(const char *key);
     int containsKey(const std::string *key);
-    int getWithVersion(const char* value, const char *key,long long *version);
+    int getWithVersion(char* value, const char *key,long long *version);
     int getWithVersion(std::string *value, const std::string *key,long long *version);
     int get(std::string * value, const std::string *key);
-    int get(const char* value, const char *key);
+    int get(char* value, const char *key);
 
     int getWithMetadata(std::string * value, Metadata *meta, const std::string *key);
 

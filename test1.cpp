@@ -290,7 +290,10 @@ void putAllTest(){
 //       return h;
 //    }
 
-
+int xx(){
+  std::cout << "test je OK" << std::endl;
+}
+#define TISK() xx()
 
 int main(){
 
@@ -398,8 +401,7 @@ int main(){
     Metadata meta;
     x.getWithMetadata(&v, &meta, &k);
     std::cout<<std::dec<<meta.created<<std::endl;
-
-
+    // x.get(&v,&"sfs");
 	return 0;
 }
 

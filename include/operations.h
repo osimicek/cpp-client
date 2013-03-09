@@ -16,6 +16,7 @@ class Metadata{
 
 class AbstractOperation{
     public:
+        #define TISKK() std::cout << "duleziteeeeeeeeeee" << this << std::endl;
         int status;
         TransportFactory &transportFactory;
         Transport *transport;

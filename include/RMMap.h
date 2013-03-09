@@ -2,15 +2,15 @@
 #define RM_H_INCLUDED
 #include <string>
 #include <iostream>
+#include <iterator>
 #include <remoteCache2.h>
-#include <RMItem.h>
 #include <map>
 
 class RMItem;
 
 std::ostream & operator << (std::ostream& s, RMItem & p);
 
-class RMMap: public std::map<std::string, std::string>{
+class RMMap{
 public:
 	std::string x;
 	RemoteCache RC; 
@@ -28,8 +28,8 @@ public:
 	
 	std::string *get(const std::string *key);
 	void set(const std::string *key,const std::string *value);
-	RMMap::iterator begin();
-	RMMap::iterator end();
+	std::map<std::string,std::string>::iterator begin();
+	std::map<std::string,std::string>::iterator end();
 };
 
 
@@ -43,6 +43,7 @@ public:
     operator std::string();
     std::string &get();
     RMItem &operator=(const std::string &value);
+    RMItem &operator=(RMItem *rm_item);
     
 };
 

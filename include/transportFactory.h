@@ -18,6 +18,10 @@
 class Transport;
 
 class TransportFactory{
+    #define LOCK() pthread_mutex_lock (&mutex);
+    #define LOCK_ID() pthread_mutex_lock (&mutex_tf_id);
+    #define UNLOCK() pthread_mutex_unlock (&mutex);
+    #define UNLOCK_ID() pthread_mutex_unlock (&mutex_tf_id);
     private:
         int message_id;
         int hotrod_version;
@@ -30,7 +34,7 @@ class TransportFactory{
         Transport *first_transport; //smazat
 
 
-        pthread_mutex_t mutex, mutex_t_id;
+        pthread_mutex_t mutex, mutex_tf_id;
         std::queue<Transport*> transports; 
         std::vector<std::pair<int, Transport*> > hash_transport_bank;
         std::vector<int> hash_vector; // for binary search of index

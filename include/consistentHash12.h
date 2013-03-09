@@ -9,7 +9,6 @@
     class ConsistentHash12: public ConsistentHash11{
         public:
             ConsistentHash12(TransportFactory &tf);
-            using ConsistentHash11::get_transport;
     };
 
 

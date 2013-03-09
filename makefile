@@ -23,7 +23,6 @@ CPPFLAGS += -I./include
 
 hotrod_cli_lib_obj := 	include/murmur/MurmurHash2.o \
 						include/murmur/MurmurHash3.o \
-						src/RMItem.o\
 						src/RMMap.o\
 						src/transport.o\
 						src/codec10.o\

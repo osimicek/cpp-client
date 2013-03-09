@@ -99,3 +99,9 @@ RMItem &RMItem::operator=(const std::string &value)
     return *this;
 }
 
+RMItem &RMItem::operator=(RMItem *rm_item)
+{
+    rm_map.set(&key, &rm_item->get());
+    return *this;
+}
+

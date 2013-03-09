@@ -13,7 +13,7 @@ class ConsistentHash10{
     public:
         TransportFactory &transportFactory;
         ConsistentHash10(TransportFactory &tf);
-        Transport *get_transport();
+        virtual Transport *get_transport();
         Transport *get_transport(const std::string *key);
         int find_index_of_transport(int key_hash);
 
