@@ -99,13 +99,13 @@ int test2(){
 	for(int i=0;i<20;i++){
 		x.put(&std::string("Hell"),&std::string("ee"));
 	}
-	if((stat = x.replaceWithVersion("Hell","dd",ver+20))){
-		std::cerr << "Error #4 in test2   stat:"<<stat <<"  !for multiservers OK"<<std::endl;
+	if((stat = x.replaceWithVersion(&std::string("Hell"),&std::string("dd"),ver+20))){
+		std::cerr << "Error #4 in test2   stat:"<<stat <<"  !for multiservers OK, klice se neinkrementuji"<<std::endl;
 		ret = 1;
 	}
 
-	if(stat = x.removeWithVersion("Hell",ver+21)){
-		std::cerr << "Error #5 in test2   stat:"<<stat <<"  !for multiservers OK"<<std::endl;
+	if(stat = x.removeWithVersion(&std::string("Hell"),ver+21)){
+		std::cerr << "Error #5 in test2   stat:"<<stat <<"  !for multiservers OK, klice se neinkrementuji"<<std::endl;
 		ret = 1;
 	}
 	//x.clear();
@@ -390,18 +390,18 @@ int main(){
     // std::cout<<std::dec<< "MUR2 "<<(murmur2 & INT_MAX) <<std::flush<<std::endl; 
 
 
-    // std::cout<<std::dec<< test1() <<std::flush<<std::endl; 
-    // std::cout<<std::dec<< test2() <<std::flush<<std::endl; 
-    // std::cout<<std::dec<< test3() <<std::flush<<std::endl; 
+    std::cout<<std::dec<< test1() <<std::flush<<std::endl; 
+    std::cout<<std::dec<< test2() <<std::flush<<std::endl; 
+    std::cout<<std::dec<< test3() <<std::flush<<std::endl; 
 
-    std::map<std::string,std::string>  bulk;
+    // std::map<std::string,std::string>  bulk;
 
-    x.stats(&bulk);
-    print_map(&bulk);
-    Metadata meta;
-    x.getWithMetadata(&v, &meta, &k);
-    std::cout<<std::dec<<meta.created<<std::endl;
-    // x.get(&v,&"sfs");
+    // x.stats(&bulk);
+    // print_map(&bulk);
+    // Metadata meta;
+    // x.getWithMetadata(&v, &meta, &k);
+    // std::cout<<std::dec<<meta.created<<std::endl;
+    // // x.get(&v,&"sfs");
 	return 0;
 }
 

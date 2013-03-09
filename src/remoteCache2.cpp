@@ -181,13 +181,13 @@ int RemoteCache::replaceWithVersion(const std::string *key, const std::string *v
     ReplaceIfUnmodifiedOperation *replaceIfUnmodifiedOperation = new ReplaceIfUnmodifiedOperation(value, key, &prev_value, version, *transportFactory, &cache_name, flags, lifespan, maxidle);
     return replaceIfUnmodifiedOperation->execute();
 }
-int RemoteCache::get(const char* value, const char *key){
+int RemoteCache::get(char* value, const char *key){
     std::string tmp_key(key);
     std::string val; //zmenit
     int ret;
 
     ret = get(&val,&tmp_key);
-    value = (val.c_str()); //nakopirovat
+    strcpy(value, val.c_str()); 
     return ret;
 }
 
@@ -239,13 +239,13 @@ int RemoteCache::containsKey(const std::string *key){
     return containsKeyOperation->execute();
 }
 
-int RemoteCache::getWithVersion(const char *value, const char *key,long long *version){
+int RemoteCache::getWithVersion(char *value, const char *key,long long *version){
     std::string tmp_key(key);
     std::string val;  //zmenit
     int ret;
 
     ret = getWithVersion(&val,&tmp_key,version);
-    value = (val.c_str()); //nakopirovat
+    strcpy(value, val.c_str()); 
     return ret;
 }
 

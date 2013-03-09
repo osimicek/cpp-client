@@ -1,6 +1,4 @@
-#define DONT_INCLUDE_CONSISTENTHASH12  //circular dependency
-#include "consistentHash11.h"
-#undef DONT_INCLUDE_CONSISTENTHASH12  //circular dependency
+#include "consistentHash.h"
 
 ConsistentHash11::ConsistentHash11(TransportFactory &tf):ConsistentHash10(tf){}
 

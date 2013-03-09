@@ -1,6 +1,4 @@
-#define DONT_INCLUDE_CODEC12  //circular dependency
-#include "codec11.h"
-#undef DONT_INCLUDE_CODEC12  //circular dependency
+#include "codec.h"
 
 
 Codec11::Codec11(Transport &t):Codec10(t){
@@ -80,9 +78,9 @@ int Codec11::read_new_topology_if_present(){
 
       }
       transport.transportFactory.del_invalid_transports();
-      transport.transportFactory.print_hash_bank();
+      // transport.transportFactory.print_hash_bank();
       update_transport_bank();
-       transport.transportFactory.print_hash_bank();
+       // transport.transportFactory.print_hash_bank();
 
   }
 

@@ -1,6 +1,6 @@
 #ifndef CONSTANTS_H_INCLUDED
 #define CONSTANTS_H_INCLUDED
-   const short DEBUG = 1;
+   const short DEBUG = 0;
 
    const int MAX_EXECUTE_REPEAT = 3;
 

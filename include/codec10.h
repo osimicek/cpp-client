@@ -12,6 +12,7 @@
 class Transport;
 
 class Codec{
+
 public:
     Transport &transport;
     Codec(Transport &t);

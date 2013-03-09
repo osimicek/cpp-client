@@ -1,9 +1,7 @@
 #ifndef TRANSPORTFACTORY_H_INCLUDED
 #define TRANSPORTFACTORY_H_INCLUDED
 #include "transport.h"
-#include "consistentHash10.h"
-#include "consistentHash11.h"
-#include "consistentHash12.h"
+#include "consistentHash.h"
 
 #include <murmur/MurmurHash2.h>
 #include <murmur/MurmurHash3.h>

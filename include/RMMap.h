@@ -11,25 +11,25 @@ class RMItem;
 std::ostream & operator << (std::ostream& s, RMItem & p);
 
 class RMMap{
-public:
-	std::string x;
-	RemoteCache RC; 
-	std::map<std::string,std::string>  bulk;
+    private:
+    	std::string x;
+    	RemoteCache RC; 
+    	std::map<std::string,std::string>  bulk;
+    public:
+    	RMMap();
+    	u_int size();
+    	RMItem &operator[](const std::string &key);
+    	RMMap& operator= ( const std::map<std::string,std::string>& x );
 
-	RMMap();
-	u_int size();
-	RMItem &operator[](const std::string &key);
-	RMMap& operator= ( const std::map<std::string,std::string>& x );
+    	int erase(const std::string &key );
 
-	int erase(const std::string &key );
-
-	//const char *operator[](const char *key);
-	void clear();
-	
-	std::string *get(const std::string *key);
-	void set(const std::string *key,const std::string *value);
-	std::map<std::string,std::string>::iterator begin();
-	std::map<std::string,std::string>::iterator end();
+    	//const char *operator[](const char *key);
+    	void clear();
+    	
+    	std::string *get(const std::string *key);
+    	void set(const std::string *key,const std::string *value);
+    	std::map<std::string,std::string>::iterator begin();
+    	std::map<std::string,std::string>::iterator end();
 };
 
 

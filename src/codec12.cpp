@@ -1,5 +1,4 @@
-#include "codec12.h"
-
+#include "codec.h"
 
 Codec12::Codec12(Transport &t):Codec11(t){
 

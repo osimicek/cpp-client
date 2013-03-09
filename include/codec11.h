@@ -1,8 +1,6 @@
-#ifndef DONT_INCLUDE_CODEC11  //circular dependency
     #ifndef CODEC11_H_INCLUDED
     #define CODEC11_H_INCLUDED
 
-    #include "codec10.h"
     #include <murmur/MurmurHash3.h>
 
     //class Codec10;
@@ -19,4 +17,3 @@
 
 
     #endif
-#endif

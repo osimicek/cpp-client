@@ -1,9 +1,4 @@
-#define DONT_INCLUDE_CODEC11  //circular dependency
-#define DONT_INCLUDE_CODEC12  //circular dependency
-#include "codec10.h"
-#undef DONT_INCLUDE_CODEC11  //circular dependency
-#undef DONT_INCLUDE_CODEC12  //circular dependency
-
+#include "codec.h"
 
 Codec::Codec(Transport &t):transport(t){}
 void Codec::write_header(char op_code, const std::string *cache_name, int flags){}   
@@ -164,9 +159,9 @@ int Codec10::read_new_topology_if_present(){
 
       }
       transport.transportFactory.del_invalid_transports();
-      transport.transportFactory.print_hash_bank();
+      // transport.transportFactory.print_hash_bank();
       update_transport_bank();
-      transport.transportFactory.print_hash_bank();
+      // transport.transportFactory.print_hash_bank();
 
 
   }

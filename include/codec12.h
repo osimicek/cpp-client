@@ -1,14 +1,7 @@
-#ifndef DONT_INCLUDE_CODEC12  //circular dependency
     #ifndef CODEC12_H_INCLUDED
     #define CODEC12_H_INCLUDED
 
-
-    #define DONT_INCLUDE_CODEC11  //circular dependency
-    #define DONT_INCLUDE_CODEC12  //circular dependency
-    #include "codec10.h"
-    #undef DONT_INCLUDE_CODEC11  //circular dependency
-    #undef DONT_INCLUDE_CODEC12  //circular dependency
-    #include "codec11.h"
+    #include "codec.h"
 
 
 
@@ -25,4 +18,3 @@
 
 
     #endif
-#endif
