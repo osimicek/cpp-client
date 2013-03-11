@@ -22,7 +22,7 @@ TransportFactory::TransportFactory(std::string host, int port, int version)
         consistentHash = new ConsistentHash12(*this);
     }
 
-    first_transport = create_transport(&host, port, 0);
+    create_transport(&host, port, 0);
 }  
 
 
@@ -99,23 +99,11 @@ int TransportFactory::get_hash(const char* key, int length){
 }
 
 Transport *TransportFactory::get_transport(){
-    if(hotrod_version == VERSION_10){
-        return ((ConsistentHash10 *) consistentHash)->get_transport(); 
-    }else if(hotrod_version == VERSION_11){
-        return ((ConsistentHash11 *) consistentHash)->get_transport();
-    }else{
-        return ((ConsistentHash12 *) consistentHash)->get_transport();
-    }
+    return consistentHash->get_transport(); 
 } 
 
 Transport *TransportFactory::get_transport(const std::string *key){
-    if(hotrod_version == VERSION_10){
-        return ((ConsistentHash10 *) consistentHash)->get_transport(key);
-    }else if(hotrod_version == VERSION_11){
-        return ((ConsistentHash11 *) consistentHash)->get_transport(key);
-    }else{
-        return ((ConsistentHash12 *) consistentHash)->get_transport(key);
-    }
+    return consistentHash->get_transport(key); 
 } 
 
 Transport * TransportFactory::get_transport(std::string *host, int port, int hash){

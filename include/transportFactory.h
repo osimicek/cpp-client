@@ -13,7 +13,7 @@
 
 #include "constants.h"
 
-class Transport;
+class ConsistentHash;
 
 class TransportFactory{
     #define LOCK() pthread_mutex_lock (&mutex);
@@ -29,15 +29,12 @@ class TransportFactory{
         int num_key_owners;
         int hash_ver;
     public:
-        Transport *first_transport; //smazat
-
-
         pthread_mutex_t mutex, mutex_tf_id;
         std::queue<Transport*> transports; 
         std::vector<std::pair<int, Transport*> > hash_transport_bank;
         std::vector<int> hash_vector; // for binary search of index
         
-        void *consistentHash;
+        ConsistentHash *consistentHash;
 
         explicit TransportFactory(std::string host, int port, int version);
         void execute();

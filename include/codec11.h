@@ -8,9 +8,9 @@
     class Codec11  : public Codec10{
         public:
             Codec11(Transport &t);
-            virtual void write_header(short op_code, const std::string *cache_name, int flags);
-            virtual int read_new_topology_if_present();
-            virtual void update_transport_bank();
+            void write_header(char op_code, const std::string *cache_name, int flags);
+            int read_new_topology_if_present();
+            void update_transport_bank();
     };
 
 

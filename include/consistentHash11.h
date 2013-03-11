@@ -9,7 +9,7 @@
     class ConsistentHash11: public ConsistentHash10{
         public:
             ConsistentHash11(TransportFactory &tf);
-            using ConsistentHash10::get_transport;
+            using ConsistentHash::get_transport;
             Transport *get_transport(const std::string *key);
     };
 

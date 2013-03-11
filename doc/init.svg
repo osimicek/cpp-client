@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created by diasvg.py -->
+<svg width="35.923cm" height="19.137cm" viewBox="0.695 3.227 36.619 22.364"
+ xmlns="http://www.w3.org/2000/svg"
+ xmlns:xlink="http://www.w3.org/1999/xlink">
+<ellipse cx="1.995" cy="4.177" rx="0.300" ry="0.300" fill="#FFFFFF" stroke="none"  /><ellipse cx="1.995" cy="4.177" rx="0.300" ry="0.300" fill="none" stroke="#000000"  stroke-width="0.100" /><line x1="0.795" y1="4.777" x2="3.195" y2="4.777" stroke="#000000" stroke-width="0.100" />
+<line x1="1.995" y1="4.477" x2="1.995" y2="5.977" stroke="#000000" stroke-width="0.100" />
+<line x1="1.995" y1="5.977" x2="0.795" y2="7.277" stroke="#000000" stroke-width="0.100" />
+<line x1="1.995" y1="5.977" x2="3.195" y2="7.277" stroke="#000000" stroke-width="0.100" />
+<text x="1.995" y="8.472"  fill="#000000" text-anchor="middle" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+APP</text>
+<line x1="1.506" y1="11.678" x2="8.758" y2="11.684" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="8.369,11.934 8.869,11.684 8.370,11.434 "/>
+<line x1="1.386" y1="10.002" x2="1.372" y2="21.534" stroke="#000000" stroke-width="0.200" />
+<line x1="9.029" y1="10.016" x2="9.040" y2="21.672" stroke="#000000" stroke-width="0.200" />
+<line x1="19.017" y1="9.853" x2="19.030" y2="21.709" stroke="#000000" stroke-width="0.200" />
+<line x1="28.070" y1="9.956" x2="28.066" y2="22.097" stroke="#000000" stroke-width="0.200" />
+<text x="1.582" y="10.199"  fill="#000000" text-anchor="start" font-size="0.60" font-family="sans" font-style="normal" font-weight="400">
+new</text>
+<text x="1.582" y="10.799"  fill="#000000" text-anchor="start" font-size="0.60" font-family="sans" font-style="normal" font-weight="400">
+RemoteCache(host,port)</text>
+<line x1="9.031" y1="12.509" x2="18.683" y2="12.509" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="18.294,12.759 18.794,12.509 18.294,12.259 "/>
+<text x="9.301" y="11.476"  fill="#000000" text-anchor="start" font-size="0.60" font-family="sans" font-style="normal" font-weight="400">
+new TransportFactory(host,port)</text>
+<text x="19.520" y="17.588"  fill="#000000" text-anchor="start" font-size="0.60" font-family="sans" font-style="normal" font-weight="400">
+TF.addTransport(T)</text>
+<line x1="8.956" y1="19.134" x2="1.655" y2="19.116" stroke="#000000" stroke-width="0.100" stroke-dasharray="1.00,1.00"/>
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="2.044,18.867 1.543,19.116 2.042,19.367 "/>
+<text x="4.664" y="18.214"  fill="#000000" text-anchor="start" font-size="0.60" font-family="sans" font-style="normal" font-weight="400">
+OK</text>
+<line x1="19.019" y1="13.766" x2="27.820" y2="13.766" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="27.432,14.016 27.932,13.766 27.432,13.516 "/>
+<rect x="25.690" y="6.598" width="5.150" height="2.225" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="25.690" y="6.598" width="5.150" height="2.225" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="25.867" y="7.347"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+Transporter</text>
+<rect x="15.250" y="6.513" width="6.978" height="2.225" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="15.250" y="6.513" width="6.978" height="2.225" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="15.449" y="7.264"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+TransportFactory</text>
+<line x1="28.059" y1="16.522" x2="19.242" y2="16.491" stroke="#000000" stroke-width="0.100" stroke-dasharray="1.00,1.00"/>
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="19.631,16.243 19.130,16.491 19.630,16.743 "/>
+<text x="22.731" y="16.102"  fill="#000000" text-anchor="start" font-size="0.60" font-family="sans" font-style="normal" font-weight="400">
+OK</text>
+<line x1="18.981" y1="18.259" x2="9.380" y2="18.284" stroke="#000000" stroke-width="0.100" stroke-dasharray="1.00,1.00"/>
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="9.767,18.033 9.268,18.284 9.769,18.533 "/>
+<rect x="5.945" y="6.515" width="6.079" height="2.225" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="5.945" y="6.515" width="6.079" height="2.225" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="6.183" y="7.333"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+RemoteCache</text>
+<text x="20.060" y="12.742"  fill="#000000" text-anchor="start" font-size="0.60" font-family="sans" font-style="normal" font-weight="400">
+new Transport(host,port)</text>
+<text x="13.110" y="17.368"  fill="#000000" text-anchor="start" font-size="0.60" font-family="sans" font-style="normal" font-weight="400">
+OK</text>
+<rect x="32.479" y="6.554" width="4.090" height="2.225" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<rect x="32.479" y="6.554" width="4.090" height="2.225" fill="none" stroke="#000000" stroke-width="0.100" />
+<text x="32.655" y="7.303"  fill="#000000" text-anchor="start" font-size="0.80" font-family="sans" font-style="normal" font-weight="400">
+Codec11</text>
+<line x1="34.920" y1="10.123" x2="34.916" y2="22.264" stroke="#000000" stroke-width="0.200" />
+<line x1="28.178" y1="14.654" x2="34.595" y2="14.665" stroke="#000000" stroke-width="0.100" />
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="34.206,14.915 34.707,14.665 34.207,14.415 "/>
+<line x1="34.944" y1="16.066" x2="28.402" y2="16.079" stroke="#000000" stroke-width="0.100" stroke-dasharray="1.00,1.00"/>
+<polyline fill="none" stroke="#000000" stroke-width="0.100"  points="28.789,15.828 28.290,16.079 28.790,16.328 "/>
+<text x="29.391" y="14.021"  fill="#000000" text-anchor="start" font-size="0.60" font-family="sans" font-style="normal" font-weight="400">
+new Codec11(T)</text>
+<text x="30.991" y="15.396"  fill="#000000" text-anchor="start" font-size="0.60" font-family="sans" font-style="normal" font-weight="400">
+OK</text>
+</svg>

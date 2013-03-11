@@ -390,9 +390,9 @@ int main(){
     // std::cout<<std::dec<< "MUR2 "<<(murmur2 & INT_MAX) <<std::flush<<std::endl; 
 
 
-    std::cout<<std::dec<< test1() <<std::flush<<std::endl; 
-    std::cout<<std::dec<< test2() <<std::flush<<std::endl; 
-    std::cout<<std::dec<< test3() <<std::flush<<std::endl; 
+    // std::cout<<std::dec<< test1() <<std::flush<<std::endl; 
+    // std::cout<<std::dec<< test2() <<std::flush<<std::endl; 
+    // std::cout<<std::dec<< test3() <<std::flush<<std::endl; 
 
     // std::map<std::string,std::string>  bulk;
 

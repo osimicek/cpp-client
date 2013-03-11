@@ -1,8 +1,9 @@
 #include "consistentHash.h"
-ConsistentHash10::ConsistentHash10(TransportFactory &tf):transportFactory(tf){}
+ConsistentHash::ConsistentHash(TransportFactory &tf):transportFactory(tf){}
 
 
-Transport *ConsistentHash10::get_transport(){
+
+Transport *ConsistentHash::get_transport(){
     pthread_mutex_lock (&transportFactory.mutex);
     Transport *transport = NULL;
     
@@ -23,8 +24,16 @@ Transport *ConsistentHash10::get_transport(){
     return transport;
 } 
 
+Transport *ConsistentHash::get_transport(const std::string *key){
+    return NULL;
+}
+
+
+
+
+ConsistentHash10::ConsistentHash10(TransportFactory &tf):ConsistentHash(tf){}
+
 Transport *ConsistentHash10::get_transport(const std::string *key){
-    
     Transport *transport = NULL;
     if(transportFactory.hash_vector.size() == 0){
         transport = get_transport();

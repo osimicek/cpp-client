@@ -4,18 +4,7 @@ Codec::Codec(Transport &t):transport(t){}
 void Codec::write_header(char op_code, const std::string *cache_name, int flags){}   
 int Codec::read_header(){}
 
-///////////////////////////////////////////////
-
-
-Codec10::Codec10(Transport &t):Codec(t){}
-
-void Codec10::write_header(char op_code, const std::string *cache_name, int flags){
-    // std::cout <<"HEADER 10" << std::endl;
-    write_header(op_code, cache_name, flags, VERSION_10);
-}   
-
-void Codec10::write_header(char op_code, const std::string *cache_name, int flags, char version){
-     // std::cout << "WRITE"<< (int)version << " " <<(int)VERSION_10<< std::endl;
+void Codec::write_headerr(char op_code, const std::string *cache_name, int flags, char version){
     struct timeval begin;
     gettimeofday(&begin, NULL);
     long long the_time;  
@@ -38,6 +27,18 @@ void Codec10::write_header(char op_code, const std::string *cache_name, int flag
     //todo change once TX support is added
     transport.write_char(0x00); //transaction type
 }
+
+///////////////////////////////////////////////
+
+
+Codec10::Codec10(Transport &t):Codec(t){}
+
+void Codec10::write_header(char op_code, const std::string *cache_name, int flags){
+    //std::cout <<"HEADER 10" << std::endl;
+    write_headerr(op_code, cache_name, flags, VERSION_10);
+}   
+
+
 
 
 int Codec10::read_header(){

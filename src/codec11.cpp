@@ -5,8 +5,8 @@ Codec11::Codec11(Transport &t):Codec10(t){
 
 }
 
-void Codec11::write_header(short op_code, const std::string *cache_name, int flags){
-    Codec10::write_header(op_code, cache_name, flags, VERSION_11);
+void Codec11::write_header(char op_code, const std::string *cache_name, int flags){
+    write_headerr(op_code, cache_name, flags, VERSION_11);
 }
 
 int Codec11::read_new_topology_if_present(){

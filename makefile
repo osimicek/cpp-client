@@ -52,17 +52,17 @@ starts:
 
 startservers:
 	 ./infinispan/bin/startServer.sh -r hotrod -p 11222 -c ./infinispan/bin/distrib.xml &
-	 sleep 6
+	 sleep 3
 	 ./infinispan/bin/startServer.sh -r hotrod -p 11223 -c ./infinispan/bin/distrib.xml &
-	 sleep 3
+	 sleep 1
 	 ./infinispan/bin/startServer.sh -r hotrod -p 11224 -c ./infinispan/bin/distrib.xml &
-	 sleep 3
+	 sleep 1
 	 ./infinispan/bin/startServer.sh -r hotrod -p 11225 -c ./infinispan/bin/distrib.xml &
-	 sleep 3
+	 sleep 1
 	 ./infinispan/bin/startServer.sh -r hotrod -p 11226 -c ./infinispan/bin/distrib.xml &
-	 sleep 3
+	 sleep 1
 	 ./infinispan/bin/startServer.sh -r hotrod -p 11227 -c ./infinispan/bin/distrib.xml &
-	 sleep 3
+	 sleep 1
 	 ./infinispan/bin/startServer.sh -r hotrod -p 11228 -c ./infinispan/bin/distrib.xml &
 
 startservers10:

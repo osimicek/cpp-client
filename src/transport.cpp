@@ -82,14 +82,14 @@ void Transport::write_8bytes(long long value){
 
 void Transport::write_header(char op_code, const std::string *cache_name, int flags){
     int hotrod_version = transportFactory.get_hotrod_version();
-    // codec->write_header(op_code, cache_name, flags);
-    if(hotrod_version == VERSION_10){
-        ((Codec10 *) codec)->write_header(op_code, cache_name, flags);
-    }else if(hotrod_version == VERSION_11){
-        ((Codec11 *) codec)->write_header(op_code, cache_name, flags);
-    }else{
-        ((Codec12 *) codec)->write_header(op_code, cache_name, flags);
-    }
+    codec->write_header(op_code, cache_name, flags);
+    // if(hotrod_version == VERSION_10){
+    //     ((Codec10*)codec)->write_header(op_code, cache_name, flags);
+    // }else if(hotrod_version == VERSION_11){
+    //     ((Codec11*)codec)->write_header(op_code, cache_name, flags);
+    // }else{
+    //     ((Codec12*) codec)->write_header(op_code, cache_name, flags);
+    // }
 }
 
 void Transport::write_array(const std::string *arr){
@@ -213,13 +213,14 @@ void Transport::read_array(std::string *arr){
 int Transport::read_header(){
     int hotrod_version = transportFactory.get_hotrod_version();
     // std::cout << "version  "<< hotrod_version << std::endl; 
-    if(hotrod_version == VERSION_10){
-        return ((Codec10 *) codec)->read_header();
-    }else if(hotrod_version == VERSION_11){
-        return ((Codec11 *) codec)->read_header();
-    }else{
-        return ((Codec12 *) codec)->read_header();
-    }
+    return codec->read_header();
+    // if(hotrod_version == VERSION_10){
+    //     return ((Codec10 *) codec)->read_header();
+    // }else if(hotrod_version == VERSION_11){
+    //     return ((Codec11 *) codec)->read_header();
+    // }else{
+    //     return ((Codec12 *) codec)->read_header();
+    // }
 }
 
 

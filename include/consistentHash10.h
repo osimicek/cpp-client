@@ -8,16 +8,24 @@
 class TransportFactory;
 class Transport;
 
-class ConsistentHash10{
-
+class ConsistentHash{
     public:
         TransportFactory &transportFactory;
+        ConsistentHash(TransportFactory &tf);
+        Transport *get_transport();
+        virtual Transport *get_transport(const std::string *key);
+};
+
+class ConsistentHash10: public ConsistentHash{
+
+    public:
         ConsistentHash10(TransportFactory &tf);
-        virtual Transport *get_transport();
+        using ConsistentHash::get_transport;
         Transport *get_transport(const std::string *key);
         int find_index_of_transport(int key_hash);
 
 };
 
-
+#include "transportFactory.h"
+#include "transport.h"
 #endif
