@@ -8,7 +8,7 @@ Transport *ConsistentHash::get_transport(){
     Transport *transport = NULL;
     
     if(transportFactory.transports.size() > 0){
-        for(int i=0; i<transportFactory.transports.size(); i++){
+        for(u_int i=0; i<transportFactory.transports.size(); i++){
             transport = transportFactory.transports.front();
             transportFactory.transports.push(transport);
             transportFactory.transports.pop();
@@ -74,10 +74,9 @@ int ConsistentHash10::find_index_of_transport(int key_hash){
     int result_i = 0;
     int best_distance = INT_MAX;
     int distance = 0;
-    int counter = 0;
     while (imax >= imin)
     {
-        int imid = (imin + imax) / 2;
+        imid = (imin + imax) / 2;
         distance = transportFactory.hash_vector[imid] - key_hash;
         if(distance >= 0 && distance < best_distance){
             result_i = imid;

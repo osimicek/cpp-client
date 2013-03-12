@@ -8,8 +8,9 @@
     class Codec11  : public Codec10{
         public:
             Codec11(Transport &t);
+            using Codec::write_header;
             void write_header(char op_code, const std::string *cache_name, int flags);
-            int read_new_topology_if_present();
+            void read_new_topology_if_present();
             void update_transport_bank();
     };
 

@@ -28,9 +28,9 @@ unsigned long int getblock(const char* key, int i) {
          | (((unsigned long int) key[i + 7] & 0x00000000000000FFL) << 56);
    }
 
-   static void print(std::string name, unsigned long int *k1, unsigned long int *k2, unsigned long int *h1, unsigned long int *h2, unsigned long int *c1, unsigned long int *c2) {
-       std::cout<<std::dec<< name<<(int)(*h1 >> 32)<<" "<<(int)(*h2 >> 32)<<" "<<(*k1 )<<" "<<(int)(*k2 >> 32)<<" "<<(int)(*c1 >> 32)<<" "<<(int)(*c2 >> 32) <<" "<<std::flush<<std::endl;  
-    }
+   // static void print(std::string name, unsigned long int *k1, unsigned long int *k2, unsigned long int *h1, unsigned long int *h2, unsigned long int *c1, unsigned long int *c2) {
+   //     std::cout<<std::dec<< name<<(int)(*h1 >> 32)<<" "<<(int)(*h2 >> 32)<<" "<<(*k1 )<<" "<<(int)(*k2 >> 32)<<" "<<(int)(*c1 >> 32)<<" "<<(int)(*c2 >> 32) <<" "<<std::flush<<std::endl;  
+   //  }
 
    static void bmix(unsigned long int *k1, unsigned long int *k2, unsigned long int *h1, unsigned long int *h2, unsigned long int *c1, unsigned long int *c2) {
       *k1 *= *c1;
@@ -41,10 +41,10 @@ unsigned long int getblock(const char* key, int i) {
       *h1 ^= *k1;
       *h1 += *h2;
       //print("bmix ", k1,k2,h1,h2,c2,c1);
-      *h2 = (*h2 << 41) | (*h2 >> 64 - 41);
+      *h2 = (*h2 << 41) | (*h2 >> (64 - 41));
 
       *k2 *= *c2;
-      *k2 = (*k2 << 23) | (*k2 >> 64 - 23);
+      *k2 = (*k2 << 23) | (*k2 >> (64 - 23));
       *k2 *= *c1;
       *h2 ^= *k2;
       *h2 += *h1;

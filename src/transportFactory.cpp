@@ -111,10 +111,8 @@ Transport * TransportFactory::get_transport(std::string *host, int port, int has
   Transport *transport, *ret_transport;
   ret_transport = NULL;
 
-  int changed = 0;
-  //std::cout <<"ii " <<std::dec<<s->host<<"/"<<s->port<<std::flush<<std::endl;
-  for(int i = 0;i<this->transports.size();i++){
-        //std::cout << std::dec<<this->servers.front().host<<"/"<<this->servers.front().port<<std::flush<<std::endl;
+  // int changed = 0; 
+  for(u_int i = 0;i<this->transports.size();i++){
         transport = this->transports.front();
         this->transports.push(transport);
         this->transports.pop();
@@ -146,7 +144,7 @@ void TransportFactory::invalidate_transports(){
   LOCK()
   Transport *transport;
   //std::cout <<"ii " <<std::dec<<s->host<<"/"<<s->port<<std::flush<<std::endl;
-  for(int i = 0;i<this->transports.size();i++){
+  for(u_int i = 0;i<this->transports.size();i++){
         transport = this->transports.front();
         transport->valid = 0;
         
@@ -162,7 +160,7 @@ void TransportFactory::del_invalid_transports(){
   LOCK()
   Transport *transport;
   //std::cout <<"ii " <<std::dec<<s->host<<"/"<<s->port<<std::flush<<std::endl;
-  for(int i = 0;i<this->transports.size();i++){
+  for(u_int i = 0;i<this->transports.size();i++){
         transport = this->transports.front();
         if(transport->valid == 1){ 
           this->transports.push(transport);
@@ -176,7 +174,7 @@ void TransportFactory::del_invalid_transports(){
 }
 
 void TransportFactory::print_hash_bank(){
-    for(int i=0; i < this->hash_transport_bank.size(); i++){
+    for(u_int i=0; i < this->hash_transport_bank.size(); i++){
 
       std::cout << i << "  "<< this->hash_transport_bank[i].first<<"  "<<this->hash_transport_bank[i].second->port<<std::endl;
 

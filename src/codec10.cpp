@@ -2,9 +2,9 @@
 
 Codec::Codec(Transport &t):transport(t){}
 void Codec::write_header(char op_code, const std::string *cache_name, int flags){}   
-int Codec::read_header(){}
+int Codec::read_header(){return 1;}
 
-void Codec::write_headerr(char op_code, const std::string *cache_name, int flags, char version){
+void Codec::write_header(char op_code, const std::string *cache_name, int flags, char version){
     struct timeval begin;
     gettimeofday(&begin, NULL);
     long long the_time;  
@@ -35,7 +35,7 @@ Codec10::Codec10(Transport &t):Codec(t){}
 
 void Codec10::write_header(char op_code, const std::string *cache_name, int flags){
     //std::cout <<"HEADER 10" << std::endl;
-    write_headerr(op_code, cache_name, flags, VERSION_10);
+    write_header(op_code, cache_name, flags, VERSION_10);
 }   
 
 
@@ -61,6 +61,7 @@ int Codec10::read_header(){
     received_op_code = transport.read_byte();
 
     status = transport.read_byte();
+    // std::cout<<"-"<<(int)status<<std::endl;
     read_new_topology_if_present();
 
     if (received_op_code == ERROR_RESPONSE) {
@@ -83,7 +84,7 @@ int Codec10::check_for_errors_in_response_status(char status){
     return status; 
 }
 
-int Codec10::read_new_topology_if_present(){
+void Codec10::read_new_topology_if_present(){
     short topology_change =transport.read_byte();
     if(DEBUG){
         std::cout <<"* Topology change marker: "<< std::hex <<topology_change<<std::endl;
@@ -92,7 +93,7 @@ int Codec10::read_new_topology_if_present(){
         int topology_id;
         u_int num_key_own;
         u_short hash_ver;
-        int hash_space, num_virtual, num_servers;
+        int hash_space, num_servers;
 
         topology_id = transport.read_varint();
         transport.transportFactory.set_topology_id(topology_id);
@@ -167,7 +168,6 @@ int Codec10::read_new_topology_if_present(){
 
   }
 
-
 }
 
 void Codec10::update_transport_bank(){
@@ -177,7 +177,7 @@ void Codec10::update_transport_bank(){
   //std::cout <<"ii " <<std::dec<<s->host<<"/"<<s->port<<std::flush<<std::endl;
   transport.transportFactory.hash_transport_bank.clear();
   transport.transportFactory.hash_vector.clear();
-  for(int i = 0;i<transport.transportFactory.transports.size();i++){
+  for(u_int i = 0;i<transport.transportFactory.transports.size();i++){
         tmp_transport = transport.transportFactory.transports.front();
 
         int nodeHashCode = tmp_transport->hash;

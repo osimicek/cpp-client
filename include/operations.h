@@ -12,6 +12,7 @@ class Metadata{
         int lifespan, maxidle;
         long long version, created, lastused;
         Metadata();
+        void clear();
 };
 
 class AbstractOperation{

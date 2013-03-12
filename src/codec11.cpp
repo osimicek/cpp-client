@@ -6,10 +6,10 @@ Codec11::Codec11(Transport &t):Codec10(t){
 }
 
 void Codec11::write_header(char op_code, const std::string *cache_name, int flags){
-    write_headerr(op_code, cache_name, flags, VERSION_11);
+    write_header(op_code, cache_name, flags, VERSION_11);
 }
 
-int Codec11::read_new_topology_if_present(){
+void Codec11::read_new_topology_if_present(){
     short topology_change =transport.read_byte();
     if(DEBUG) std::cout <<"* Topology change marker: "<< std::hex <<topology_change<<std::endl;
 
@@ -94,7 +94,7 @@ void Codec11::update_transport_bank(){
   //std::cout <<"ii " <<std::dec<<s->host<<"/"<<s->port<<std::flush<<std::endl;
   transport.transportFactory.hash_transport_bank.clear();
   transport.transportFactory.hash_vector.clear();
-  for(int i = 0;i<transport.transportFactory.transports.size();i++){
+  for(u_int i = 0;i<transport.transportFactory.transports.size();i++){
         tmp_transport = transport.transportFactory.transports.front();
 
         int nodeBaseHashCode = tmp_transport->hash;

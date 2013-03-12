@@ -18,17 +18,18 @@ public:
     Codec(Transport &t);
     virtual int read_header();
     virtual void write_header(char op_code, const std::string *cache_name, int flags);
-    void write_headerr(char op_code, const std::string *cache_name, int flags, char version);
+    void write_header(char op_code, const std::string *cache_name, int flags, char version);
 };
 
 class Codec10: public Codec{
 
     public:
         Codec10(Transport &t);
+        using Codec::write_header;
         void write_header(char op_code, const std::string *cache_name, int flags);
-        virtual int read_header();
+        int read_header();
         int check_for_errors_in_response_status(char status);
-        virtual int read_new_topology_if_present();
+        virtual void read_new_topology_if_present();
         virtual void update_transport_bank();
 };
 

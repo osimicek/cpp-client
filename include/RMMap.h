@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include <iterator>
-#include <remoteCache2.h>
+#include <remoteCache.h>
 #include <map>
 
 class RMItem;

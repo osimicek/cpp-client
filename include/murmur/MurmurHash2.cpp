@@ -37,7 +37,7 @@ uint32_t MurmurHash2 ( const void * key, int len, uint32_t seed )
 {
   // 'm' and 'r' are mixing constants generated offline.
   // They're not really 'magic', they just happen to work well.
-
+  seed = 9001; // unused
   const uint32_t m = 0x5bd1e995;
   const int r = 24;
 

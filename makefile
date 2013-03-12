@@ -1,25 +1,36 @@
 # Soubor:  Makefile
 
 
-CC= g++ -Wall -dynamic_cast -lpthread -I.
+CC= g++ -Wall -dynamic_cast  -lpthread -I.
+hotrod_lib = libHotRod.a
+main = main
 
-
-CPPFLAGS += -I.
+CPPFLAGS += -g #-Wall -W -ansi
 CPPFLAGS += -I./include
-# CPPFLAGS += -I./include/nosjob/include
-# libnosjob := ./include/nosjob/src/nosjob.o \
-# 						./include/nosjob/src/Array.o \
-# 						./include/nosjob/src/Boolean.o \
-# 						./include/nosjob/src/Double.o \
-# 						./include/nosjob/src/Integer.o \
-# 						./include/nosjob/src/Mutex.o \
-# 						./include/nosjob/src/Object.o \
-# 						./include/nosjob/src/Parser.o \
-# 						./include/nosjob/src/Utf8String.o \
-# 						./include/nosjob/src/Utf16String.o \
-# 						./include/nosjob/src/parser/JSON_parser.o \
-# 						./include/nosjob/src/whalloc_amalgamation.o
-		
+objects = include/UnitTest++/AssertException.o \
+	include/UnitTest++/Test.o \
+	include/UnitTest++/Checks.o \
+	include/UnitTest++/TestRunner.o \
+	include/UnitTest++/TestResults.o \
+	include/UnitTest++/TestReporter.o \
+	include/UnitTest++/TestReporterStdout.o \
+	include/UnitTest++/ReportAssert.o \
+	include/UnitTest++/TestList.o \
+	include/UnitTest++/TimeConstraint.o \
+	include/UnitTest++/TestDetails.o \
+	include/UnitTest++/MemoryOutStream.o \
+	include/UnitTest++/DeferredTestReporter.o \
+	include/UnitTest++/DeferredTestResult.o \
+	include/UnitTest++/XmlTestReporter.o \
+	include/UnitTest++/CurrentTest.o \
+	include/UnitTest++/Posix/SignalTranslator.o \
+	include/UnitTest++/Posix/TimeHelpers.o
+
+
+test_objects = test/main.o \
+	test/test1.o \
+	test/test2.o \
+	
 
 hotrod_cli_lib_obj := 	include/murmur/MurmurHash2.o \
 						include/murmur/MurmurHash3.o \
@@ -33,19 +44,53 @@ hotrod_cli_lib_obj := 	include/murmur/MurmurHash2.o \
 						src/consistentHash12.o\
 						src/transportFactory.o\
 						src/operations.o\
-						src/remoteCache2.o\
+						src/remoteCache.o\
 
+# $(hotrod_lib): $(hotrod_cli_lib_obj) 
+# 	@echo Creating $(hotrod_lib) library...
+# 	@ar cr $(hotrod_lib) $(hotrod_cli_lib_obj)
 
-ALL:    $(hotrod_cli_lib_obj)    test1.o 
-	#make -C ./include/nosjob/		
-	$(CC) $(libnosjob)  $(hotrod_cli_lib_obj) test1.o -o test1
+# $(main):  $(hotrod_lib) main.o
+# 	@echo Linking $(main)...
+# 	$(CC) $(hotrod_lib) main.o -o $(main) 
+# 	@echo Running unit tests...
+# 	@./$(main)
 
+ALL: $(hotrod_cli_lib_obj)  $(main).o
+	$(CC) $(hotrod_cli_lib_obj) $(main).o -o $(main) 
 
 run:
-	./test1
+	./main
 
 go: ALL
-	./test1
+	./main
+
+
+# test:    $(hotrod_cli_lib_obj) test/test2.o test/test1.o
+# 	#make -C ./include/nosjob/		
+# 	$(CC) $(libnosjob)  $(hotrod_cli_lib_obj) test/test1.o test/test1.o -o test/test1
+
+tests: $(objects) $(hotrod_cli_lib_obj) $(test_objects)
+	$(CC) $(objects) $(hotrod_cli_lib_obj) $(test_objects) -o test/hotrod_test
+	@echo "*******************"
+	@echo "** Running tests **"
+	@echo "*******************"
+	./test/hotrod_test
+
+runtests:
+	@echo "*******************"
+	@echo "** Running tests **"
+	@echo "*******************"
+	./test/hotrod_test
+
+
+
+
+
+
+
+
+
 
 starts:
 	./infinispan/bin/startServer.sh -r hotrod
@@ -97,8 +142,12 @@ clean:							# smazani nezadoucich souboru
 	rm -f *~
 	rm -f *.o
 	rm -f src/*.o
+	rm -f test/*.o
 	rm -f include/murmur/*.o
-	rm -f test1
+	rm -f $(objects) $(test_objects)
+	rm -f $(hotrod_lib)
+	rm -f main
+	rm -f test/hotrod_test
 
 pack:
 	tar cf xsimic02.tar *.cpp README Makefile *.pdf 	

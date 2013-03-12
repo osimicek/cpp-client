@@ -1,6 +1,10 @@
 #include "operations.h"
 
 Metadata::Metadata(){
+    clear();
+}
+
+void Metadata::clear(){
     flag = -1;
     lifespan = -1;
     maxidle = -1;
@@ -34,7 +38,7 @@ int AbstractOperation::execute()
     return state;
 } 
 
-int AbstractOperation::execute_operation(){}  
+int AbstractOperation::execute_operation(){return 1;}  
 
 void AbstractOperation::return_possible_prev_value(std::string *prev_value)
 {
@@ -59,7 +63,7 @@ int GetOperation::execute_operation()
 
     transport->write_header(GET_REQUEST, cache_name, flags);
     transport->write_array(key);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
 
@@ -67,6 +71,8 @@ int GetOperation::execute_operation()
     if(status == NO_ERROR_STATUS){
         transport->read_array(value);
         if(DEBUG)std::cout << *value << std::endl;
+    }else{
+        *value = "";
     }
     return status;
     
@@ -86,7 +92,7 @@ int GetWithVersionOperation::execute_operation()
 
     transport->write_header(GET_WITH_VERSION, cache_name, flags);
     transport->write_array(key);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
 
@@ -95,6 +101,9 @@ int GetWithVersionOperation::execute_operation()
         *version = transport->read_8bytes();
         transport->read_array(value);
         if(DEBUG)std::cout << *value << std::endl;
+    }else{
+        *value = "";
+        *version = 0;
     }
     return status;
     
@@ -115,7 +124,7 @@ int GetWithMetadataOperation::execute_operation()
 
     transport->write_header(GET_WITH_METADATA, cache_name, flags);
     transport->write_array(key);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
     char flag; 
@@ -150,6 +159,10 @@ int GetWithMetadataOperation::execute_operation()
         transport->read_array(value);
         if(DEBUG)std::cout << *value << std::endl;
     }
+    else{
+        *value = "";
+        meta->clear();
+    }
     return status;
     
 }  
@@ -167,7 +180,7 @@ int RemoveOperation::execute_operation()
 
     transport->write_header(REMOVE_REQUEST, cache_name, flags);
     transport->write_array(key);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
 
@@ -195,7 +208,7 @@ int RemoveIfUnmodifiedOperation::execute_operation()
     transport->write_header(REMOVE_IF_UNMODIFIED_REQUEST, cache_name, flags);
     transport->write_array(key);
     transport->write_8bytes(version);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
 
@@ -219,7 +232,7 @@ int ContainsKeyOperation::execute_operation()
 
     transport->write_header(REMOVE_REQUEST, cache_name, flags);
     transport->write_array(key);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
 
@@ -245,7 +258,7 @@ int PutBasedOperation::execute_operation(int op_code){
     transport->write_varint(this->lifespan); //lifespan
     transport->write_varint(this->idle); //idle
     transport->write_array(value);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
     
@@ -262,7 +275,7 @@ PutOperation::PutOperation(const std::string *value, const std::string *key, std
 
 int PutOperation::execute_operation()
 {
-    PutBasedOperation::execute_operation(PUT_REQUEST);
+    return PutBasedOperation::execute_operation(PUT_REQUEST);
 }  
 
 PutIfAbsentOperation::PutIfAbsentOperation(const std::string *value, const std::string *key, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):PutBasedOperation(value, key, prev_value, tF, cache_name, flags, lifespan, idle)
@@ -270,7 +283,7 @@ PutIfAbsentOperation::PutIfAbsentOperation(const std::string *value, const std::
 
 int PutIfAbsentOperation::execute_operation()
 {
-    PutBasedOperation::execute_operation(PUT_IF_ABSENT_REQUEST);
+    return PutBasedOperation::execute_operation(PUT_IF_ABSENT_REQUEST);
 }  
 
 ReplaceOperation::ReplaceOperation(const std::string *value, const std::string *key, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):PutBasedOperation(value, key, prev_value, tF, cache_name, flags, lifespan, idle)
@@ -278,7 +291,7 @@ ReplaceOperation::ReplaceOperation(const std::string *value, const std::string *
 
 int ReplaceOperation::execute_operation()
 {
-    PutBasedOperation::execute_operation(REPLACE_REQUEST);
+    return PutBasedOperation::execute_operation(REPLACE_REQUEST);
 }  
 
 ReplaceIfUnmodifiedOperation::ReplaceIfUnmodifiedOperation(const std::string *value, const std::string *key, std::string *prev_value, long long version, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):AbstractOperation(tF)
@@ -301,7 +314,7 @@ int ReplaceIfUnmodifiedOperation::execute_operation()
     transport->write_varint(this->idle); //idle
     transport->write_8bytes(version);
     transport->write_array(value);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
     status = transport->read_header();
@@ -324,7 +337,7 @@ int GetBulkOperation::execute_operation()
 {
     transport->write_header(BULK_GET_REQUEST, cache_name, flags);
     transport->write_varint(count);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
     
@@ -352,7 +365,7 @@ int BulkKeysGetOperation::execute_operation()
 {
     transport->write_header(BULK_GET_KEYS_REQUEST, cache_name, flags);
     transport->write_varint(scope);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
     
@@ -377,7 +390,7 @@ ClearOperation::ClearOperation(TransportFactory &tF, const std::string *cache_na
 int ClearOperation::execute_operation()
 {
     transport->write_header(CLEAR_REQUEST, cache_name, flags);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
     
@@ -394,7 +407,7 @@ PingOperation::PingOperation(TransportFactory &tF, const std::string *cache_name
 int PingOperation::execute_operation()
 {
     transport->write_header(PING_REQUEST, cache_name, flags);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
     
@@ -414,7 +427,7 @@ int StatsOperation::execute_operation()
 {
     std::cout << "ok" <<std::endl;
     transport->write_header(STATS_REQUEST, cache_name, flags);
-    if(status = transport->flush() != NO_ERROR_STATUS){
+    if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
         std::cout << "ok"<< status <<std::endl;
