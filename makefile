@@ -44,6 +44,7 @@ hotrod_cli_lib_obj := 	include/murmur/MurmurHash2.o \
 						src/consistentHash12.o\
 						src/transportFactory.o\
 						src/operations.o\
+						src/marshaller.o\
 						src/remoteCache.o\
 
 # $(hotrod_lib): $(hotrod_cli_lib_obj) 
