@@ -1,17 +1,19 @@
 #include "marshaller.h"
 
 Marshaller::Marshaller(){}
-int Marshaller::dump(std::string* dest, int src){};
-int Marshaller::dump(std::string* dest, double src){};
-int Marshaller::dump(std::string* dest, std::string *src){};
+int Marshaller::dump(std::string* dest, const int src){};
+int Marshaller::dump(std::string* dest, const double src){};
+int Marshaller::dump(std::string* dest, const char *src){};
+int Marshaller::dump(std::string* dest, const std::string *src){};
 
 int Marshaller::load(int* dest, std::string* src){};
 int Marshaller::load(double* dest, std::string* src){};
+int Marshaller::load(char* dest, std::string* src){};
 int Marshaller::load(std::string* dest, std::string* src){};
 
 
 MarshallerJBoss::MarshallerJBoss(){}
-int MarshallerJBoss::dump(std::string* dest, int src){
+int MarshallerJBoss::dump(std::string* dest, const int src){
     dest->clear();
     short type = INT_TYPE;
     *dest += ((char *) &type)[1];
@@ -21,7 +23,7 @@ int MarshallerJBoss::dump(std::string* dest, int src){
     }
     return NO_ERROR_STATUS;
 };
-int MarshallerJBoss::dump(std::string* dest, double src){
+int MarshallerJBoss::dump(std::string* dest, const double src){
     dest->clear();
     short type = DOUBLE_TYPE;
     *dest += ((char *) &type)[1];
@@ -31,7 +33,12 @@ int MarshallerJBoss::dump(std::string* dest, double src){
     }
     return NO_ERROR_STATUS;
 };
-int MarshallerJBoss::dump(std::string* dest, std::string *src){
+int MarshallerJBoss::dump(std::string* dest, const char *src){
+    std::string src2(src);
+    return MarshallerJBoss::dump(dest, &src2);
+};
+
+int MarshallerJBoss::dump(std::string* dest, const std::string *src){
     dest->clear();
     short type;
     int len = src->length();
@@ -101,7 +108,11 @@ int MarshallerJBoss::load(double* dest, std::string* src){
     *dest = *((double *)&result);
     return NO_ERROR_STATUS;
 };
+int MarshallerJBoss::load(char* dest, std::string* src){};
 int MarshallerJBoss::load(std::string* dest, std::string* src){
+    for(int i=0; i<10;i++){
+        std::cout<<std::hex<< (0x00ff & ((short)((char *) src->c_str())[i])) << " ";
+    }
     dest->clear();
     int result = 0;
     int possition = 0;

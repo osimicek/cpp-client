@@ -296,6 +296,78 @@ int xx(){
 }
 #define TISK() xx()
 
+template <typename F>
+void doOperation(F f)
+{
+  int temp=0;
+
+  std::cout << "Result is " << f << std::endl;
+}
+
+
+#include <iostream>
+#include <map>
+#include <string>
+using namespace std;
+
+union Values {
+    char asChar;
+    unsigned char asUChar;
+    short asShort;
+    unsigned short asUShort;
+    int asInt;
+    unsigned int asUInt;
+    long asLong;
+    unsigned long asULong;  
+    float asFloat;
+    double asDouble;
+    char* asStr;
+    std::string* asStdStr;
+    Values() { asULong = 0; }
+    Values(char in) { asUChar = in; }
+    Values(unsigned char in) { asChar = in; }
+    Values(short in) { asShort = in; }
+    Values(unsigned short in) { asUShort = in; }
+    Values(int in) { asInt = in; }
+    Values(unsigned int in) { asUInt = in; }
+    Values(long in) { asLong = in; }
+    Values(unsigned long in) { asULong = in; }
+    Values(float in) { asFloat = in; }
+    Values(double in) { asDouble = in; }
+    Values(char* in) { asStr = in; }
+    Values(std::string in) { asStdStr = &in; }
+    
+    
+    operator char() { return asChar; }
+    operator unsigned char() { return asUChar; }
+    operator short() { return asShort; }
+    operator unsigned short() { return asUShort; }
+    operator int() { return asInt; }
+    operator unsigned int() { return asUInt; }
+    operator long() { return asLong; }
+    operator unsigned long() { return asULong; }
+    operator float() { return asFloat; }
+    operator double() { return asDouble; }
+    operator std::string*() { return asStdStr; }
+    operator char*() { return asStr; }
+    
+};
+
+
+namespace std
+{
+ template<> struct less<VarItem>
+        {
+           bool operator() (const VarItem& lhs, const VarItem& rhs)
+           {
+               return 1;
+           }
+        };
+
+}
+
+
+
 int main(){
 
 	// char key[7]; //xx
@@ -335,9 +407,9 @@ int main(){
 
   char key[7]; //xx
     int seed = 9001;
-    key[0] = 3;
-      key[1] = 62;
-      key[2] = 4; //pocet
+    key[0] = 120;
+      key[1] = 120;
+      key[2] = 120; //pocet
       key[3] = 120;
       key[4] = 120;
       key[5] = 120;
@@ -419,7 +491,7 @@ int main(){
     MarshallerJBoss mj;
     int in;
     std::string re;
-    mj.load(&re, &v);
+    // mj.load(&re, &v);
 
 
 
@@ -436,18 +508,43 @@ int main(){
     re = "nam to slape muhehehe jojojo ono to jede to je uplne super :Plkj";
 
    std::cout <<std::dec<< "delka " <<"   "<< re.length()<<std::endl;
-    mj.dump(&vv, &re);
+    // mj.dump(&vv, &re);
     for(int i=0; i<10;i++){
         std::cout<<std::hex<< (0x00ff & ((short)((char *) vv.c_str())[i])) << " ";
     }
     x.put(&k, &vv, 1000, 1000);
+
+    int ci = 60660;
+    char *xx = "xxxxx";
+
+    x.put(xx,ci);
+    std::cout<<ci<<std::endl;
+
+
+    map<string, VarItem> mymap;
+    mymap["Item1"] = 2;
+    mymap["Item2"] = re;
+    Values val = "asdf";
+    // re = val.asStdStr;
+    mymap["Item3"] = "It was the best of times, it was the worst of times";
+    ci = mymap["Item1"];
+    // cout << mymap["Item1"].asInt <<" " << mymap["Item2"].asStdStr<<re << endl;
+    // cout << mymap["Item3"].asStr <<"  " << ci<<endl;
+
+    VarItem  vi;
+    vi = 666;
+    ci = vi;
+    vi = 66.66;
+    // vi = "wow";
+    cout <<std::dec<< "  " << ci<< (double)vi<<endl;
+    std::vector<VarItem>  keys;
+    x.keySet(&keys);
+    for(int t=0;t<keys.size();++t){
+            std::cout<<(std::string)keys.at(t)<<std::endl;
+    }
 	return 0;
 }
 
 
 
-    // std::vector<std::string>  keys;
-    // x.keySet(&keys);
-    // for(int t=0;t<keys.size();++t){
-    //         std::cout<<keys.at(t)<<std::endl;
-    // }
+    

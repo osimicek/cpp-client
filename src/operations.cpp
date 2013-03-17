@@ -353,7 +353,7 @@ int GetBulkOperation::execute_operation()
     return status;
 }  
 
-BulkKeysGetOperation::BulkKeysGetOperation(std::vector<std::string> *keys, int scope, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+BulkKeysGetOperation::BulkKeysGetOperation(std::vector<VarItem> *keys, int scope, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
 {    
      this->keys = keys;
      this->scope = scope;
@@ -374,7 +374,9 @@ int BulkKeysGetOperation::execute_operation()
     if(status == NO_ERROR_STATUS){
         while(transport->read_byte()){
             transport->read_array(&key);
-            keys->push_back(key);
+            VarItem item;
+            item.set_value(&key);
+            keys->push_back(item);
         }
     }
     return status;
