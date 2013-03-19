@@ -10,7 +10,7 @@ RMMap::RMMap(){
 
 u_int RMMap::size(){
         //stahni_data();
-        std::map<std::string,std::string> bulk;
+        std::map<VarItem,VarItem> bulk;
         RC.getBulk(&bulk);
 
         return bulk.size();
@@ -38,7 +38,7 @@ void RMMap::clear()
  	RC.clear();
 }
 
-/* RMMap& RMMap::operator= ( const std::map<std::string,std::string>& x ){
+/* RMMap& RMMap::operator= ( const std::map<VarItem,VarItem>& x ){
  	std::cout<< "used ="<<std::flush<<std::endl;
  	return (*this);	
  }*/
@@ -56,12 +56,12 @@ void RMMap::set(const VarItem *key,const VarItem *value){
 
 }
 
-std::map<std::string,std::string>::iterator RMMap::begin(){
+std::map<VarItem,VarItem>::iterator RMMap::begin(){
 	RC.getBulk(&bulk);	
 	return bulk.begin();	
 }
 
-std::map<std::string,std::string>::iterator RMMap::end(){
+std::map<VarItem,VarItem>::iterator RMMap::end(){
 	return bulk.end();	
 }
 

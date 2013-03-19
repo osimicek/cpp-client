@@ -1,17 +1,46 @@
 #include "marshaller.h"
+Marshaller* DEFAULT_MARSHALLER;
 
 Marshaller::Marshaller(){}
-int Marshaller::dump(std::string* dest, const int src){};
-int Marshaller::dump(std::string* dest, const double src){};
-int Marshaller::dump(std::string* dest, const char *src){};
-int Marshaller::dump(std::string* dest, const std::string *src){};
-int Marshaller::dump(std::string* dest, const VarItem *src){};
+int Marshaller::dump(std::string* dest, const int src){
+    std::stringstream ss;
+    ss << src;
+    *dest = ss.str();
+    return NO_ERROR_STATUS;
+};
+int Marshaller::dump(std::string* dest, const double src){
+    std::stringstream ss;
+    ss << src;
+    *dest = ss.str();
+    return NO_ERROR_STATUS;
+};
+int Marshaller::dump(std::string* dest, const char *src){
+    *dest = src;
+    return NO_ERROR_STATUS;
+};
+int Marshaller::dump(std::string* dest, const std::string *src){
+    *dest = *src;
+    return NO_ERROR_STATUS;
+};
+int Marshaller::dump(std::string* dest, const VarItem *src){
+    *dest = src->marshalled;
+    return NO_ERROR_STATUS;
+};
 
 int Marshaller::load(int* dest, std::string* src){};
 int Marshaller::load(double* dest, std::string* src){};
-int Marshaller::load(char* dest, std::string* src){};
-int Marshaller::load(std::string* dest, std::string* src){};
-int Marshaller::load(VarItem* dest, std::string* src){};
+int Marshaller::load(char* dest, std::string* src){ // otestovat
+    dest =(char *)src->c_str();
+    return NO_ERROR_STATUS;
+};
+int Marshaller::load(std::string* dest, std::string* src){
+    *dest = *src;
+    return NO_ERROR_STATUS;
+};
+int Marshaller::load(VarItem* dest, std::string* src){
+    dest->marshalled = *src;
+    return NO_ERROR_STATUS;
+};
 
 int Marshaller::get_type(std::string* src){};
 std::ostream & Marshaller::print(std::ostream& _stream, std::string* src){
@@ -158,6 +187,7 @@ int MarshallerJBoss::load(std::string* dest, std::string* src){
 
 int MarshallerJBoss::load(VarItem* dest, std::string* src){
     dest->marshalled = *src;
+    return NO_ERROR_STATUS;
 }
 
 int MarshallerJBoss::get_type(std::string* src){

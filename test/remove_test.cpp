@@ -1,6 +1,8 @@
 #include "UnitTest++/UnitTest++.h"
 #include "UnitTest++/AssertException.h"
 #include "UnitTest++/ReportAssert.h"
+#include "main.h"
+extern RemoteCache *cache;
 
 using namespace UnitTest;
 

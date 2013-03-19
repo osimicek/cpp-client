@@ -28,8 +28,10 @@ objects = include/UnitTest++/AssertException.o \
 
 
 test_objects = test/main.o \
-	test/test1.o \
-	test/test2.o \
+	test/put_get_test.o \
+	test/replace_test.o \
+	test/put_if_absent_test.o \
+	test/remove_test.o \
 	
 
 hotrod_cli_lib_obj := 	include/murmur/MurmurHash2.o \
@@ -72,7 +74,7 @@ go: ALL
 # 	#make -C ./include/nosjob/		
 # 	$(CC) $(libnosjob)  $(hotrod_cli_lib_obj) test/test1.o test/test1.o -o test/test1
 
-tests: $(objects) $(hotrod_cli_lib_obj) $(test_objects)
+test: $(objects) $(hotrod_cli_lib_obj) $(test_objects)
 	$(CC) $(objects) $(hotrod_cli_lib_obj) $(test_objects) -o test/hotrod_test
 	@echo "*******************"
 	@echo "** Running tests **"

@@ -3,10 +3,12 @@
 
 #include <string>
 #include <iostream>
+#include <sstream>
 
 #include "constants.h"
 
-
+class Marshaller;
+extern Marshaller* DEFAULT_MARSHALLER;
 
 class VarItem;
 

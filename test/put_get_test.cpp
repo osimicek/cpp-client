@@ -39,64 +39,9 @@ TEST(It_can_basic_get_and_put)
     CHECK(value == "value2");
 }
 
-TEST(It_can_put_if_absent)
-{
-    std::string key("key");
-    std::string value;
-    int status;
 
 
-    status = cache->clear();
-    CHECK(status == NO_ERROR_STATUS);
-    value = "value";
-    status = cache->putIfAbsent(&key, &value);
-    CHECK(status == NO_ERROR_STATUS);
 
-    value.clear();
-    status = cache->get(&value, &key);
-    CHECK(value == "value");
-    CHECK(status == NO_ERROR_STATUS);
-
-    value = "value2";
-    status = cache->putIfAbsent(&key, &value);
-    CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
-
-    value.clear();
-    status = cache->get(&value, &key);
-    CHECK(value == "value");
-    CHECK(status == NO_ERROR_STATUS);
-
-}
-
-TEST(It_can_replace)
-{
-    std::string key("key");
-    std::string value;
-    int status;
-
-
-    cache->clear();
-    value = "value";
-    status = cache->replace(&key, &value);
-    CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
-
-    value.clear();
-    status = cache->get(&value, &key);
-    CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
-    CHECK(value == "");
-
-    status = cache->put(&key, &value);
-    CHECK(status == NO_ERROR_STATUS);
-
-    value = "value2";
-    status = cache->replace(&key, &value);
-    CHECK(status == NO_ERROR_STATUS);
-
-    value.clear();
-    status = cache->get(&value, &key);
-    CHECK(value == "value2");
-    CHECK(status == NO_ERROR_STATUS);
-}
 
 
 }

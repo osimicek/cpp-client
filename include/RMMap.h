@@ -15,7 +15,7 @@ class RMMap{
     private:
     	std::string x;
     	RemoteCache RC; 
-    	std::map<std::string,std::string>  bulk;
+    	std::map<VarItem,VarItem>  bulk;
     public:
     	RMMap();
     	u_int size();
@@ -28,8 +28,8 @@ class RMMap{
     	void clear();
     	
     	void set(const VarItem *key,const VarItem *value);
-    	std::map<std::string,std::string>::iterator begin();
-    	std::map<std::string,std::string>::iterator end();
+    	std::map<VarItem,VarItem>::iterator begin();
+    	std::map<VarItem,VarItem>::iterator end();
 };
 
 

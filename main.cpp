@@ -1,7 +1,11 @@
 #include <string>
 #include <remoteCache.h>
-#include <marshaller.h>
+// #include <marshaller.h>
 #include <RMMap.h>
+#include <sstream>
+#include <iostream>
+#include <map>
+#include <string>
 #include "varItem.h"
 #include <murmur/MurmurHash3.h>
 #include <murmur/MurmurHash2.h>
@@ -12,12 +16,12 @@
 
 
 
-void print_map(std::map<std::string,std::string>  *data){
-	std::map<std::string,std::string>::iterator pos;
+void print_map(std::map<VarItem,VarItem>  *data){
+	std::map<VarItem,VarItem>::iterator pos;
 	std::cout << "Bulk:" <<std::endl;
-    for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
-        std::cout << "key: \"" << pos->first << "\" "<< "value: " << pos->second << std::endl;
-    }
+    // for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
+    //     std::cout << "key: \"" << pos->first << "\" "<< "value: " << pos->second << std::endl;
+    // }
 }
 
 // void print_rmmap(RMMap  *data){
@@ -131,12 +135,12 @@ int test3(){
 	x.put(&std::string("Hell2"),&std::string("f2"));
 	x.put(&std::string("Hell3"),&std::string("f3"));
     std::cout <<"ok"<<std::endl;
-	std::map<std::string,std::string>  bulk;
+	std::map<VarItem,VarItem>  bulk;
 
 	x.getBulk(&bulk);
 	print_map(&bulk);
 
-	std::map<std::string,std::string>  data;
+	std::map<VarItem,VarItem>  data;
 	data["Hell4"] = "f4";
 	data["Hell5"] = "f5";
 	data["Hell6"] = "f6";
@@ -196,7 +200,7 @@ void smallTest(){
 
 void putAllTest(){
 	RemoteCache x = RemoteCache();
-	std::map<std::string,std::string>  data;
+	std::map<VarItem,VarItem>  data;
 	data["Test1"] = "Sample text #1";
 	data["Test2"] = "Sample text #2";
 	data["Test3"] = "Sample text #3";
@@ -306,60 +310,12 @@ void doOperation(F f)
 }
 
 
-#include <iostream>
-#include <map>
-#include <string>
-using namespace std;
-
-union Values {
-    char asChar;
-    unsigned char asUChar;
-    short asShort;
-    unsigned short asUShort;
-    int asInt;
-    unsigned int asUInt;
-    long asLong;
-    unsigned long asULong;  
-    float asFloat;
-    double asDouble;
-    char* asStr;
-    std::string* asStdStr;
-    Values() { asULong = 0; }
-    Values(char in) { asUChar = in; }
-    Values(unsigned char in) { asChar = in; }
-    Values(short in) { asShort = in; }
-    Values(unsigned short in) { asUShort = in; }
-    Values(int in) { asInt = in; }
-    Values(unsigned int in) { asUInt = in; }
-    Values(long in) { asLong = in; }
-    Values(unsigned long in) { asULong = in; }
-    Values(float in) { asFloat = in; }
-    Values(double in) { asDouble = in; }
-    Values(char* in) { asStr = in; }
-    Values(std::string in) { asStdStr = &in; }
-    
-    
-    operator char() { return asChar; }
-    operator unsigned char() { return asUChar; }
-    operator short() { return asShort; }
-    operator unsigned short() { return asUShort; }
-    operator int() { return asInt; }
-    operator unsigned int() { return asUInt; }
-    operator long() { return asLong; }
-    operator unsigned long() { return asULong; }
-    operator float() { return asFloat; }
-    operator double() { return asDouble; }
-    operator std::string*() { return asStdStr; }
-    operator char*() { return asStr; }
-    
-};
-
-
 
 
 
 
 int main(){
+
 
 	// char key[7]; //xx
  //    int seed = 9001;
@@ -458,7 +414,7 @@ int main(){
     // std::cout<<std::dec<< test2() <<std::flush<<std::endl; 
     // std::cout<<std::dec<< test3() <<std::flush<<std::endl; 
 
-    // std::map<std::string,std::string>  bulk;
+    // std::map<VarItem,VarItem>  bulk;
 
     // x.stats(&bulk);
     // print_map(&bulk);
@@ -512,31 +468,35 @@ int main(){
     std::cout<<ci<<std::endl;
 
 
-    map<VarItem, VarItem> mymap;
-    cout <<std::dec<< (int)mymap["Item1"] <<endl;
+    std::map<VarItem, VarItem> mymap;
+    std::cout <<std::dec<< (int)mymap["Item1"] <<std::endl;
     mymap["Item1"] = 2;
-     cout <<std::dec<< "endint " <<endl;
+     std::cout <<std::dec<< "endint " <<std::endl;
     mymap["Item2"] = re;
-    Values val = "asdf";
+
     // re = val.asStdStr;
     mymap["Item3"] = "It was the best of times, it was the worst of times";
     // ci = mymap["Item1"];
-    // cout <<std::dec<< "test " <<endl;
-    // cout << (int)mymap["Item1"] <<" " << (char *)mymap["Item2"]<<re << endl;
-    // cout << (char *)mymap["Item3"] <<"  " <<endl;
-    // cout <<std::dec<< "/test " <<endl;
+    // std::cout <<std::dec<< "test " <<std::endl;
+    // std::cout << (int)mymap["Item1"] <<" " << (char *)mymap["Item2"]<<re << std::endl;
+    // std::cout << (char *)mymap["Item3"] <<"  " <<std::endl;
+    
+    std::cout <<std::dec<< "/test "  <<std::endl;
     VarItem  vi;
     vi = 666;
     ci = vi;
     vi = 95.4556;
     
     // vi = "wow";
-    cout <<std::dec<< "  " << ci<<"  "<< vi<< endl;
+    std::cout <<std::dec<< "  " << ci<<"  "<< vi<< std::endl;
     std::vector<VarItem>  keys;
     x.keySet(&keys);
     for(int t=0;t<keys.size();++t){
             // std::cout<<"K "<<(keys.at(t))<<std::endl;
     }
+
+
+
 	return 0;
 }
 

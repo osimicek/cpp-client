@@ -326,7 +326,7 @@ int ReplaceIfUnmodifiedOperation::execute_operation()
     return status;
 }
 
-GetBulkOperation::GetBulkOperation(std::map<std::string,std::string> *bulk, int count, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+GetBulkOperation::GetBulkOperation(std::map<VarItem,VarItem> *bulk, int count, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
 {    
      this->bulk = bulk;
      this->count = count;
@@ -348,7 +348,11 @@ int GetBulkOperation::execute_operation()
         while(transport->read_byte()){
             transport->read_array(&key);
             transport->read_array(&value);
-            (*bulk)[key] = value;
+            VarItem k_object;
+            k_object.set_value(&key);
+            VarItem v_object;
+            v_object.set_value(&value);
+            (*bulk)[k_object] = v_object;
         }
     }
     return status;

@@ -124,8 +124,8 @@ class ReplaceIfUnmodifiedOperation : public AbstractOperation{
 class GetBulkOperation : public AbstractOperation{
     public:
         int count;
-        std::map<std::string,std::string> *bulk;
-        GetBulkOperation(std::map<std::string,std::string> *bulk, int count, TransportFactory &tF, const std::string *cache_name, int flags);
+        std::map<VarItem, VarItem> *bulk;
+        GetBulkOperation(std::map<VarItem, VarItem> *bulk, int count, TransportFactory &tF, const std::string *cache_name, int flags);
         virtual int execute_operation();
 };
 

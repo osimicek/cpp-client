@@ -35,8 +35,11 @@ RemoteCache::RemoteCache(){
 void RemoteCache::init(RemoteCacheConfig* remote_cache_config){
     srand (time(NULL));
     transportFactory = new TransportFactory(remote_cache_config->host, remote_cache_config->port, remote_cache_config->version);
-
-    marshaller = new MarshallerJBoss();
+    if(DEFAULT_MARSHALLER != NULL){
+        marshaller = DEFAULT_MARSHALLER;
+    }else{
+        marshaller = new MarshallerJBoss();
+    }
     lifespan = remote_cache_config->lifespan;
     maxidle = remote_cache_config->maxidle;
     flags = remote_cache_config->flags;
@@ -68,9 +71,9 @@ static void *print_message_function( void * t_a)
     // return (void * )(t_args->RC->put(t_args->key,t_args->value,t_args->lifespan,t_args->maxidle));
 }
 
-int RemoteCache::putAllAsync(std::map<std::string,std::string> *data,int lifespan, int maxidle){
+int RemoteCache::putAllAsync(std::map<VarItem,VarItem> *data,int lifespan, int maxidle){
     // int max_threads = 10;
-    // std::map<std::string,std::string>::iterator pos;
+    // std::map<VarItem,VarItem>::iterator pos;
     // int *rets = new int[data->size()];
     // pthread_t *threads = new pthread_t[data->size()];
     // thread_args *t_args = new thread_args[data->size()];
@@ -104,8 +107,8 @@ int RemoteCache::putAllAsync(std::map<std::string,std::string> *data,int lifespa
     return 0;
 }
 
-int RemoteCache::putAll(std::map<std::string,std::string> *data,int lifespan, int maxidle){
-    std::map<std::string,std::string>::iterator pos;
+int RemoteCache::putAll(std::map<VarItem,VarItem> *data,int lifespan, int maxidle){
+    std::map<VarItem,VarItem>::iterator pos;
 
     for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
        // print_servers();
@@ -115,8 +118,18 @@ int RemoteCache::putAll(std::map<std::string,std::string> *data,int lifespan, in
     return 0;
 }
 
+int RemoteCache::getBulk(std::map<VarItem,VarItem> *bulk){
+    /**
+    * Bulk get operations, returns all the entries within the remote cache.
+    *
+    * @return returns Map of string
+    */
 
-int RemoteCache::getBulk(std::map<std::string,std::string> *bulk,int count){
+    return getBulk(bulk,0);
+    
+}
+
+int RemoteCache::getBulk(std::map<VarItem,VarItem> *bulk,int count){
     /**
     * Bulk get operations, returns all the entries within the remote cache.
     *
@@ -142,16 +155,7 @@ int RemoteCache::keySet(std::vector<VarItem> *keys,int scope){
     
 }
 
-int RemoteCache::getBulk(std::map<std::string,std::string> *bulk){
-    /**
-    * Bulk get operations, returns all the entries within the remote cache.
-    *
-    * @return returns Map of string
-    */
 
-    return getBulk(bulk,0);
-    
-}
 
 int RemoteCache::stats(std::map<std::string,std::string> *stats){
     StatsOperation *statsOperation = new StatsOperation(stats, *transportFactory, &cache_name, flags);

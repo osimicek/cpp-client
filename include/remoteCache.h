@@ -63,8 +63,8 @@ class RemoteCache{
     template <typename TYPE,typename TYPE2>
     int put(const TYPE key,const TYPE2 value,int lifespan=-1, int maxidle=-1);
 
-    int putAll(std::map<std::string,std::string> *data,int lifespan=-1, int maxidle=-1);
-    int putAllAsync(std::map<std::string,std::string> *data,int lifespan=-1, int maxidle=-1);
+    int putAll(std::map<VarItem,VarItem> *data,int lifespan=-1, int maxidle=-1);
+    int putAllAsync(std::map<VarItem,VarItem> *data,int lifespan=-1, int maxidle=-1);
     template <typename TYPE,typename TYPE2>
     int putIfAbsent(const TYPE key,const TYPE2 value,int lifespan=-1, int maxidle=-1);
 
@@ -94,10 +94,10 @@ class RemoteCache{
     template <typename TYPE,typename TYPE2>
     int getWithMetadata(TYPE value, Metadata *meta, const TYPE2 key);
 
-    int getBulk(std::map<std::string,std::string> *bulk);
-    int getBulk(std::map<std::string,std::string> *bulk, int count);
+    int getBulk(std::map<VarItem,VarItem> *bulk);
+    int getBulk(std::map<VarItem,VarItem> *bulk, int count);
 
-    int keySet(std::vector<VarItem> *keys,int scope=0);
+    int keySet(std::vector<VarItem> *keys, int scope=0);
 
     void print_servers();
     void close();
@@ -246,6 +246,8 @@ int RemoteCache::containsKey(const TYPE key){
     ContainsKeyOperation *containsKeyOperation = new ContainsKeyOperation(&m_key, *transportFactory, &cache_name, flags);
     return containsKeyOperation->execute();
 }
+
+
 
 
 
