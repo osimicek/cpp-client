@@ -1,11 +1,5 @@
 #include <RMMap.h>
-
-std::ostream & operator << (std::ostream& s, RMItem & i)
-{
-	std::cout<< "<<"<<(std::string)i <<std::flush<<std::endl;
-   	s << (std::string)i;
-    return s;
-}
+#include "varItem.h"
 
 
 RMMap::RMMap(){
@@ -22,11 +16,12 @@ u_int RMMap::size(){
         return bulk.size();
  }
 
-RMItem &RMMap::operator[](const std::string &key)
+VarItem &RMMap::operator[](const VarItem &key)
  {
- 	RMItem *x = new RMItem(*this,key);
-  	return *x;
-      //return std::map<string,string>
+    VarItem *value = new VarItem();
+ 	RC.get(value,&key);
+    //std::cout << "val "<<*value <<std::endl;
+    return *value;
  }
 /*
 const char *RMMap::operator[](const char *key)
@@ -48,22 +43,15 @@ void RMMap::clear()
  	return (*this);	
  }*/
 
-int RMMap::erase (const std::string &key ){
+int RMMap::erase (const VarItem &key ){
 	int ret;
 	ret = RC.remove(&key);
 	if(ret == 0) return 1;
 	return 0;
 }
 
-std::string *RMMap::get(const std::string *key){
-	std::string *value = new std::string();
-	//std::cout << "key "<<*key<<std::endl;
-	RC.get(value,key);
-	//std::cout << "val "<<*value <<std::endl;
-	return value;
 
-}
-void RMMap::set(const std::string *key,const std::string *value){
+void RMMap::set(const VarItem *key,const VarItem *value){
 	RC.put(key,value);		
 
 }
@@ -80,28 +68,28 @@ std::map<std::string,std::string>::iterator RMMap::end(){
 
 
 
-RMItem::RMItem(RMMap &m,const std::string &kk):	rm_map(m),key(kk){
+// RMItem::RMItem(RMMap &m,const std::string &kk):	rm_map(m),key(kk){
 	
-}
+// }
 
 
-RMItem::operator std::string(){
-	//std::cout<< "pretypovani"<<std::flush<<std::endl; 
-	return *rm_map.get(&key); 
-}
-std::string &RMItem::get(){ 
-	return *rm_map.get(&key); 
-}
+// RMItem::operator std::string(){
+// 	//std::cout<< "pretypovani"<<std::flush<<std::endl; 
+// 	return *rm_map.get(&key); 
+// }
+// std::string &RMItem::get(){ 
+// 	return *rm_map.get(&key); 
+// }
 
-RMItem &RMItem::operator=(const std::string &value)
-{
-    rm_map.set(&key, &value);
-    return *this;
-}
+// RMItem &RMItem::operator=(const std::string &value)
+// {
+//     rm_map.set(&key, &value);
+//     return *this;
+// }
 
-RMItem &RMItem::operator=(RMItem *rm_item)
-{
-    rm_map.set(&key, &rm_item->get());
-    return *this;
-}
+// RMItem &RMItem::operator=(RMItem *rm_item)
+// {
+//     rm_map.set(&key, &rm_item->get());
+//     return *this;
+// }
 

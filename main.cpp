@@ -2,6 +2,7 @@
 #include <remoteCache.h>
 #include <marshaller.h>
 #include <RMMap.h>
+#include "varItem.h"
 #include <murmur/MurmurHash3.h>
 #include <murmur/MurmurHash2.h>
 
@@ -354,17 +355,7 @@ union Values {
 };
 
 
-namespace std
-{
- template<> struct less<VarItem>
-        {
-           bool operator() (const VarItem& lhs, const VarItem& rhs)
-           {
-               return 1;
-           }
-        };
 
-}
 
 
 
@@ -521,26 +512,30 @@ int main(){
     std::cout<<ci<<std::endl;
 
 
-    map<string, VarItem> mymap;
+    map<VarItem, VarItem> mymap;
+    cout <<std::dec<< (int)mymap["Item1"] <<endl;
     mymap["Item1"] = 2;
+     cout <<std::dec<< "endint " <<endl;
     mymap["Item2"] = re;
     Values val = "asdf";
     // re = val.asStdStr;
     mymap["Item3"] = "It was the best of times, it was the worst of times";
-    ci = mymap["Item1"];
-    // cout << mymap["Item1"].asInt <<" " << mymap["Item2"].asStdStr<<re << endl;
-    // cout << mymap["Item3"].asStr <<"  " << ci<<endl;
-
+    // ci = mymap["Item1"];
+    // cout <<std::dec<< "test " <<endl;
+    // cout << (int)mymap["Item1"] <<" " << (char *)mymap["Item2"]<<re << endl;
+    // cout << (char *)mymap["Item3"] <<"  " <<endl;
+    // cout <<std::dec<< "/test " <<endl;
     VarItem  vi;
     vi = 666;
     ci = vi;
-    vi = 66.66;
+    vi = 95.4556;
+    
     // vi = "wow";
-    cout <<std::dec<< "  " << ci<< (double)vi<<endl;
+    cout <<std::dec<< "  " << ci<<"  "<< vi<< endl;
     std::vector<VarItem>  keys;
     x.keySet(&keys);
     for(int t=0;t<keys.size();++t){
-            std::cout<<(std::string)keys.at(t)<<std::endl;
+            // std::cout<<"K "<<(keys.at(t))<<std::endl;
     }
 	return 0;
 }

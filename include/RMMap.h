@@ -4,6 +4,7 @@
 #include <iostream>
 #include <iterator>
 #include <remoteCache.h>
+#include "varItem.h"
 #include <map>
 
 class RMItem;
@@ -18,34 +19,33 @@ class RMMap{
     public:
     	RMMap();
     	u_int size();
-    	RMItem &operator[](const std::string &key);
-    	RMMap& operator= ( const std::map<std::string,std::string>& x );
+    	VarItem &operator[](const VarItem &key);
+    	RMMap& operator= ( const std::map<VarItem,VarItem>& x );
 
-    	int erase(const std::string &key );
+    	int erase(const VarItem &key );
 
     	//const char *operator[](const char *key);
     	void clear();
     	
-    	std::string *get(const std::string *key);
-    	void set(const std::string *key,const std::string *value);
+    	void set(const VarItem *key,const VarItem *value);
     	std::map<std::string,std::string>::iterator begin();
     	std::map<std::string,std::string>::iterator end();
 };
 
 
 
-class RMItem{
-private:
-    RMMap &rm_map;
-    const std::string key;
-public:
-	RMItem(RMMap &m,const std::string &kk);
-    operator std::string();
-    std::string &get();
-    RMItem &operator=(const std::string &value);
-    RMItem &operator=(RMItem *rm_item);
+// class RMItem{
+// private:
+//     RMMap &rm_map;
+//     const std::string key;
+// public:
+// 	RMItem(RMMap &m,const std::string &kk);
+//     operator std::string();
+//     std::string &get();
+//     RMItem &operator=(const std::string &value);
+//     RMItem &operator=(RMItem *rm_item);
     
-};
+// };
 
 
 

@@ -34,6 +34,7 @@ test_objects = test/main.o \
 
 hotrod_cli_lib_obj := 	include/murmur/MurmurHash2.o \
 						include/murmur/MurmurHash3.o \
+						src/varItem.o\
 						src/RMMap.o\
 						src/codec10.o\
 						src/codec11.o\

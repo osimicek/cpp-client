@@ -3,69 +3,9 @@
 #include "transportFactory.h"
 #include "transport.h"
 #include "constants.h"
+#include "varItem.h"
 #include <map>
 #include <iostream>
-
-#include <marshaller.h>
-class VarItem{
-    public:
-
-        MarshallerJBoss marshaller;
-        std::string marshalled;
-
-        operator std::string*() { 
-            std::string *strVal = new std::string();
-            marshaller.load(strVal, &marshalled);
-
-            return strVal;
-        }
-        operator std::string() {
-            std::string strVal; 
-            marshaller.load(&strVal, &marshalled);
-            std::cout << "tutu " <<strVal<<"  "<<marshalled<< std::endl;
-            return strVal; 
-        }
-        operator int() { 
-            int intVal;
-            marshaller.load(&intVal, &marshalled);
-            return intVal; 
-        }
-        operator double() { 
-            double doubleVal;
-            marshaller.load(&doubleVal, &marshalled);
-            return doubleVal; 
-        }
-
-        double operator=(const double value){
-            marshaller.dump(&marshalled, value);
-            return value;
-        }
-
-        int operator=(const int value){
-            marshaller.dump(&marshalled, value);
-            return value;
-        }
-
-        std::string operator=(const std::string value){
-            marshaller.dump(&marshalled, &value);
-            return value;
-        }
-
-        const std::string* operator=(const std::string *value){
-            marshaller.dump(&marshalled, value);
-            return value;
-        }
-
-        std::string* operator=(std::string *value){
-            marshaller.dump(&marshalled, value);
-            return value;
-        }
-
-        void set_value(std::string *value){
-            marshalled = *value;
-        }
-        
-};
 
 
 

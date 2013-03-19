@@ -8,6 +8,7 @@
 #include <operations.h>
 #include <map>
 #include <pthread.h>
+#include "varItem.h"
 class RemoteCache;
 
 static void *print_message_function(void *);

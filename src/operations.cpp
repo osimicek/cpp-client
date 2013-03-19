@@ -1,4 +1,5 @@
 #include "operations.h"
+#include "varItem.h"
 
 Metadata::Metadata(){
     clear();
