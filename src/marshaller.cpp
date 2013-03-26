@@ -27,23 +27,23 @@ int Marshaller::dump(std::string* dest, const VarItem *src){
     return NO_ERROR_STATUS;
 };
 
-int Marshaller::load(int* dest, std::string* src){};
-int Marshaller::load(double* dest, std::string* src){};
-int Marshaller::load(char* dest, std::string* src){ // otestovat
+int Marshaller::load(int* dest, const std::string* src){};
+int Marshaller::load(double* dest, const std::string* src){};
+int Marshaller::load(char* dest, const std::string* src){ // otestovat
     dest =(char *)src->c_str();
     return NO_ERROR_STATUS;
 };
-int Marshaller::load(std::string* dest, std::string* src){
+int Marshaller::load(std::string* dest, const std::string* src){
     *dest = *src;
     return NO_ERROR_STATUS;
 };
-int Marshaller::load(VarItem* dest, std::string* src){
+int Marshaller::load(VarItem* dest, const std::string* src){
     dest->marshalled = *src;
     return NO_ERROR_STATUS;
 };
 
-int Marshaller::get_type(std::string* src){};
-std::ostream & Marshaller::print(std::ostream& _stream, std::string* src){
+int Marshaller::get_type(const std::string* src){};
+std::ostream & Marshaller::print(std::ostream& _stream, const std::string* src){
     return _stream;
 }
 
@@ -57,7 +57,7 @@ int MarshallerJBoss::dump(std::string* dest, const int src){
     for(int i=3; i>=0; i--){
         *dest += ((char *)&src)[i];
     }
-    std::cout<<std::dec<<"delka"<< dest->length() << std::endl;
+    // std::cout<<std::dec<<"delka"<< dest->length() << std::endl;
     return NO_ERROR_STATUS;
 };
 int MarshallerJBoss::dump(std::string* dest, const double src){
@@ -110,7 +110,7 @@ int MarshallerJBoss::dump(std::string* dest, const VarItem *src){
     return NO_ERROR_STATUS;
 }
 
-int MarshallerJBoss::load(int* dest, std::string* src){
+int MarshallerJBoss::load(int* dest, const std::string* src){
     *dest = 0;
     int result = 0;
     for(int i=0; i<10;i++){
@@ -132,7 +132,7 @@ int MarshallerJBoss::load(int* dest, std::string* src){
     *dest = result;
     return NO_ERROR_STATUS;
 };
-int MarshallerJBoss::load(double* dest, std::string* src){
+int MarshallerJBoss::load(double* dest, const std::string* src){
     *dest = 0;
     long long result = 0;
 
@@ -152,8 +152,8 @@ int MarshallerJBoss::load(double* dest, std::string* src){
     *dest = *((double *)&result);
     return NO_ERROR_STATUS;
 };
-int MarshallerJBoss::load(char* dest, std::string* src){};
-int MarshallerJBoss::load(std::string* dest, std::string* src){
+int MarshallerJBoss::load(char* dest, const std::string* src){};
+int MarshallerJBoss::load(std::string* dest, const std::string* src){
     for(int i=0; i<10;i++){
         // std::cout<<std::hex<< (0x00ff & ((short)((char *) src->c_str())[i])) << " ";
     }
@@ -185,12 +185,12 @@ int MarshallerJBoss::load(std::string* dest, std::string* src){
     return NO_ERROR_STATUS;
 };
 
-int MarshallerJBoss::load(VarItem* dest, std::string* src){
+int MarshallerJBoss::load(VarItem* dest, const std::string* src){
     dest->marshalled = *src;
     return NO_ERROR_STATUS;
 }
 
-int MarshallerJBoss::get_type(std::string* src){
+int MarshallerJBoss::get_type(const std::string* src){
     if(src->length() < 2){
         return 0;
     }
@@ -216,7 +216,7 @@ int MarshallerJBoss::get_type(std::string* src){
 
 };
 
-std::ostream & MarshallerJBoss::print(std::ostream& _stream, std::string* src){
+std::ostream & MarshallerJBoss::print(std::ostream& _stream, const std::string* src){
     int type = get_type(src);
     if(type == INT_TYPE){
         int intVal;

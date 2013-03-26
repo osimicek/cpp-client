@@ -8,14 +8,14 @@ using namespace UnitTest;
 
 namespace {
 
-TEST(It_can_put_if_absent)
+TEST(It_can_put_if_absent_basic)
 {
     std::string key("key");
     std::string value;
     int status;
 
 
-    status = cache->clear();
+    CLEAR();
     CHECK(status == NO_ERROR_STATUS);
     value = "value";
     status = cache->putIfAbsent(&key, &value);
@@ -33,6 +33,62 @@ TEST(It_can_put_if_absent)
     value.clear();
     status = cache->get(&value, &key);
     CHECK(value == "value");
+    CHECK(status == NO_ERROR_STATUS);
+
+}
+
+TEST(It_can_put_if_absent_int)
+{
+    VarItem value;
+    int status;
+
+
+    CLEAR();
+    CHECK(status == NO_ERROR_STATUS);
+    value = "value";
+    status = cache->putIfAbsent(15, 99);
+    CHECK(status == NO_ERROR_STATUS);
+
+    value.clear();
+    status = cache->get(&value, 15);
+    CHECK(value == 99);
+    CHECK(status == NO_ERROR_STATUS);
+
+    value = "value2";
+    status = cache->putIfAbsent(15, 66);
+    CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
+
+    value.clear();
+    status = cache->get(&value, 15);
+    CHECK(value == 99);
+    CHECK(status == NO_ERROR_STATUS);
+
+}
+
+TEST(It_can_put_if_absent_double)
+{
+    VarItem value;
+    int status;
+
+
+    CLEAR();
+    CHECK(status == NO_ERROR_STATUS);
+    value = "value";
+    status = cache->putIfAbsent(1.5, 9.9);
+    CHECK(status == NO_ERROR_STATUS);
+
+    value.clear();
+    status = cache->get(&value, 1.5);
+    CHECK(value == 9.9);
+    CHECK(status == NO_ERROR_STATUS);
+
+    value = "value2";
+    status = cache->putIfAbsent(1.5, 6.6);
+    CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
+
+    value.clear();
+    status = cache->get(&value, 1.5);
+    CHECK(value == 9.9);
     CHECK(status == NO_ERROR_STATUS);
 
 }

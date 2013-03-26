@@ -25,14 +25,14 @@ public:
     virtual int dump(std::string *dest, const std::string *src);
     virtual int dump(std::string *dest, const VarItem *src);
 
-    virtual int load(int *dest, std::string *src);
-    virtual int load(double *dest, std::string *src);
-    virtual int load(char *dest, std::string *src);
-    virtual int load(std::string *dest, std::string *src);
-    virtual int load(VarItem *dest, std::string *src);
+    virtual int load(int *dest, const std::string *src);
+    virtual int load(double *dest, const std::string *src);
+    virtual int load(char *dest, const std::string *src);
+    virtual int load(std::string *dest, const std::string *src);
+    virtual int load(VarItem *dest, const std::string *src);
 
-    virtual int get_type(std::string* src);
-    virtual std::ostream & print(std::ostream& _stream, std::string* src);
+    virtual int get_type(const std::string* src);
+    virtual std::ostream & print(std::ostream& _stream, const std::string* src);
 
 };
 
@@ -52,14 +52,14 @@ public:
     int dump(std::string *dest, const std::string *src);
     int dump(std::string *dest, const VarItem *src);
 
-    int load(int *dest, std::string *src);
-    int load(double *dest, std::string *src);
-    int load(char *dest, std::string *src);
-    int load(std::string *dest, std::string *src);
-    int load(VarItem *dest, std::string *src);
+    int load(int *dest, const std::string *src);
+    int load(double *dest, const std::string *src);
+    int load(char *dest, const std::string *src);
+    int load(std::string *dest, const std::string *src);
+    int load(VarItem *dest, const std::string *src);
 
-    int get_type(std::string* src);
-    std::ostream & print(std::ostream& _stream, std::string* src);
+    int get_type(const std::string* src);
+    std::ostream & print(std::ostream& _stream, const std::string* src);
 
 };
 

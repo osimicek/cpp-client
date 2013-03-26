@@ -4,7 +4,7 @@
 #include "constants.h"
 
 extern RemoteCache *cache;
-
+#define CLEAR() cache->clear();
 const int b = 55;
 class aa{};
 

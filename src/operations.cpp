@@ -353,6 +353,7 @@ int GetBulkOperation::execute_operation()
             VarItem v_object;
             v_object.set_value(&value);
             (*bulk)[k_object] = v_object;
+            // std::cout << "key: \"" << k_object << "\" "<< "value: " << v_object<< std::endl;
         }
     }
     return status;

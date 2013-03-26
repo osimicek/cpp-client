@@ -24,13 +24,14 @@ void print_map(std::map<VarItem,VarItem>  *data){
     // }
 }
 
-// void print_rmmap(RMMap  *data){
-// 	RMMap::iterator pos;
-// 	std::cout << "RMMap:" <<std::endl;
-//     for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
-//         std::cout << "key: \"" << pos->first << "\" "<< "value: " << pos->second << std::endl;
-//     }
-// }
+void print_rmmap(RMMap  *data){
+	// RMMap::iterator pos;
+    std::map<VarItem,VarItem>::iterator pos;
+	std::cout << "RMMap:" <<std::endl;
+    for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
+        std::cout << "key: \"" << (char *)&(pos->first)  << "\" "<< "value: " ;//<< (pos->second) << std::endl;
+    }
+}
 
 int test1(){
 	RemoteCache x = RemoteCache();
@@ -494,9 +495,17 @@ int main(){
     for(int t=0;t<keys.size();++t){
             // std::cout<<"K "<<(keys.at(t))<<std::endl;
     }
-
-
-
+    std::cout <<std::dec<< "testttt " <<std::endl<<std::flush;
+    RMMap rm;
+    std::cout <<std::dec<< "test " <<std::endl<<std::flush;
+    rm[8.99] = 6.6;
+    std::cout <<std::dec<< "Last "<<rm[8.99]<< std::endl;
+    x.get(&vi, "key");
+    std::cout <<std::dec<< "Last "<<vi<< std::endl;
+     RMItem r;
+    RMItem r2;
+    // r = "value1";
+    r==r2;
 	return 0;
 }
 

@@ -143,6 +143,7 @@ int RemoteCache::getWithVersion(TYPE value,const TYPE2 key,long long *version){
 
 template <typename TYPE,typename TYPE2>
 int RemoteCache::getWithMetadata(TYPE value, Metadata *meta, const TYPE2 key){
+    if(transportFactory->get_hotrod_version() < VERSION_12) return ERROR_NOT_IMPLEMENTED;
     int status = 0;
     std::string m_value, m_key;
     marshaller->dump(&m_key, key);
