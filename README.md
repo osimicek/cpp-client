@@ -19,6 +19,7 @@ make kill  #to kill all java programs (servers)
 
 
 Run client´s tests
+--------------
 ```bash
 make test
 ```
