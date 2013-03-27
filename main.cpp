@@ -368,6 +368,7 @@ int main(){
     RemoteCacheConfig remote_cache_config;
     remote_cache_config.cache_name = "";
     remote_cache_config.version = 12;
+    remote_cache_config.intelligence = 1;
     RemoteCache x = RemoteCache(&remote_cache_config);
     std::string name(key);
 
@@ -506,6 +507,21 @@ int main(){
     RMItem r2;
     // r = "value1";
     r==r2;
+
+     int status;
+    status = x.put(777, "value");
+
+
+    Metadata meta;
+
+        for(int q=0;q<100;q++){
+        meta.clear();
+        status = x.getWithMetadata(&vi, &meta, 777);
+        std::cout <<status<<" "<<(int)meta.flag<<" "<<
+        meta.lifespan<<" "<<meta.maxidle<<" "<<
+        meta.created<<" "<<meta.lastused<<" "<<meta.version<<std::endl;
+    }
+
 	return 0;
 }
 

@@ -8,6 +8,7 @@ RemoteCacheConfig::RemoteCacheConfig(){
     cache_name = "";
     host = "127.0.0.1";
     port = 11222;
+    intelligence = CLIENT_INTELLIGENCE_HASH_DISTRIBUTION_AWARE;
 }
 
 RemoteCache::RemoteCache(RemoteCacheConfig* remote_cache_config){
@@ -34,7 +35,7 @@ RemoteCache::RemoteCache(){
 
 void RemoteCache::init(RemoteCacheConfig* remote_cache_config){
     srand (time(NULL));
-    transportFactory = new TransportFactory(remote_cache_config->host, remote_cache_config->port, remote_cache_config->version);
+    transportFactory = new TransportFactory(remote_cache_config->host, remote_cache_config->port, remote_cache_config->version, remote_cache_config->intelligence);
     if(DEFAULT_MARSHALLER != NULL){
         marshaller = DEFAULT_MARSHALLER;
     }else{
@@ -44,6 +45,7 @@ void RemoteCache::init(RemoteCacheConfig* remote_cache_config){
     maxidle = remote_cache_config->maxidle;
     flags = remote_cache_config->flags;
     cache_name = remote_cache_config->cache_name;
+    
 
     ping();
 }
@@ -109,7 +111,9 @@ int RemoteCache::putAllAsync(std::map<VarItem,VarItem> *data,int lifespan, int m
 
 int RemoteCache::putAll(std::map<VarItem,VarItem> *data,int lifespan, int maxidle){
     std::map<VarItem,VarItem>::iterator pos;
-
+    if(lifespan < 0){lifespan = this->lifespan;}
+    if(maxidle < 0){maxidle = this->maxidle;}
+    
     for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
        // print_servers();
        put(&pos->first,&pos->second,lifespan,maxidle);

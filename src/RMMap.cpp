@@ -3,7 +3,9 @@
 
 
 RMMap::RMMap(){
-	RC = RemoteCache();
+  RemoteCacheConfig remote_cache_config;
+  remote_cache_config.intelligence = CLIENT_INTELLIGENCE_BASIC;
+	RC = RemoteCache(&remote_cache_config);
 
 }
 

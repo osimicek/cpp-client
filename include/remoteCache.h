@@ -37,6 +37,7 @@ class RemoteCacheConfig{
         std::string cache_name;
         std::string host;
         int port;
+        char intelligence;
         RemoteCacheConfig();
 
 };

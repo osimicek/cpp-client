@@ -28,6 +28,7 @@ class TransportFactory{
         int max_hash_size;
         int num_key_owners;
         int hash_ver;
+        char intelligence;
     public:
         pthread_mutex_t mutex, mutex_tf_id;
         std::queue<Transport*> transports; 
@@ -36,9 +37,10 @@ class TransportFactory{
         
         ConsistentHash *consistentHash;
 
-        explicit TransportFactory(std::string host, int port, int version);
+        explicit TransportFactory(std::string host, int port, int version, char intelligence);
         void execute();
         int get_and_inc_message_id();
+        char get_intelligence();
         void set_topology_id(int id);
         int get_topology_id();
         // void set_hotrod_version(int version);

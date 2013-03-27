@@ -18,6 +18,7 @@ AbstractOperation::AbstractOperation(TransportFactory &tF):transportFactory(tF)
 {
     this->flags = 0x00;
     this->key = NULL;
+    this->status = 0;
 }    
 int AbstractOperation::execute()
 {
@@ -164,6 +165,7 @@ int GetWithMetadataOperation::execute_operation()
         *value = "";
         meta->clear();
     }
+
     return status;
     
 }  
@@ -433,19 +435,15 @@ StatsOperation::StatsOperation(std::map<std::string,std::string> *stats, Transpo
 
 int StatsOperation::execute_operation()
 {
-    std::cout << "ok" <<std::endl;
     transport->write_header(STATS_REQUEST, cache_name, flags);
     if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;
     }
-        std::cout << "ok"<< status <<std::endl;
     status = transport->read_header();
-     std::cout << "ok" <<std::endl;
     std::string name, value;
 
     if(status == NO_ERROR_STATUS){
         int count = transport->read_varint();
-        std::cout << count <<std::endl;
         for(int i=0; i<count; i++){
             transport->read_array(&name);
             transport->read_array(&value);

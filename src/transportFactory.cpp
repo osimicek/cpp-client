@@ -1,7 +1,7 @@
 #include "transportFactory.h"
 #include "constants.h"
 
-TransportFactory::TransportFactory(std::string host, int port, int version)
+TransportFactory::TransportFactory(std::string host, int port, int version, char intelligence)
 {
     hotrod_version = version;
     topology_id = 0;
@@ -10,6 +10,7 @@ TransportFactory::TransportFactory(std::string host, int port, int version)
     message_id = 1;
     hash_ver = 1;
     num_key_owners = 1;
+    this->intelligence = intelligence;
     pthread_mutex_init(&mutex, NULL);
     pthread_mutex_init(&mutex_tf_id, NULL);
 
@@ -25,6 +26,9 @@ TransportFactory::TransportFactory(std::string host, int port, int version)
     create_transport(&host, port, 0);
 }  
 
+char TransportFactory::get_intelligence(){
+    return intelligence;
+}  
 
 void TransportFactory::set_topology_id(int id){
     LOCK_ID();

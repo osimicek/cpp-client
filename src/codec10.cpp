@@ -22,7 +22,7 @@ void Codec::write_header(char op_code, const std::string *cache_name, int flags,
     transport.write_char(op_code); //op_code
     transport.write_array(cache_name); //cache name length
     transport.write_char(flags); //flags
-    transport.write_char(CLIENT_INTELLIGENCE_HASH_DISTRIBUTION_AWARE); //inteligence
+    transport.write_char(transport.transportFactory.get_intelligence()); //intelligenc
     transport.write_varint(transport.transportFactory.get_topology_id()); //topology
     //todo change once TX support is added
     transport.write_char(0x00); //transaction type
@@ -45,7 +45,7 @@ int Codec10::read_header(){
     char magic;
     long received_message_id;
     char received_op_code;
-    char status;
+    int status;
 
 
 
@@ -63,14 +63,15 @@ int Codec10::read_header(){
     status = transport.read_byte();
     // std::cout<<"-"<<(int)status<<std::endl;
     read_new_topology_if_present();
-
+    // std::cout << "o"<<std::hex<<(int)received_op_code <<std::endl;
     if (received_op_code == ERROR_RESPONSE) {
         return check_for_errors_in_response_status(status);
     }
+
     return status;
 }
 
-int Codec10::check_for_errors_in_response_status(char status){
+int Codec10::check_for_errors_in_response_status(int status){
     if(status == NOT_PUT_REMOVED_REPLACED_STATUS){
         return status;
     } else if(status == KEY_DOES_NOT_EXIST_STATUS){

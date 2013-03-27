@@ -33,8 +33,11 @@ test_objects = test/main.o \
 	test/put_if_absent_test.o \
 	test/remove_test.o \
 	test/rmmap_test.o \
-	test/ping_stats_test.o\
+	test/ping_stats_contains_key_test.o\
 	test/put_all_test.o\
+	test/get_with_meta_test.o\
+	test/get_bulk_key_set_test.o\
+
 	
 
 hotrod_cli_lib_obj := 	include/murmur/MurmurHash2.o \

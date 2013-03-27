@@ -11,7 +11,7 @@ namespace {
 
 TEST(It_can_RMMap_basic_inserts)
 {
-    // CLEAR();
+    CLEAR();
     RMMap rm_map;
     std::string key = "66";
     std::string value = "value5";
@@ -54,22 +54,37 @@ TEST(It_can_RMMap_basic_inserts)
 
 TEST(It_can_RMMap_iterations)
 {
-    std::map<VarItem,VarItem>  bulk;
-    cache->getBulk(&bulk);
-
-    std::map<VarItem,VarItem>::iterator pos;
-    std::cout << "Bulk:" <<std::endl;
-    for (pos = bulk.begin(); pos != bulk.end(); ++pos) {
-        std::cout << "key: \"" << pos->first<< "\" "<< "value: " << pos->second << std::endl;
-    }
-
-
+    CLEAR();
     RMMap rm_map;
+
+    rm_map["55"]  = "value1";
+    rm_map["5.5"] = "value2";
+    rm_map[55]    = "value3";
+    rm_map[5.5]   = "value4";
+
+
+    rm_map["55"]  = 11;
+    rm_map["5.5"] = 22;
+    rm_map[55]    = 33;
+    rm_map[5.5]   = 44;
+ 
+
+    rm_map["55"]  = 11.11;
+    rm_map["5.5"] = 22.22;
+    rm_map[55]    = 33.33;
+    rm_map[5.5]   = 44.44;
+    // std::cout << rm_map.size() <<std::endl;
+    CHECK(rm_map.size() <= 12);
+
     std::map<VarItem,VarItem>::iterator pos2;
-    std::cout << "RMMap:" <<std::endl;
+    int count =0;
     for (pos2 = rm_map.begin(); pos2 != rm_map.end(); ++pos2) {
-        std::cout << "key: \"" << pos2->first  << "\" "<< "value: " << pos2->second << std::endl;
+        // std::cout << "key: \"" << pos2->first  << "\" "<< "value: " << pos2->second << std::endl;
+        count++;
     }
+
+
+    CHECK(count <= 12);
 
 }
 

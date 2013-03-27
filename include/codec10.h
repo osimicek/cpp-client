@@ -28,7 +28,7 @@ class Codec10: public Codec{
         using Codec::write_header;
         void write_header(char op_code, const std::string *cache_name, int flags);
         int read_header();
-        int check_for_errors_in_response_status(char status);
+        int check_for_errors_in_response_status(int status);
         virtual void read_new_topology_if_present();
         virtual void update_transport_bank();
 };
