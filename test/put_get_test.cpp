@@ -129,7 +129,7 @@ TEST(It_can_get_and_put_with_varItem)
     VarItem key, value;
     CLEAR();
     status = cache->get(&value, 6.6);
-    // std::cout << value <<std::endl;
+
     CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
     CHECK(value == "");
     CHECK(value == std::string(""));

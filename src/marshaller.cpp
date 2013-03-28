@@ -57,7 +57,6 @@ int MarshallerJBoss::dump(std::string* dest, const int src){
     for(int i=3; i>=0; i--){
         *dest += ((char *)&src)[i];
     }
-    // std::cout<<std::dec<<"delka"<< dest->length() << std::endl;
     return NO_ERROR_STATUS;
 };
 int MarshallerJBoss::dump(std::string* dest, const double src){
@@ -113,9 +112,6 @@ int MarshallerJBoss::dump(std::string* dest, const VarItem *src){
 int MarshallerJBoss::load(int* dest, const std::string* src){
     *dest = 0;
     int result = 0;
-    for(int i=0; i<10;i++){
-        // std::cout<<std::hex<< (0x00ff & ((short)((char *) src->c_str())[i])) << " ";
-    }
     short type = 0x00ff & (short)(*src)[0];
     type = type << 8;
     type |= 0x00ff & (short)(*src)[1];
@@ -154,9 +150,6 @@ int MarshallerJBoss::load(double* dest, const std::string* src){
 };
 int MarshallerJBoss::load(char* dest, const std::string* src){};
 int MarshallerJBoss::load(std::string* dest, const std::string* src){
-    for(int i=0; i<10;i++){
-        // std::cout<<std::hex<< (0x00ff & ((short)((char *) src->c_str())[i])) << " ";
-    }
     dest->clear();
     int result = 0;
     int possition = 0;

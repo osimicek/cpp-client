@@ -28,9 +28,6 @@ unsigned long int getblock(const char* key, int i) {
          | (((unsigned long int) key[i + 7] & 0x00000000000000FFL) << 56);
    }
 
-   // static void print(std::string name, unsigned long int *k1, unsigned long int *k2, unsigned long int *h1, unsigned long int *h2, unsigned long int *c1, unsigned long int *c2) {
-   //     std::cout<<std::dec<< name<<(int)(*h1 >> 32)<<" "<<(int)(*h2 >> 32)<<" "<<(*k1 )<<" "<<(int)(*k2 >> 32)<<" "<<(int)(*c1 >> 32)<<" "<<(int)(*c2 >> 32) <<" "<<std::flush<<std::endl;  
-   //  }
 
    static void bmix(unsigned long int *k1, unsigned long int *k2, unsigned long int *h1, unsigned long int *h2, unsigned long int *c1, unsigned long int *c2) {
       *k1 *= *c1;

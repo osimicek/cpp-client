@@ -11,6 +11,7 @@ TransportFactory::TransportFactory(std::string host, int port, int version, char
     hash_ver = 1;
     num_key_owners = 1;
     this->intelligence = intelligence;
+    transports_in_use = 0;
     pthread_mutex_init(&mutex, NULL);
     pthread_mutex_init(&mutex_tf_id, NULL);
 
@@ -76,12 +77,12 @@ int TransportFactory::get_max_hash_size(){
     return max_hash_size;
 }
 
-void TransportFactory::set_num_key_owners(int num){
+void TransportFactory::set_key_owners_num(int num){
     LOCK_ID();
     num_key_owners = num;
     UNLOCK_ID()
 }
-int TransportFactory::get_num_key_owners(){
+int TransportFactory::get_key_owners_num(){
     return num_key_owners;
 }
 
@@ -103,11 +104,19 @@ int TransportFactory::get_hash(const char* key, int length){
 }
 
 Transport *TransportFactory::get_transport(){
-    return consistentHash->get_transport(); 
+    Transport *trans = consistentHash->get_transport(); 
+    LOCK()
+    transports_in_use++;
+    UNLOCK();
+    return trans;
 } 
 
 Transport *TransportFactory::get_transport(const std::string *key){
-    return consistentHash->get_transport(key); 
+    Transport *trans = consistentHash->get_transport(key); 
+    LOCK()
+    transports_in_use++;
+    UNLOCK();
+    return trans;
 } 
 
 Transport * TransportFactory::get_transport(std::string *host, int port, int hash){
@@ -131,6 +140,7 @@ Transport * TransportFactory::get_transport(std::string *host, int port, int has
 
 void TransportFactory::release_transport(Transport * transport){
   LOCK()
+  transports_in_use--;
   transport->used = 0;
   UNLOCK();
 }
@@ -147,7 +157,6 @@ Transport * TransportFactory::create_transport(std::string *host, int port, int 
 void TransportFactory::invalidate_transports(){
   LOCK()
   Transport *transport;
-  //std::cout <<"ii " <<std::dec<<s->host<<"/"<<s->port<<std::flush<<std::endl;
   for(u_int i = 0;i<this->transports.size();i++){
         transport = this->transports.front();
         transport->valid = 0;
@@ -163,7 +172,6 @@ void TransportFactory::invalidate_transports(){
 void TransportFactory::del_invalid_transports(){
   LOCK()
   Transport *transport;
-  //std::cout <<"ii " <<std::dec<<s->host<<"/"<<s->port<<std::flush<<std::endl;
   for(u_int i = 0;i<this->transports.size();i++){
         transport = this->transports.front();
         if(transport->valid == 1){ 
@@ -181,9 +189,6 @@ void TransportFactory::print_hash_bank(){
     for(u_int i=0; i < this->hash_transport_bank.size(); i++){
 
       std::cout << i << "  "<< this->hash_transport_bank[i].first<<"  "<<this->hash_transport_bank[i].second->port<<std::endl;
-
-
-
   }
 }
 

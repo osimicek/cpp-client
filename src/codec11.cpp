@@ -15,15 +15,15 @@ void Codec11::read_new_topology_if_present(){
 
     if(topology_change == 0x01){
         int topology_id;
-        u_int num_key_own;
+        u_int key_own_num;
         u_short hash_ver;
         int hash_space, num_virtual, num_servers;
 
         topology_id = transport.read_varint();
         transport.transportFactory.set_topology_id(topology_id);
 
-        num_key_own = transport.read_2bytes();
-        transport.transportFactory.set_num_key_owners(num_key_own);
+        key_own_num = transport.read_2bytes();
+        transport.transportFactory.set_key_owners_num(key_own_num);
 
         hash_ver = transport.read_byte();
 
@@ -39,7 +39,7 @@ void Codec11::read_new_topology_if_present(){
 
       if(DEBUG){
         std::cout <<"** Topology ID: "<<std::dec<<topology_id<<" old: "<<transport.transportFactory.get_topology_id()<<std::endl;
-        std::cout <<"** Num key owners: "<<num_key_own<<std::endl;
+        std::cout <<"** Num key owners: "<<key_own_num<<std::endl;
         std::cout <<"** Hash function version: "<<hash_ver<<std::endl;
         std::cout <<"** Hash space size: "<<hash_space<<std::endl;
         std::cout <<"** Num servers in topology: "<<num_servers<<std::endl;
@@ -72,16 +72,10 @@ void Codec11::read_new_topology_if_present(){
             t = transport.transportFactory.create_transport(&host, port, hash);
         }
         t->valid = 1;
-
-        // std::cout << transport.transportFactory.transports.size() << std::endl;
-        //s->port = 0;
-
       }
       transport.transportFactory.del_invalid_transports();
-      // transport.transportFactory.print_hash_bank();
       update_transport_bank();
        // transport.transportFactory.print_hash_bank();
-
   }
 
 
@@ -91,7 +85,6 @@ void Codec11::update_transport_bank(){
   pthread_mutex_lock (&transport.transportFactory.mutex);
   Transport *tmp_transport;
   
-  //std::cout <<"ii " <<std::dec<<s->host<<"/"<<s->port<<std::flush<<std::endl;
   transport.transportFactory.hash_transport_bank.clear();
   transport.transportFactory.hash_vector.clear();
   for(u_int i = 0;i<transport.transportFactory.transports.size();i++){
@@ -114,10 +107,6 @@ void Codec11::update_transport_bank(){
         transport.transportFactory.transports.push(tmp_transport);
         transport.transportFactory.transports.pop();        
   }
-  // std::cout << "SIZE" << transport.transportFactory.hash_transport_bank.size() << std::endl; 
-
-  
-
 
   std::sort(transport.transportFactory.hash_transport_bank.begin(), transport.transportFactory.hash_transport_bank.end());
   std::sort(transport.transportFactory.hash_vector.begin(), transport.transportFactory.hash_vector.end());

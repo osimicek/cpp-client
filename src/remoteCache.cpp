@@ -33,6 +33,13 @@ RemoteCache::RemoteCache(){
     init(&remote_cache_config);
 }
 
+int RemoteCache::getVersion(){
+    return transportFactory->get_hotrod_version();
+}
+int RemoteCache::getKeyOwnersNum(){
+    return transportFactory->get_key_owners_num();
+}
+
 void RemoteCache::init(RemoteCacheConfig* remote_cache_config){
     srand (time(NULL));
     transportFactory = new TransportFactory(remote_cache_config->host, remote_cache_config->port, remote_cache_config->version, remote_cache_config->intelligence);
@@ -64,47 +71,56 @@ int RemoteCache::clear(){
 
 
 
-static void *print_message_function( void * t_a)
+static void *put_provider( void * t_a)
 {
-    // thread_args *t_args;
-    // t_args = (thread_args *)t_a;
+    thread_args *t_args;
+    t_args = (thread_args *)t_a;
 
-    // //std::cout << *t_args->key <<std::flush<<std::endl;
-    // return (void * )(t_args->RC->put(t_args->key,t_args->value,t_args->lifespan,t_args->maxidle));
+    // std::cout << *t_args->key <<std::flush<<std::endl;
+    return (void * )(t_args->RC->put(t_args->key,t_args->value,t_args->lifespan,t_args->maxidle));
 }
 
 int RemoteCache::putAllAsync(std::map<VarItem,VarItem> *data,int lifespan, int maxidle){
-    // int max_threads = 10;
-    // std::map<VarItem,VarItem>::iterator pos;
-    // int *rets = new int[data->size()];
-    // pthread_t *threads = new pthread_t[data->size()];
-    // thread_args *t_args = new thread_args[data->size()];
-    // int i =0;
-    // for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
-    //     t_args[i].RC = this;
-    //     t_args[i].key = &pos->first;
-    //     t_args[i].value = &pos->second;
-    //     t_args[i].lifespan = lifespan;
-    //     t_args[i].maxidle = maxidle;
+    // mel by vracet i chyby, asi pocet neulozenych polozek
+    int max_threads = transportFactory->get_key_owners_num();
+    if(lifespan < 0){lifespan = this->lifespan;}
+    if(maxidle < 0){maxidle = this->maxidle;}
+    std::map<VarItem,VarItem>::iterator pos;
+    int *rets = new int[data->size()];
+    pthread_t *threads = new pthread_t[data->size()];
+    thread_args *t_args = new thread_args[data->size()];
+    int i =0;
+    for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
 
-    //     rets[i] = pthread_create( &threads[i], NULL, print_message_function, (void*) &t_args[i]);
+        t_args[i].RC = this;
+        t_args[i].key = &pos->first;
+        t_args[i].value = &pos->second;
+        t_args[i].lifespan = lifespan;
+        t_args[i].maxidle = maxidle;
 
-    //     i++;
+        rets[i] = pthread_create( &threads[i], NULL, put_provider, (void*) &t_args[i]);
 
-    //     if(i>= max_threads){
-    //         pthread_join( threads[i-max_threads], NULL);
+        i++;
 
-    //     }
+        if(i>= max_threads){ // limit number of threads
+            pthread_join( threads[i-max_threads], NULL);
 
-    // }
-    // int start = data->size() - max_threads;
-    // if(start < 0){start = 0;}
+        }
 
-    // for(int j = start;j<data->size();j++){
-    //     pthread_join( threads[j], NULL);
-    //     printf("Thread %d returns: %d\n",j,rets[j]);
+    }
+    int start = data->size() - max_threads;
+    if(start < 0){start = 0;}
 
-    // }
+    for(int j = start;j<data->size();j++){
+        pthread_join( threads[j], NULL);
+        // std::cout<<"Thread "<<j<<" returns: "<<rets[j]<<std::endl;
+
+    }
+    delete [] rets;
+    delete [] t_args; 
+    delete [] threads;
+
+      
     // std::cout << "done"<<std::endl;
     return 0;
 }

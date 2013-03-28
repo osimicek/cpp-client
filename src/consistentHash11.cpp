@@ -12,16 +12,16 @@ Transport *ConsistentHash11::get_transport(const std::string *key){
     if(transportFactory.hash_vector.size() == 0){
         transport = get_transport();
     }else{
-        int num_key_owners = transportFactory.get_num_key_owners();
+        int key_owners_num = transportFactory.get_key_owners_num();
         int hash = transportFactory.get_hash( key->c_str(), key->length());
         hash = hash % transportFactory.get_max_hash_size();
         int random_choice = rand();
         int found = 0;
-        for(int i=0; i<num_key_owners; i++){
+        for(int i=0; i<key_owners_num; i++){
             pthread_mutex_lock (&transportFactory.mutex);
             if(transportFactory.hash_transport_bank.size() > 0){
                 int index = find_index_of_transport(hash);
-                int index_to_return = (index + ((random_choice + i) % num_key_owners)) % transportFactory.hash_transport_bank.size();
+                int index_to_return = (index + ((random_choice + i) % key_owners_num)) % transportFactory.hash_transport_bank.size();
                 transport = transportFactory.hash_transport_bank[index_to_return].second;
                 if(DEBUG) std::cout << std::dec<<"11 vybran pro "  <<hash<<"  "<< transport->port << "  "<<index_to_return<< std::endl; 
             }

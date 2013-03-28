@@ -83,7 +83,6 @@ class VarItem{
         virtual operator int() { 
             int intVal;
             marshaller->load(&intVal, &marshalled);
-            // std::cout<<std::dec<< "load "<< intVal  << " " << marshalled.length() <<"  "<<this<< std::endl;
             return intVal; 
         }
         virtual operator double() { 
@@ -101,7 +100,6 @@ class VarItem{
 
         virtual VarItem &operator=(const int value){
             marshaller->dump(&marshalled, value);
-            // std::cout<<std::dec<< "value "<< value  << " " << marshalled.length() <<"  "<<this<< std::endl;
             return *this;
         }
 
@@ -115,10 +113,6 @@ class VarItem{
             return *this;
         }
 
-        // VarItem &operator=(std::string *value){
-        //     marshaller->dump(&marshalled, value);
-        //     return *this;
-        // }
 
         virtual VarItem &operator=(const char *value){
             marshaller->dump(&marshalled, value);
@@ -200,31 +194,7 @@ namespace std
     };
 }
 
-// class VarItemJBoss: public VarItem{
-// public:
-//     MarshallerJBoss marshaller;
-//     VarItemJBoss(){}
 
-//     VarItemJBoss(const std::string value){
-//         marshaller->dump(&marshalled, &value);
-//     }
-
-//     VarItemJBoss(const std::string *value){
-//         marshaller->dump(&marshalled, value);
-//     }
-
-//     VarItemJBoss(const char *value){
-//         marshaller->dump(&marshalled, value);
-//     }
-
-//     VarItemJBoss(const double value){
-//         marshaller->dump(&marshalled, value);
-//     }
-
-//     VarItemJBoss(const int value){
-//         marshaller->dump(&marshalled, value);
-//     }
-// };
 
 
 #endif

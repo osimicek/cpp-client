@@ -367,7 +367,7 @@ int main(){
     std::string resp;
     RemoteCacheConfig remote_cache_config;
     remote_cache_config.cache_name = "";
-    remote_cache_config.version = 12;
+    remote_cache_config.version = 10;
     remote_cache_config.intelligence = 1;
     RemoteCache x = RemoteCache(&remote_cache_config);
     std::string name(key);
@@ -514,7 +514,7 @@ int main(){
 
     Metadata meta;
 
-        for(int q=0;q<100;q++){
+    for(int q=0;q<1;q++){
         meta.clear();
         status = x.getWithMetadata(&vi, &meta, 777);
         std::cout <<status<<" "<<(int)meta.flag<<" "<<

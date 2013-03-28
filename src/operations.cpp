@@ -314,6 +314,7 @@ int ReplaceIfUnmodifiedOperation::execute_operation()
     transport->write_header(REPLACE_IF_UNMODIFIED_REQUEST, cache_name, flags);
     transport->write_array(key);
     transport->write_varint(this->lifespan); //lifespan
+
     transport->write_varint(this->idle); //idle
     transport->write_8bytes(version);
     transport->write_array(value);
@@ -355,7 +356,6 @@ int GetBulkOperation::execute_operation()
             VarItem v_object;
             v_object.set_value(&value);
             (*bulk)[k_object] = v_object;
-            // std::cout << "key: \"" << k_object << "\" "<< "value: " << v_object<< std::endl;
         }
     }
     return status;

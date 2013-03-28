@@ -46,31 +46,39 @@ TEST(It_can_get_bulk)
 
 TEST(It_can_get_key_set)
 {
-    std::map<VarItem,VarItem> data;
-    int status;
+    if(cache->getVersion() >= VERSION_12){
+        std::map<VarItem,VarItem> data;
+        int status;
 
-    CLEAR();
-    data["key1"] = "value";
-    data["key2"] = 555;
-    data["key3"] = 55.5;
-    data[11] = "value";
-    data[22] = 555;
-    data[33] = 55.5;
-    data[1.1] = "value";
-    data[2.2] = 555;
-    data[3.3] = 55.5;
+        CLEAR();
+        data["key1"] = "value";
+        data["key2"] = 555;
+        data["key3"] = 55.5;
+        data[11] = "value";
+        data[22] = 555;
+        data[33] = 55.5;
+        data[1.1] = "value";
+        data[2.2] = 555;
+        data[3.3] = 55.5;
 
-    cache->putAll(&data);
+        cache->putAll(&data);
 
 
-    std::vector<VarItem>  k_set;
-    cache->keySet(&k_set);
-    CHECK(k_set.size() == data.size());
+        std::vector<VarItem>  k_set;
+        cache->keySet(&k_set);
+        CHECK(k_set.size() == data.size());
 
-    k_set.clear();
-    cache->keySet(&k_set,2);
-    CHECK(k_set.size() <= data.size());
+        k_set.clear();
+        cache->keySet(&k_set,2);
+        CHECK(k_set.size() <= data.size());
+    }else{
 
+        int status;
+        std::vector<VarItem>  k_set;
+        status = cache->keySet(&k_set,2);
+        CHECK(status == ERROR_NOT_IMPLEMENTED);
+
+    }
 
 }
 

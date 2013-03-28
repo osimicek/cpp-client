@@ -11,17 +11,14 @@ Transport::Transport(std::string host, int port, TransportFactory &tF):transport
     this->valid = 1;
 
     int hotrod_version = transportFactory.get_hotrod_version();
-    // std::cout << "version  "<< hotrod_version << std::endl; 
     if(hotrod_version == VERSION_10){
         codec = new Codec10(*this);
     }else if(hotrod_version == VERSION_11){
         codec = new Codec11(*this);
     }else{
-        // std::cout << "je to 12" << std::endl;
         codec = new Codec12(*this);
     }
 
-    //((Codec11 *) codec)->write_header(20);
 
 
     
@@ -73,7 +70,6 @@ void Transport::write_byte(short byte){
 }
 
 void Transport::write_8bytes(long long value){
-    std::cerr <<std::hex<< " "<< value<< std::endl;
     for(int k=0; k<8; k++){
         write_char((char) (((long long)0xff00000000000000 &  value ) >> 56 ));
         value <<= 8;
@@ -83,13 +79,6 @@ void Transport::write_8bytes(long long value){
 void Transport::write_header(char op_code, const std::string *cache_name, int flags){
     int hotrod_version = transportFactory.get_hotrod_version();
     codec->write_header(op_code, cache_name, flags);
-    // if(hotrod_version == VERSION_10){
-    //     ((Codec10*)codec)->write_header(op_code, cache_name, flags);
-    // }else if(hotrod_version == VERSION_11){
-    //     ((Codec11*)codec)->write_header(op_code, cache_name, flags);
-    // }else{
-    //     ((Codec12*) codec)->write_header(op_code, cache_name, flags);
-    // }
 }
 
 void Transport::write_array(const std::string *arr){
@@ -102,7 +91,6 @@ void Transport::write_array(const std::string *arr){
 int Transport::flush(){
     // sends data to server
     int status = 0;
-    // std::cout << "_SOCKET " << this->_socket << std::endl;
     if(this->_socket == 0){
         create_connection();
     }
@@ -160,7 +148,6 @@ int Transport::read_byte(){
     int n;
     char loaded_data[1]; 
     n = recv(this->_socket, loaded_data, 1,0);
-   // std::cout << std::hex <<"hex " <<(u_short)loaded_data[0] << std::endl;
     return ((int)0x000000ff) & loaded_data[0];
 }
 
@@ -212,15 +199,7 @@ void Transport::read_array(std::string *arr){
 
 int Transport::read_header(){
     int hotrod_version = transportFactory.get_hotrod_version();
-    // std::cout << "version  "<< hotrod_version << std::endl; 
     return codec->read_header();
-    // if(hotrod_version == VERSION_10){
-    //     return ((Codec10 *) codec)->read_header();
-    // }else if(hotrod_version == VERSION_11){
-    //     return ((Codec11 *) codec)->read_header();
-    // }else{
-    //     return ((Codec12 *) codec)->read_header();
-    // }
 }
 
 

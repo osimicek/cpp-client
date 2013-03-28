@@ -11,14 +11,14 @@
 #include "varItem.h"
 class RemoteCache;
 
-static void *print_message_function(void *);
-// typedef struct {
-//     RemoteCache * RC;
-//     const std::string *key;
-//     const std::string *value;
-//     int lifespan;
-//     int maxidle;
-// } thread_args;
+static void *put_provider(void *);
+typedef struct {
+    RemoteCache * RC;
+    const VarItem *key;
+    const VarItem *value;
+    int lifespan;
+    int maxidle;
+} thread_args;
 
 
 
@@ -44,7 +44,6 @@ class RemoteCacheConfig{
 
 
 class RemoteCache{
-
   private:
     TransportFactory *transportFactory;
     Marshaller *marshaller;
@@ -57,6 +56,8 @@ class RemoteCache{
     RemoteCache(std::string host, int port);
     RemoteCache(std::string host);
     RemoteCache(void);
+    int getKeyOwnersNum();
+    int getVersion();
     void init(RemoteCacheConfig* remote_cache_config);
     int stats(std::map<std::string,std::string> *stats);
     int ping();
@@ -105,18 +106,6 @@ class RemoteCache{
 
 };
 
-// #include "../src/remoteCache.cpp"
-
-
-// int RemoteCache::get(char* value, const char *key){
-//     std::string tmp_key(key);
-//     std::string val; //zmenit
-//     int ret;
-
-//     ret = get(&val,&tmp_key);
-//     strcpy(value, val.c_str()); 
-//     return ret;
-// }
 template <typename TYPE,typename TYPE2>
 int RemoteCache::get(TYPE value, const TYPE2 key){
     int status = 0;

@@ -73,7 +73,7 @@ TEST(It_can_RMMap_iterations)
     rm_map["5.5"] = 22.22;
     rm_map[55]    = 33.33;
     rm_map[5.5]   = 44.44;
-    // std::cout << rm_map.size() <<std::endl;
+
     CHECK(rm_map.size() <= 12);
 
     std::map<VarItem,VarItem>::iterator pos2;

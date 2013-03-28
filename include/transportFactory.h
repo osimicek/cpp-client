@@ -30,6 +30,7 @@ class TransportFactory{
         int hash_ver;
         char intelligence;
     public:
+        int transports_in_use;
         pthread_mutex_t mutex, mutex_tf_id;
         std::queue<Transport*> transports; 
         std::vector<std::pair<int, Transport*> > hash_transport_bank;
@@ -49,8 +50,8 @@ class TransportFactory{
         int get_virtual_nodes_num();
         void set_max_hash_size(int size);
         int get_max_hash_size();
-        void set_num_key_owners(int num);
-        int get_num_key_owners();
+        void set_key_owners_num(int num);
+        int get_key_owners_num();
         void set_hash_ver(int ver);
         int get_hash_ver();
         int get_hash(const char* key, int length);

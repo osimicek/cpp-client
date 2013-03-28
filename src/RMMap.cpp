@@ -24,15 +24,7 @@ RMItem &RMMap::operator[](const VarItem &key)
     RMItem *item = new RMItem(this, &key);
     return *item;
  }
-/*
-const char *RMMap::operator[](const char *key)
- {
-  	std::cout<< key<<std::flush<<std::endl;
-  	std::string x;
-  	x ="blaaaa";
-  	return x.c_str();
-      //return std::map<string,string>
- }*/
+
 
 void RMMap::clear()
 {
@@ -40,7 +32,6 @@ void RMMap::clear()
 }
 
  // RMMap& RMMap::operator= ( const std::map<VarItem,VarItem>& x ){
- // 	std::cout<< "used ="<<std::flush<<std::endl;
  // 	return (*this);	
  // }
 
@@ -53,7 +44,6 @@ int RMMap::erase (const VarItem &key ){
 
 VarItem *RMMap::get(const VarItem *key){
   VarItem *value = new VarItem();
-  //std::cout << "key "<<*key<<std::endl;
   RC.get(value,key);
 
   return value;

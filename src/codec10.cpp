@@ -34,7 +34,6 @@ void Codec::write_header(char op_code, const std::string *cache_name, int flags,
 Codec10::Codec10(Transport &t):Codec(t){}
 
 void Codec10::write_header(char op_code, const std::string *cache_name, int flags){
-    //std::cout <<"HEADER 10" << std::endl;
     write_header(op_code, cache_name, flags, VERSION_10);
 }   
 
@@ -50,8 +49,7 @@ int Codec10::read_header(){
 
 
     magic = transport.read_byte();
-    //std::cout <<std::hex<<"INVALID_SERVER_MAGIC"<< magic<< std::endl;
-    if (magic != RESPONSE_MAGIC) {
+      if (magic != RESPONSE_MAGIC) {
         if(DEBUG){
             std::cerr <<std::hex<< "INVALID_SERVER_MAGIC, got "<< (u_short)magic<< std::endl;
         }
@@ -61,9 +59,7 @@ int Codec10::read_header(){
     received_op_code = transport.read_byte();
 
     status = transport.read_byte();
-    // std::cout<<"-"<<(int)status<<std::endl;
     read_new_topology_if_present();
-    // std::cout << "o"<<std::hex<<(int)received_op_code <<std::endl;
     if (received_op_code == ERROR_RESPONSE) {
         return check_for_errors_in_response_status(status);
     }
@@ -92,15 +88,15 @@ void Codec10::read_new_topology_if_present(){
     }
     if(topology_change == 0x01){
         int topology_id;
-        u_int num_key_own;
+        u_int key_own_num;
         u_short hash_ver;
         int hash_space, num_servers;
 
         topology_id = transport.read_varint();
         transport.transportFactory.set_topology_id(topology_id);
 
-        num_key_own = transport.read_2bytes();
-        transport.transportFactory.set_num_key_owners(num_key_own);
+        key_own_num = transport.read_2bytes();
+        transport.transportFactory.set_key_owners_num(key_own_num);
 
         hash_ver = transport.read_byte();
         transport.transportFactory.set_hash_ver(hash_ver);
@@ -115,7 +111,7 @@ void Codec10::read_new_topology_if_present(){
 
       if(DEBUG){
         std::cout <<"** Topology ID: "<<std::dec<<topology_id<<" old: "<<transport.transportFactory.get_topology_id()<<std::endl;
-        std::cout <<"** Num key owners: "<<num_key_own<<std::endl;
+        std::cout <<"** Num key owners: "<<key_own_num<<std::endl;
         std::cout <<"** Hash function version: "<<hash_ver<<std::endl;
         std::cout <<"** Hash space size: "<<hash_space<<std::endl;
         std::cout <<"** Num servers in topology: "<<num_servers<<std::endl;
@@ -149,20 +145,15 @@ void Codec10::read_new_topology_if_present(){
         if(DEBUG){
           std::cout <<std::dec << " + " << hash<< std::endl;
         }  
-        // std::cout<<std::endl;
+       
         Transport *t = transport.transportFactory.get_transport(&host, port, hash);
         if(t == NULL){
-            // std::cout << "create " << port << std::endl;
             t = transport.transportFactory.create_transport(&host, port, hash);
         }
         t->valid = 1;
 
-        // std::cout << transport.transportFactory.transports.size() << std::endl;
-        //s->port = 0;
-
       }
       transport.transportFactory.del_invalid_transports();
-      // transport.transportFactory.print_hash_bank();
       update_transport_bank();
       // transport.transportFactory.print_hash_bank();
 
@@ -175,7 +166,6 @@ void Codec10::update_transport_bank(){
   pthread_mutex_lock (&transport.transportFactory.mutex);
   Transport *tmp_transport;
   
-  //std::cout <<"ii " <<std::dec<<s->host<<"/"<<s->port<<std::flush<<std::endl;
   transport.transportFactory.hash_transport_bank.clear();
   transport.transportFactory.hash_vector.clear();
   for(u_int i = 0;i<transport.transportFactory.transports.size();i++){
@@ -191,9 +181,6 @@ void Codec10::update_transport_bank(){
         transport.transportFactory.transports.push(tmp_transport);
         transport.transportFactory.transports.pop();        
   }
-  // std::cout << "SIZEee " << transport.transportFactory.hash_transport_bank.size() << std::endl; 
-
-  
 
 
   std::sort(transport.transportFactory.hash_transport_bank.begin(), transport.transportFactory.hash_transport_bank.end());
