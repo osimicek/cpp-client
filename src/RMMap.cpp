@@ -44,7 +44,7 @@ int RMMap::erase (const VarItem &key ){
 
 VarItem *RMMap::get(const VarItem *key){
   VarItem *value = new VarItem();
-  RC.get(value,key);
+  RC.get(key,value);
 
   return value;
 
@@ -89,7 +89,7 @@ VarItem &RMItem::get() const{
 
 void RMItem::print(std::ostream& _stream){ 
   VarItem *value = new VarItem();
-  rm_map->RC.get(value,key);
+  rm_map->RC.get(key, value);
 
   value->print(_stream);
 }

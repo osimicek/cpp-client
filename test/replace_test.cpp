@@ -20,7 +20,7 @@ TEST(It_can_replace_basic)
     CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
 
     value.clear();
-    status = cache->get(&value, &key);
+    status = cache->get(&key, &value);
     CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
     CHECK(value == "");
 
@@ -32,7 +32,7 @@ TEST(It_can_replace_basic)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, &key);
+    status = cache->get(&key, &value);
     CHECK(value == "value2");
     CHECK(status == NO_ERROR_STATUS);
 }
@@ -48,7 +48,7 @@ TEST(It_can_replace_int)
     CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
 
     value.clear();
-    status = cache->get(&value, 123);
+    status = cache->get(123, &value);
     CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
     CHECK(value == "");
 
@@ -60,7 +60,7 @@ TEST(It_can_replace_int)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, 123);
+    status = cache->get(123, &value);
     CHECK(value == 789);
     CHECK(status == NO_ERROR_STATUS);
 }
@@ -76,7 +76,7 @@ TEST(It_can_replace_double)
     CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
 
     value.clear();
-    status = cache->get(&value, 12.3);
+    status = cache->get(12.3, &value);
     CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
     CHECK(value == "");
 
@@ -88,7 +88,7 @@ TEST(It_can_replace_double)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, 12.3);
+    status = cache->get(12.3, &value);
     CHECK(value == 78.9);
     CHECK(status == NO_ERROR_STATUS);
 }
@@ -105,7 +105,7 @@ TEST(It_can_replace_with_version)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->getWithVersion(&value, 12.3, &version);
+    status = cache->getWithVersion(12.3, &value, &version);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 45.6);
 
@@ -113,14 +113,14 @@ TEST(It_can_replace_with_version)
     status = cache->replaceWithVersion(12.3, 999, version +1);
     CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
 
-    status = cache->getWithVersion(&value, 12.3, &version);
+    status = cache->getWithVersion(12.3, &value, &version);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 45.6);
 
      status = cache->replaceWithVersion(12.3, 999, version);
     CHECK(status == NO_ERROR_STATUS);
 
-    status = cache->getWithVersion(&value, 12.3, &version);
+    status = cache->getWithVersion(12.3, &value, &version);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 999);
 

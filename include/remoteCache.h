@@ -87,14 +87,14 @@ class RemoteCache{
     
 
     template <typename TYPE,typename TYPE2>
-    int get(TYPE value, const TYPE2 key);
+    int get(const TYPE key, TYPE2 value);
 
 
     template <typename TYPE,typename TYPE2>
-    int getWithVersion(TYPE value, const TYPE2 key,long long *version);
+    int getWithVersion(const TYPE key, TYPE2 value,long long *version);
 
     template <typename TYPE,typename TYPE2>
-    int getWithMetadata(TYPE value, Metadata *meta, const TYPE2 key);
+    int getWithMetadata(const TYPE key, TYPE2 value, Metadata *meta);
 
     int getBulk(std::map<VarItem,VarItem> *bulk);
     int getBulk(std::map<VarItem,VarItem> *bulk, int count);
@@ -107,12 +107,12 @@ class RemoteCache{
 };
 
 template <typename TYPE,typename TYPE2>
-int RemoteCache::get(TYPE value, const TYPE2 key){
+int RemoteCache::get(const TYPE key, TYPE2 value){
     int status = 0;
     std::string m_value, m_key;
     marshaller->dump(&m_key, key);
 
-    GetOperation *getOperation = new GetOperation(&m_value, &m_key, *transportFactory, &cache_name, flags);
+    GetOperation *getOperation = new GetOperation(&m_key, &m_value, *transportFactory, &cache_name, flags);
     
     status = getOperation->execute();
     marshaller->load(value, &m_value);
@@ -120,11 +120,11 @@ int RemoteCache::get(TYPE value, const TYPE2 key){
 };
 
 template <typename TYPE,typename TYPE2>
-int RemoteCache::getWithVersion(TYPE value,const TYPE2 key,long long *version){
+int RemoteCache::getWithVersion(const TYPE key, TYPE2 value,long long *version){
     int status = 0;
     std::string m_value, m_key;
     marshaller->dump(&m_key, key);
-    GetWithVersionOperation *getWithVersionOperation = new GetWithVersionOperation(&m_value, &m_key, version, *transportFactory, &cache_name, flags);
+    GetWithVersionOperation *getWithVersionOperation = new GetWithVersionOperation(&m_key, &m_value, version, *transportFactory, &cache_name, flags);
     
     status = getWithVersionOperation->execute();
     marshaller->load(value, &m_value);
@@ -132,12 +132,12 @@ int RemoteCache::getWithVersion(TYPE value,const TYPE2 key,long long *version){
 }
 
 template <typename TYPE,typename TYPE2>
-int RemoteCache::getWithMetadata(TYPE value, Metadata *meta, const TYPE2 key){
+int RemoteCache::getWithMetadata(const TYPE key, TYPE2 value, Metadata *meta){
     if(transportFactory->get_hotrod_version() < VERSION_12) return ERROR_NOT_IMPLEMENTED;
     int status = 0;
     std::string m_value, m_key;
     marshaller->dump(&m_key, key);
-    GetWithMetadataOperation *getWithMetadataOperation = new GetWithMetadataOperation(&m_value, meta, &m_key, *transportFactory, &cache_name, flags);
+    GetWithMetadataOperation *getWithMetadataOperation = new GetWithMetadataOperation(&m_key, &m_value, meta, *transportFactory, &cache_name, flags);
     
     status = getWithMetadataOperation->execute();
     marshaller->load(value, &m_value);
@@ -154,7 +154,7 @@ int RemoteCache::put(const TYPE key,const TYPE2 value,int lifespan, int maxidle)
 
     if(lifespan < 0){lifespan = this->lifespan;}
     if(maxidle < 0){maxidle = this->maxidle;}
-    PutOperation *putOperation = new PutOperation(&m_value, &m_key, &prev_value, *transportFactory, &cache_name, flags, lifespan, maxidle);
+    PutOperation *putOperation = new PutOperation(&m_key, &m_value, &prev_value, *transportFactory, &cache_name, flags, lifespan, maxidle);
     return putOperation->execute();
 };
 
@@ -166,7 +166,7 @@ int RemoteCache::putIfAbsent(const TYPE key,const TYPE2 value,int lifespan, int 
     marshaller->dump(&m_value, value);
     if(lifespan < 0){lifespan = this->lifespan;}
     if(maxidle < 0){maxidle = this->maxidle;}
-    PutIfAbsentOperation *putIfAbsentOperation = new PutIfAbsentOperation(&m_value, &m_key, &prev_value, *transportFactory, &cache_name, flags, lifespan, maxidle);
+    PutIfAbsentOperation *putIfAbsentOperation = new PutIfAbsentOperation(&m_key, &m_value, &prev_value, *transportFactory, &cache_name, flags, lifespan, maxidle);
     return putIfAbsentOperation->execute();
 }
 
@@ -178,7 +178,7 @@ int RemoteCache::replace(const TYPE key,const TYPE2 value,int lifespan, int maxi
     marshaller->dump(&m_value, value);
     if(lifespan < 0){lifespan = this->lifespan;}
     if(maxidle < 0){maxidle = this->maxidle;}
-    ReplaceOperation *replaceOperation = new ReplaceOperation(&m_value, &m_key, &prev_value, *transportFactory, &cache_name, flags, lifespan, maxidle);
+    ReplaceOperation *replaceOperation = new ReplaceOperation(&m_key, &m_value, &prev_value, *transportFactory, &cache_name, flags, lifespan, maxidle);
     return replaceOperation->execute();
 }
 
@@ -199,7 +199,7 @@ int RemoteCache::replaceWithVersion(const TYPE key, const TYPE2 value, long long
     marshaller->dump(&m_value, value);
     if(lifespan < 0){lifespan = this->lifespan;}
     if(maxidle < 0){maxidle = this->maxidle;}
-    ReplaceIfUnmodifiedOperation *replaceIfUnmodifiedOperation = new ReplaceIfUnmodifiedOperation(&m_value, &m_key, &prev_value, version, *transportFactory, &cache_name, flags, lifespan, maxidle);
+    ReplaceIfUnmodifiedOperation *replaceIfUnmodifiedOperation = new ReplaceIfUnmodifiedOperation(&m_key, &m_value, &prev_value, version, *transportFactory, &cache_name, flags, lifespan, maxidle);
     return replaceIfUnmodifiedOperation->execute();
 }
 
@@ -208,7 +208,7 @@ int RemoteCache::remove(const TYPE key){
     std::string prev_value;
     std::string m_key;
     marshaller->dump(&m_key, key);
-    RemoveOperation *removeOperation = new RemoveOperation(&prev_value, &m_key, *transportFactory, &cache_name, flags);
+    RemoveOperation *removeOperation = new RemoveOperation(&m_key, &prev_value, *transportFactory, &cache_name, flags);
     return removeOperation->execute();
 }
 
@@ -225,7 +225,7 @@ int RemoteCache::removeWithVersion(const TYPE key, long long version){
     std::string prev_value;
     std::string m_key;
     marshaller->dump(&m_key, key);
-    RemoveIfUnmodifiedOperation *removeIfUnmodifiedOperation = new RemoveIfUnmodifiedOperation(&prev_value, &m_key, version, *transportFactory, &cache_name, flags);
+    RemoveIfUnmodifiedOperation *removeIfUnmodifiedOperation = new RemoveIfUnmodifiedOperation(&m_key, &prev_value, version, *transportFactory, &cache_name, flags);
     return removeIfUnmodifiedOperation->execute();
     
 }

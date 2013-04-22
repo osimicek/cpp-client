@@ -27,39 +27,39 @@ TEST(It_can_put_all)
 
     cache->putAll(&data);
 
-    status = cache->get(&value, "key1");
+    status = cache->get("key1", &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == "value");
 
-    status = cache->get(&value, "key2");
+    status = cache->get("key2", &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 555);
 
-    status = cache->get(&value, "key3");
+    status = cache->get("key3", &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 55.5);
 
-    status = cache->get(&value, 11);
+    status = cache->get(11, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == "value");
 
-    status = cache->get(&value, 22);
+    status = cache->get(22, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 555);
 
-    status = cache->get(&value, 33);
+    status = cache->get(33, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 55.5);
 
-    status = cache->get(&value, 1.1);
+    status = cache->get(1.1, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == "value");
 
-    status = cache->get(&value, 2.2);
+    status = cache->get(2.2, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 555);
 
-    status = cache->get(&value, 3.3);
+    status = cache->get(3.3, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 55.5);
 
@@ -85,39 +85,39 @@ TEST(It_can_put_all_async)
 
     cache->putAllAsync(&data);
 
-    status = cache->get(&value, "key1");
+    status = cache->get("key1", &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == "value");
 
-    status = cache->get(&value, "key2");
+    status = cache->get("key2", &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 555);
 
-    status = cache->get(&value, "key3");
+    status = cache->get("key3", &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 55.5);
 
-    status = cache->get(&value, 11);
+    status = cache->get(11, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == "value");
 
-    status = cache->get(&value, 22);
+    status = cache->get(22, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 555);
 
-    status = cache->get(&value, 33);
+    status = cache->get(33, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 55.5);
 
-    status = cache->get(&value, 1.1);
+    status = cache->get(1.1, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == "value");
 
-    status = cache->get(&value, 2.2);
+    status = cache->get(2.2, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 555);
 
-    status = cache->get(&value, 3.3);
+    status = cache->get(3.3, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 55.5);
 

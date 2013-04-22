@@ -54,6 +54,10 @@ class VarItem{
             }
         }
 
+        int get_type(){
+            return marshaller->get_type(&marshalled);
+        }
+
         void clear(){
             marshalled  = "";
         }

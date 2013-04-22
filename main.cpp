@@ -376,13 +376,13 @@ int main(){
     std::string k("key");
     std::string v("value");
     // k = key;
-    x.get(&v, &k);
+    x.get(&k,&v);
     v = "value";
 
 
     x.put(&k, &v, 1000, 1000);
     v.clear();
-    x.get(&v, &k);
+    x.get(&k,&v);
 
 
     std::cout << "RESP " << v << std::endl;
@@ -464,7 +464,7 @@ int main(){
     x.put(&k, &vv, 1000, 1000);
 
     int ci = 60660;
-    char *xx = "xxxxx";
+    const char *xx = "xxxxx";
 
     x.put(xx,ci);
     std::cout<<ci<<std::endl;
@@ -501,7 +501,7 @@ int main(){
     std::cout <<std::dec<< "test " <<std::endl<<std::flush;
     rm[8.99] = 6.6;
     std::cout <<std::dec<< "Last "<<rm[8.99]<< std::endl;
-    x.get(&vi, "key");
+    x.get("key",&vi);
     std::cout <<std::dec<< "Last "<<vi<< std::endl;
      RMItem r;
     RMItem r2;
@@ -516,11 +516,20 @@ int main(){
 
     for(int q=0;q<1;q++){
         meta.clear();
-        status = x.getWithMetadata(&vi, &meta, 777);
+        status = x.getWithMetadata( 777, &vi, &meta);
         std::cout <<status<<" "<<(int)meta.flag<<" "<<
         meta.lifespan<<" "<<meta.maxidle<<" "<<
         meta.created<<" "<<meta.lastused<<" "<<meta.version<<std::endl;
     }
+
+    VarItem ww = "ahoj";
+    status = x.put("abc", &ww);
+
+
+    ww.clear();
+    status = x.get("abc",&ww);
+ 
+    std::cout << "re "<<std::hex<<status <<" "<< ww <<std::endl;
 
 	return 0;
 }

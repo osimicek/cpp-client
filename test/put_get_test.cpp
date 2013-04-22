@@ -16,7 +16,7 @@ TEST(It_can_basic_get_and_put)
 
 
     CLEAR();
-    status = cache->get(&value, &key);
+    status = cache->get(&key, &value);
     CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
     CHECK(value == "");
 
@@ -25,7 +25,7 @@ TEST(It_can_basic_get_and_put)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, &key);
+    status = cache->get(&key, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == "value");
 
@@ -34,7 +34,7 @@ TEST(It_can_basic_get_and_put)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, &key);
+    status = cache->get(&key, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == "value2");
 }
@@ -46,7 +46,7 @@ TEST(It_can_get_and_put_with_int)
 
     std::string value("value");
     CLEAR();
-    status = cache->get(&value, 66);
+    status = cache->get(66, &value);
     CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
     CHECK(value == "");
 
@@ -55,14 +55,14 @@ TEST(It_can_get_and_put_with_int)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, 66);
+    status = cache->get(66, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == "value");
 
 
     int value2    = 77;
     CLEAR();
-    status = cache->get(&value2, 66);
+    status = cache->get(66, &value2);
     CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
     CHECK(value2 == 0);
 
@@ -71,7 +71,7 @@ TEST(It_can_get_and_put_with_int)
     CHECK(status == NO_ERROR_STATUS);
 
     value2 = 0;
-    status = cache->get(&value2, 66);
+    status = cache->get(66, &value2);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value2 == 77);
 
@@ -90,7 +90,7 @@ TEST(It_can_get_and_put_with_double)
 
     std::string value("value");
     CLEAR();
-    status = cache->get(&value, 6.6);
+    status = cache->get(6.6, &value);
     CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
     CHECK(value == "");
 
@@ -99,14 +99,14 @@ TEST(It_can_get_and_put_with_double)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, 6.6);
+    status = cache->get(6.6, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == "value");
 
 
     double value2    = 7.7;
     CLEAR();
-    status = cache->get(&value2, 6.6);
+    status = cache->get(6.6, &value2);
     CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
     CHECK(value2 == 0);
 
@@ -115,7 +115,7 @@ TEST(It_can_get_and_put_with_double)
     CHECK(status == NO_ERROR_STATUS);
 
     value2 = 0;
-    status = cache->get(&value2, 6.6);
+    status = cache->get(6.6, &value2);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value2 == 7.7);
 
@@ -128,7 +128,7 @@ TEST(It_can_get_and_put_with_varItem)
 
     VarItem key, value;
     CLEAR();
-    status = cache->get(&value, 6.6);
+    status = cache->get(6.6, &value);
 
     CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
     CHECK(value == "");
@@ -142,7 +142,7 @@ TEST(It_can_get_and_put_with_varItem)
     CHECK(status == NO_ERROR_STATUS);
 
     value = 99;
-    status = cache->get(&value, 6.6);
+    status = cache->get(6.6, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == "value");
 
@@ -150,7 +150,7 @@ TEST(It_can_get_and_put_with_varItem)
     value = 99.99;
     key = 6.75;
     CLEAR();
-    status = cache->get(&value, &key);
+    status = cache->get(&key, &value);
     CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
     CHECK(value == 0);
 
@@ -159,7 +159,7 @@ TEST(It_can_get_and_put_with_varItem)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, &key);
+    status = cache->get(&key, &value);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 7.7);
 

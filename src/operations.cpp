@@ -23,8 +23,9 @@ AbstractOperation::AbstractOperation(TransportFactory &tF):transportFactory(tF)
 int AbstractOperation::execute()
 {
     int state;
-    for(int i=0; i<MAX_EXECUTE_REPEAT; i++){
-        if(key != NULL){
+    bool get_by_key = (key != NULL);
+    for(int i=1; i<=MAX_EXECUTE_REPEAT; i++){
+        if(get_by_key){
             transport = transportFactory.get_transport(key);
         }else{
             transport = transportFactory.get_transport();
@@ -35,6 +36,10 @@ int AbstractOperation::execute()
             state = execute_operation();
             transportFactory.release_transport(transport);
             if(status != FAILED_TO_SEND) break;
+        }
+        if(i == MAX_EXECUTE_REPEAT){ // try get transport without key
+            i = 1;
+            get_by_key = false;
         }
     }
     return state;
@@ -52,7 +57,7 @@ void AbstractOperation::return_possible_prev_value(std::string *prev_value)
 
 
 
-GetOperation::GetOperation(std::string *value, const std::string *key, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+GetOperation::GetOperation(const std::string *key, std::string *value, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
 {    
      this->value = value;
      this->key = key;
@@ -80,7 +85,7 @@ int GetOperation::execute_operation()
     
 }  
 
-GetWithVersionOperation::GetWithVersionOperation(std::string *value, const std::string *key, long long *version, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+GetWithVersionOperation::GetWithVersionOperation(const std::string *key, std::string *value, long long *version, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
 {    
      this->version = version;
      this->value = value;
@@ -112,7 +117,7 @@ int GetWithVersionOperation::execute_operation()
 }  
 
 
-GetWithMetadataOperation::GetWithMetadataOperation(std::string *value, Metadata *meta, const std::string *key, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+GetWithMetadataOperation::GetWithMetadataOperation(const std::string *key, std::string *value, Metadata *meta, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
 {    
      this->value = value;
      this->key = key;
@@ -170,7 +175,7 @@ int GetWithMetadataOperation::execute_operation()
     
 }  
 
-RemoveOperation::RemoveOperation(std::string *prev_value, const std::string *key, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+RemoveOperation::RemoveOperation(const std::string *key, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
 {   
     this->prev_value = prev_value;
     this->key = key; 
@@ -195,7 +200,7 @@ int RemoveOperation::execute_operation()
     return status; 
 }  
 
-RemoveIfUnmodifiedOperation::RemoveIfUnmodifiedOperation(std::string *prev_value, const std::string *key, long long version, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+RemoveIfUnmodifiedOperation::RemoveIfUnmodifiedOperation(const std::string *key, std::string *prev_value, long long version, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
 {   
     
     this->version = version;
@@ -244,7 +249,7 @@ int ContainsKeyOperation::execute_operation()
     
 } 
 
-PutBasedOperation::PutBasedOperation(const std::string *value, const std::string *key, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):AbstractOperation(tF)
+PutBasedOperation::PutBasedOperation(const std::string *key, const std::string *value, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):AbstractOperation(tF)
 {    
     this->value = value; 
     this->key = key; 
@@ -273,7 +278,7 @@ int PutBasedOperation::execute_operation(int op_code){
     return status;
 }  
 
-PutOperation::PutOperation(const std::string *value, const std::string *key, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):PutBasedOperation(value, key, prev_value, tF, cache_name, flags, lifespan, idle)
+PutOperation::PutOperation(const std::string *key, const std::string *value, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):PutBasedOperation(key, value, prev_value, tF, cache_name, flags, lifespan, idle)
 { }   
 
 int PutOperation::execute_operation()
@@ -281,7 +286,7 @@ int PutOperation::execute_operation()
     return PutBasedOperation::execute_operation(PUT_REQUEST);
 }  
 
-PutIfAbsentOperation::PutIfAbsentOperation(const std::string *value, const std::string *key, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):PutBasedOperation(value, key, prev_value, tF, cache_name, flags, lifespan, idle)
+PutIfAbsentOperation::PutIfAbsentOperation(const std::string *key, const std::string *value, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):PutBasedOperation(key, value, prev_value, tF, cache_name, flags, lifespan, idle)
 { }   
 
 int PutIfAbsentOperation::execute_operation()
@@ -289,7 +294,7 @@ int PutIfAbsentOperation::execute_operation()
     return PutBasedOperation::execute_operation(PUT_IF_ABSENT_REQUEST);
 }  
 
-ReplaceOperation::ReplaceOperation(const std::string *value, const std::string *key, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):PutBasedOperation(value, key, prev_value, tF, cache_name, flags, lifespan, idle)
+ReplaceOperation::ReplaceOperation(const std::string *key, const std::string *value, std::string *prev_value, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):PutBasedOperation(key, value, prev_value, tF, cache_name, flags, lifespan, idle)
 { }   
 
 int ReplaceOperation::execute_operation()
@@ -297,7 +302,7 @@ int ReplaceOperation::execute_operation()
     return PutBasedOperation::execute_operation(REPLACE_REQUEST);
 }  
 
-ReplaceIfUnmodifiedOperation::ReplaceIfUnmodifiedOperation(const std::string *value, const std::string *key, std::string *prev_value, long long version, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):AbstractOperation(tF)
+ReplaceIfUnmodifiedOperation::ReplaceIfUnmodifiedOperation(const std::string *key, const std::string *value, std::string *prev_value, long long version, TransportFactory &tF, const std::string *cache_name, int flags, int lifespan, int idle):AbstractOperation(tF)
 {    
     this->version = version; 
     this->value = value; 

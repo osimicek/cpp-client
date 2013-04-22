@@ -20,7 +20,7 @@ TEST(It_remove_basic)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, &key);
+    status = cache->get(&key, &value);
     CHECK(value == "value");
     CHECK(status == NO_ERROR_STATUS);
 
@@ -28,7 +28,7 @@ TEST(It_remove_basic)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, &key);
+    status = cache->get(&key, &value);
     CHECK(value == "");
     CHECK(status = KEY_DOES_NOT_EXIST_STATUS);
 
@@ -43,7 +43,7 @@ TEST(It_remove_int)
     status = cache->put(123, 336);
     CHECK(status == NO_ERROR_STATUS);
 
-    status = cache->get(&value, 123);
+    status = cache->get(123, &value);
     CHECK(value == 336);
     CHECK(status == NO_ERROR_STATUS);
 
@@ -51,7 +51,7 @@ TEST(It_remove_int)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, 123);
+    status = cache->get(123, &value);
     CHECK(value == "");
     CHECK(status = KEY_DOES_NOT_EXIST_STATUS);
 
@@ -66,7 +66,7 @@ TEST(It_remove_double)
     status = cache->put(12.3, 33.6);
     CHECK(status == NO_ERROR_STATUS);
 
-    status = cache->get(&value, 12.3);
+    status = cache->get(12.3, &value);
     CHECK(value == 33.6);
     CHECK(status == NO_ERROR_STATUS);
 
@@ -74,7 +74,7 @@ TEST(It_remove_double)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, 12.3);
+    status = cache->get(12.3, &value);
     CHECK(value == "");
     CHECK(status = KEY_DOES_NOT_EXIST_STATUS);
 
@@ -92,7 +92,7 @@ TEST(It_can_remove_with_version)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->getWithVersion(&value, 12.3, &version);
+    status = cache->getWithVersion(12.3, &value, &version);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 45.6);
 
@@ -100,14 +100,14 @@ TEST(It_can_remove_with_version)
     status = cache->removeWithVersion(12.3, version +1);
     CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
 
-    status = cache->getWithVersion(&value, 12.3, &version);
+    status = cache->getWithVersion(12.3, &value, &version);
     CHECK(status == NO_ERROR_STATUS);
     CHECK(value == 45.6);
 
      status = cache->removeWithVersion(12.3, version);
     CHECK(status == NO_ERROR_STATUS);
 
-    status = cache->getWithVersion(&value, 12.3, &version);
+    status = cache->getWithVersion(12.3, &value, &version);
     CHECK(status == KEY_DOES_NOT_EXIST_STATUS);
     CHECK(value == 0);
 

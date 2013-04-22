@@ -22,7 +22,7 @@ TEST(It_can_put_if_absent_basic)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, &key);
+    status = cache->get(&key, &value);
     CHECK(value == "value");
     CHECK(status == NO_ERROR_STATUS);
 
@@ -31,7 +31,7 @@ TEST(It_can_put_if_absent_basic)
     CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
 
     value.clear();
-    status = cache->get(&value, &key);
+    status = cache->get(&key, &value);
     CHECK(value == "value");
     CHECK(status == NO_ERROR_STATUS);
 
@@ -50,7 +50,7 @@ TEST(It_can_put_if_absent_int)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, 15);
+    status = cache->get(15, &value);
     CHECK(value == 99);
     CHECK(status == NO_ERROR_STATUS);
 
@@ -59,7 +59,7 @@ TEST(It_can_put_if_absent_int)
     CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
 
     value.clear();
-    status = cache->get(&value, 15);
+    status = cache->get(15, &value);
     CHECK(value == 99);
     CHECK(status == NO_ERROR_STATUS);
 
@@ -78,7 +78,7 @@ TEST(It_can_put_if_absent_double)
     CHECK(status == NO_ERROR_STATUS);
 
     value.clear();
-    status = cache->get(&value, 1.5);
+    status = cache->get(1.5, &value);
     CHECK(value == 9.9);
     CHECK(status == NO_ERROR_STATUS);
 
@@ -87,7 +87,7 @@ TEST(It_can_put_if_absent_double)
     CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
 
     value.clear();
-    status = cache->get(&value, 1.5);
+    status = cache->get(1.5, &value);
     CHECK(value == 9.9);
     CHECK(status == NO_ERROR_STATUS);
 
