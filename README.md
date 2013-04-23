@@ -5,7 +5,7 @@ Start servers
 --------------
 1 server
 ```bash
-make starts  #to run infinispan server
+make startserver  #to run infinispan server
 ```
 
 or
@@ -21,7 +21,7 @@ make kill  #to kill all java programs (servers)
 Run client´s tests
 --------------
 ```bash
-make test
+make tests
 ```
 
 

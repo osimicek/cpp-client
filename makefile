@@ -121,7 +121,7 @@ runtests:
 
 
 
-starts:
+startserver:
 	./infinispan/bin/startServer.sh -r hotrod
 
 startservers:
