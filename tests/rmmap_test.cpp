@@ -82,7 +82,7 @@ TEST(It_can_RMMap_iterations)
         // std::cout << "key: \"" << pos2->first  << "\" "<< "value: " << pos2->second << std::endl;
         count++;
     }
-
+    std::cout << count << std::endl;
 
     CHECK(count <= 12);
 

@@ -122,22 +122,22 @@ runtests:
 
 
 startserver:
-	./infinispan/bin/startServer.sh -r hotrod
+	./server/infinispan/bin/startServer.sh -r hotrod
 
 startservers:
-	 ./infinispan/bin/startServer.sh -r hotrod -p 11222 -c ./infinispan/bin/distrib.xml &
+	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11222 -c ./server/distrib.xml &
 	 sleep 3
-	 ./infinispan/bin/startServer.sh -r hotrod -p 11223 -c ./infinispan/bin/distrib.xml &
+	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11223 -c ./server/distrib.xml &
 	 sleep 1
-	 ./infinispan/bin/startServer.sh -r hotrod -p 11224 -c ./infinispan/bin/distrib.xml &
+	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11224 -c ./server/distrib.xml &
 	 sleep 1
-	 ./infinispan/bin/startServer.sh -r hotrod -p 11225 -c ./infinispan/bin/distrib.xml &
+	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11225 -c ./server/distrib.xml &
 	 sleep 1
-	 ./infinispan/bin/startServer.sh -r hotrod -p 11226 -c ./infinispan/bin/distrib.xml &
+	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11226 -c ./server/distrib.xml &
 	 sleep 1
-	 ./infinispan/bin/startServer.sh -r hotrod -p 11227 -c ./infinispan/bin/distrib.xml &
+	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11227 -c ./server/distrib.xml &
 	 sleep 1
-	 ./infinispan/bin/startServer.sh -r hotrod -p 11228 -c ./infinispan/bin/distrib.xml &
+	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11228 -c ./server/distrib.xml &
 
 startservers10:
 	 ./infinispan-4.1.0.FINAL/bin/startServer.sh -r hotrod -p 11222 -c ./infinispan-4.1.0.FINAL/bin/distrib.xml &

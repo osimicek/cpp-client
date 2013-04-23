@@ -31,7 +31,7 @@ TEST(It_can_get_meta_basic)
         Metadata meta;
         status = cache2.getWithMetadata(777, &value, &meta);
         CHECK(status == NO_ERROR_STATUS);
-        // std::cout <<status<<" "<<(int)meta.flag<<" "<<meta.lifespan<<" "<<meta.maxidle<<" "<<meta.created<<" "<<meta.lastused<<" "<<meta.version<<std::endl;
+        std::cout <<status<<" "<<(int)meta.flag<<" "<<meta.lifespan<<" "<<meta.maxidle<<" "<<meta.created<<" "<<meta.lastused<<" "<<meta.version<<std::endl;
         CHECK(meta.flag == 0x03);
         CHECK(meta.lifespan == -1);
         CHECK(meta.maxidle == -1);
