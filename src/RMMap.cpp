@@ -6,6 +6,10 @@ RMMap::RMMap(){
   RemoteCacheConfig remote_cache_config;
   remote_cache_config.intelligence = CLIENT_INTELLIGENCE_BASIC;
 	RC = RemoteCache(&remote_cache_config);
+}
+
+RMMap::RMMap(RemoteCacheConfig *remote_cache_config){
+  RC = RemoteCache(remote_cache_config);
 
 }
 
@@ -59,14 +63,15 @@ void RMMap::close(){
   RC.close();
 }
 
-std::map<VarItem,VarItem>::iterator RMMap::begin(){
+RMMap::iterator RMMap::begin(){
 	RC.getBulk(&bulk);	
 	return bulk.begin();	
 }
 
-std::map<VarItem,VarItem>::iterator RMMap::end(){
+RMMap::iterator RMMap::end(){
 	return bulk.end();	
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////
@@ -88,8 +93,7 @@ VarItem &RMItem::get() const{
 }
 
 void RMItem::print(std::ostream& _stream){ 
-  VarItem *value = new VarItem();
-  rm_map->RC.get(key, value);
+  VarItem *value = &get();
 
   value->print(_stream);
 }

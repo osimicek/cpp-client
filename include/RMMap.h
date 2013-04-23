@@ -14,11 +14,13 @@ std::ostream & operator << (std::ostream& s, RMItem & p);
 class RMMap{
     private:
     	std::string x;
-    	
+    	RemoteCache RC;
     	std::map<VarItem,VarItem>  bulk;
     public:
-        RemoteCache RC;
+        
+        typedef std::map<VarItem,VarItem>::iterator iterator;
     	RMMap();
+        RMMap(RemoteCacheConfig *remote_cache_config);
     	u_int size();
     	RMItem &operator[](const VarItem &key);
     	RMMap& operator= ( const std::map<VarItem,VarItem>& x );
@@ -30,8 +32,8 @@ class RMMap{
     	VarItem *get(const VarItem *key);
     	void set(const VarItem *key,const VarItem *value);
         void close();
-    	std::map<VarItem,VarItem>::iterator begin();
-    	std::map<VarItem,VarItem>::iterator end();
+    	iterator begin();
+    	iterator end();
 };
 
 

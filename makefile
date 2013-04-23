@@ -27,16 +27,16 @@ objects = include/UnitTest++/AssertException.o \
 	include/UnitTest++/Posix/TimeHelpers.o
 
 
-test_objects = test/main.o \
-	test/put_get_test.o \
-	test/replace_test.o \
-	test/put_if_absent_test.o \
-	test/remove_test.o \
-	test/rmmap_test.o \
-	test/ping_stats_contains_key_test.o\
-	test/put_all_test.o\
-	test/get_with_meta_test.o\
-	test/get_bulk_key_set_test.o\
+test_objects = tests/main.o \
+	tests/put_get_test.o \
+	tests/replace_test.o \
+	tests/put_if_absent_test.o \
+	tests/remove_test.o \
+	tests/rmmap_test.o \
+	tests/ping_stats_contains_key_test.o\
+	tests/put_all_test.o\
+	tests/get_with_meta_test.o\
+	tests/get_bulk_key_set_test.o\
 
 	
 
@@ -75,17 +75,36 @@ run:
 go: ALL
 	./main
 
+basic_example: $(hotrod_cli_lib_obj) examples/basic_example.o
+	$(CC) $(hotrod_cli_lib_obj) examples/basic_example.o -o examples/basic_example
+	./examples/basic_example
 
+bulk_example: $(hotrod_cli_lib_obj) examples/bulk_example.o
+	$(CC) $(hotrod_cli_lib_obj) examples/bulk_example.o -o examples/bulk_example
+	./examples/bulk_example
+
+rmmap_example: $(hotrod_cli_lib_obj) examples/rmmap_example.o
+	$(CC) $(hotrod_cli_lib_obj) examples/rmmap_example.o -o examples/rmmap_example
+	./examples/rmmap_example
+
+advanced_example: $(hotrod_cli_lib_obj) examples/advanced_example.o
+	$(CC) $(hotrod_cli_lib_obj) examples/advanced_example.o -o examples/advanced_example
+	./examples/advanced_example
+
+
+rmmap_advanced_example: $(hotrod_cli_lib_obj) examples/rmmap_advanced_example.o
+	$(CC) $(hotrod_cli_lib_obj) examples/rmmap_advanced_example.o -o examples/rmmap_advanced_example
+	./examples/rmmap_advanced_example
 # test:    $(hotrod_cli_lib_obj) test/test2.o test/test1.o
 # 	#make -C ./include/nosjob/		
 # 	$(CC) $(libnosjob)  $(hotrod_cli_lib_obj) test/test1.o test/test1.o -o test/test1
 
-test: $(objects) $(hotrod_cli_lib_obj) $(test_objects)
-	$(CC) $(objects) $(hotrod_cli_lib_obj) $(test_objects) -o test/hotrod_test
+tests: $(objects) $(hotrod_cli_lib_obj) $(test_objects)
+	$(CC) $(objects) $(hotrod_cli_lib_obj) $(test_objects) -o tests/hotrod_test
 	@echo "*******************"
 	@echo "** Running tests **"
 	@echo "*******************"
-	./test/hotrod_test
+	./tests/hotrod_test
 
 runtests:
 	@echo "*******************"
@@ -153,11 +172,17 @@ clean:							# smazani nezadoucich souboru
 	rm -f *.o
 	rm -f src/*.o
 	rm -f test/*.o
+	rm -f examples/*.o
 	rm -f include/murmur/*.o
 	rm -f $(objects) $(test_objects)
 	rm -f $(hotrod_lib)
 	rm -f main
-	rm -f test/hotrod_test
+	rm -f tests/hotrod_test
+	rm -f examples/basic_example
+	rm -f examples/bulk_example
+	rm -f examples/rmmap_example
+	rm -f examples/advanced_example
+	rm -f examples/rmmap_advanced_example
 
 pack:
 	tar cf xsimic02.tar *.cpp README Makefile *.pdf 	

@@ -51,6 +51,7 @@ class RemoteCache{
     int maxidle;
     int flags;
     std::string cache_name;
+    void init(RemoteCacheConfig* remote_cache_config);
   public:
     RemoteCache(RemoteCacheConfig* remote_cache_config);
     RemoteCache(std::string host, int port);
@@ -58,7 +59,7 @@ class RemoteCache{
     RemoteCache(void);
     int getKeyOwnersNum();
     int getVersion();
-    void init(RemoteCacheConfig* remote_cache_config);
+    
     int stats(std::map<std::string,std::string> *stats);
     int ping();
     int clear();
