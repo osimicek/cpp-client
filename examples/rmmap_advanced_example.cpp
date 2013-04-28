@@ -9,9 +9,8 @@ void example1(){
     cache[4.56] = 654;
     std::cout << cache[123] <<std::endl;
 
-    RMMap::iterator pos;
-    for (pos = cache.begin(); pos != cache.end(); ++pos) {
-        std::cout << "key: " << pos->first  << " "<< "value: " << pos->second << std::endl;
+    for (auto entry = cache.begin(); entry != cache.end(); ++entry) {
+        std::cout << "key: " << entry->first  << " "<< "value: " << entry->second << std::endl;
     }
 }
 

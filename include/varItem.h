@@ -20,27 +20,27 @@ class VarItem{
 
         VarItem(const std::string value){
             init();
-            marshaller->dump(&marshalled, &value);
+            marshaller->dump(&value, &marshalled);
         }
 
         VarItem(const std::string *value){
             init();
-            marshaller->dump(&marshalled, value);
+            marshaller->dump(value, &marshalled);
         }
 
         VarItem(const char *value){
-            init();
-            marshaller->dump(&marshalled, value);
+            init(); 
+            marshaller->dump(value, &marshalled);
         }
 
         VarItem(const double value){
             init();
-            marshaller->dump(&marshalled, value);
+            marshaller->dump(value, &marshalled);
         }
 
         VarItem(const int value){
             init();
-            marshaller->dump(&marshalled, value);
+            marshaller->dump(value, &marshalled);
         }
 
         void init(){
@@ -70,13 +70,13 @@ class VarItem{
         // }
         virtual operator std::string() {
             std::string strVal; 
-            marshaller->load(&strVal, &marshalled);
+            marshaller->load(&marshalled, &strVal);
             return strVal; 
         }
 
         virtual operator char *() { 
             std::string strVal; 
-            marshaller->load(&strVal, &marshalled);
+            marshaller->load(&marshalled, &strVal);
 
             char *charVal=new char[strVal.size()+1];
             charVal[strVal.size()] = 0;
@@ -86,40 +86,40 @@ class VarItem{
 
         virtual operator int() { 
             int intVal;
-            marshaller->load(&intVal, &marshalled);
+            marshaller->load(&marshalled, &intVal);
             return intVal; 
         }
         virtual operator double() { 
             double doubleVal;
-            marshaller->load(&doubleVal, &marshalled);
+            marshaller->load(&marshalled, &doubleVal);
             return doubleVal; 
         }
 
 
 
         virtual VarItem &operator=(const double value){
-            marshaller->dump(&marshalled, value);
+            marshaller->dump(value, &marshalled);
             return *this;
         }
 
         virtual VarItem &operator=(const int value){
-            marshaller->dump(&marshalled, value);
+            marshaller->dump(value, &marshalled);
             return *this;
         }
 
         virtual VarItem &operator=(const std::string value){
-            marshaller->dump(&marshalled, &value);
+            marshaller->dump(&value, &marshalled);
             return *this;
         }
 
         virtual VarItem &operator=(const std::string *value){
-            marshaller->dump(&marshalled, value);
+            marshaller->dump(value, &marshalled);
             return *this;
         }
 
 
         virtual VarItem &operator=(const char *value){
-            marshaller->dump(&marshalled, value);
+            marshaller->dump(value, &marshalled);
             return *this;
         }
 
@@ -142,13 +142,13 @@ class VarItem{
 
          bool operator==(const std::string  &other) const { 
             std::string strVal; 
-            marshaller->load(&strVal, &marshalled);
+            marshaller->load(&marshalled, &strVal);
             return  strVal == other;
          }
 
          bool operator!=(const std::string  &other) const { 
             std::string strVal; 
-            marshaller->load(&strVal, &marshalled);
+            marshaller->load(&marshalled, &strVal);
             return  strVal != other;
          }
 
@@ -162,25 +162,25 @@ class VarItem{
 
          bool operator==(const int &other) const { 
             int intVal;
-            marshaller->load(&intVal, &marshalled);
+            marshaller->load(&marshalled, &intVal);
             return intVal == other;
          }
 
          bool operator!=(const int &other) const { 
             int intVal;
-            marshaller->load(&intVal, &marshalled);
+            marshaller->load(&marshalled, &intVal);
             return intVal == other;
          }
 
          bool operator==(const double &other) const { 
             double doubleVal;
-            marshaller->load(&doubleVal, &marshalled);
+            marshaller->load(&marshalled, &doubleVal);
             return doubleVal == other;
          }
 
          bool operator!=(const double &other) const { 
             double doubleVal;
-            marshaller->load(&doubleVal, &marshalled);
+            marshaller->load(&marshalled, &doubleVal);
             return doubleVal == other;
          }
         

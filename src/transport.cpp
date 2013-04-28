@@ -23,6 +23,10 @@ Transport::Transport(std::string host, int port, TransportFactory &tF):transport
 
     
 } 
+Transport::~Transport(){
+    delete codec;
+    close_connection();
+}
 
 void Transport::write_version(long long value){
     std::string result;
@@ -94,17 +98,22 @@ int Transport::flush(){
     if(this->_socket == 0){
         create_connection();
     }
-    for(int i=0; i<2; i++){
-        if(write(this->_socket, this->packet.c_str(), this->packet.length()) < 0)  // odeslani pozadavku na server 24
+    if(this->_socket == 0){
+        return FAILED_TO_SEND_STATUS;
+    }
+    for(int i=0; i<2; i++){ //when keeping dead socket
+        if(write(this->_socket, this->packet.c_str(), this->packet.length()) < 0)  // odeslani pozadavku na server 
         {
+            
             status = create_connection();
             if(status == 0){
-                return FAILED_TO_SEND;
+                return FAILED_TO_SEND_STATUS;
             }
         }else{
             break;
         }
     }
+
     return NO_ERROR_STATUS;
 }
 
@@ -233,6 +242,10 @@ int Transport::create_connection(){
   return ret_socket;
 
 
+}
+
+int Transport::close_connection(){
+    return close(_socket);
 }
 
 

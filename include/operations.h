@@ -12,12 +12,12 @@
 
 
 
-class Metadata{
+class RemoteEntryMetadata{
     public:
         char flag; 
         int lifespan, maxidle;
         long long version, created, lastused;
-        Metadata();
+        RemoteEntryMetadata();
         void clear();
 };
 
@@ -52,11 +52,11 @@ class GetWithVersionOperation : public AbstractOperation{
         virtual int execute_operation();
 };
 
-class GetWithMetadataOperation : public AbstractOperation{
+class GetWithRemoteEntryMetadataOperation : public AbstractOperation{
     public:
         std::string *value;
-        Metadata *meta;
-        GetWithMetadataOperation(const std::string *key, std::string *value, Metadata *meta, TransportFactory &tF, const std::string *cache_name, int flags);
+        RemoteEntryMetadata *meta;
+        GetWithRemoteEntryMetadataOperation(const std::string *key, std::string *value, RemoteEntryMetadata *meta, TransportFactory &tF, const std::string *cache_name, int flags);
         virtual int execute_operation();
 };
 

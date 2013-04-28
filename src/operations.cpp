@@ -1,11 +1,11 @@
 #include "operations.h"
 #include "varItem.h"
 
-Metadata::Metadata(){
+RemoteEntryMetadata::RemoteEntryMetadata(){
     clear();
 }
 
-void Metadata::clear(){
+void RemoteEntryMetadata::clear(){
     flag = -1;
     lifespan = -1;
     maxidle = -1;
@@ -22,8 +22,8 @@ AbstractOperation::AbstractOperation(TransportFactory &tF):transportFactory(tF)
 }    
 int AbstractOperation::execute()
 {
-    int state;
     bool get_by_key = (key != NULL);
+    bool counter_reseted = false;
     for(int i=1; i<=MAX_EXECUTE_REPEAT; i++){
         if(get_by_key){
             transport = transportFactory.get_transport(key);
@@ -31,18 +31,19 @@ int AbstractOperation::execute()
             transport = transportFactory.get_transport();
         }
         if(transport == NULL){
-            state =  FAILED_TO_CHOOSE_TRANSPORT;
+            status =  FAILED_TO_CHOOSE_TRANSPORT_STATUS;
         }else{
-            state = execute_operation();
+            status = execute_operation();
             transportFactory.release_transport(transport);
-            if(status != FAILED_TO_SEND) break;
+            if(status != FAILED_TO_SEND_STATUS) break;
         }
-        if(i == MAX_EXECUTE_REPEAT){ // try get transport without key
-            i = 1;
+        if(i == MAX_EXECUTE_REPEAT and !counter_reseted){ // try get transport without key
+            i = 0;
             get_by_key = false;
+            counter_reseted = true;
         }
     }
-    return state;
+    return status;
 } 
 
 int AbstractOperation::execute_operation(){return 1;}  
@@ -117,7 +118,7 @@ int GetWithVersionOperation::execute_operation()
 }  
 
 
-GetWithMetadataOperation::GetWithMetadataOperation(const std::string *key, std::string *value, Metadata *meta, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
+GetWithRemoteEntryMetadataOperation::GetWithRemoteEntryMetadataOperation(const std::string *key, std::string *value, RemoteEntryMetadata *meta, TransportFactory &tF, const std::string *cache_name, int flags):AbstractOperation(tF)
 {    
      this->value = value;
      this->key = key;
@@ -126,10 +127,10 @@ GetWithMetadataOperation::GetWithMetadataOperation(const std::string *key, std::
      this->flags = flags;
 }   
 
-int GetWithMetadataOperation::execute_operation()
+int GetWithRemoteEntryMetadataOperation::execute_operation()
 {  
 
-    transport->write_header(GET_WITH_METADATA, cache_name, flags);
+    transport->write_header(GET_WITH_RemoteEntryMetadata, cache_name, flags);
     transport->write_array(key);
     if((status = transport->flush()) != NO_ERROR_STATUS){
         return status;

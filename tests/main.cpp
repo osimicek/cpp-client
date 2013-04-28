@@ -12,17 +12,17 @@ int main(int, char const *[])
     remote_cache_config.cache_name = "";
 
     
-    std::cout<<"TESTING v 1.0" <<std::endl;
+    std::cout<<"TESTING client with Hot Rod v 1.0" <<std::endl;
     remote_cache_config.version = 10;
     cache = new RemoteCache(&remote_cache_config);
     UnitTest::RunAllTests();
     delete cache;
-    std::cout<<"TESTING v 1.1" <<std::endl;
+    std::cout<<"TESTING client with Hot Rod v 1.1" <<std::endl;
     remote_cache_config.version = 11;
     cache = new RemoteCache(&remote_cache_config);
     UnitTest::RunAllTests();
     delete cache;
-    std::cout<<"TESTING v 1.2" <<std::endl;
+    std::cout<<"TESTING client with Hot Rod v 1.2" <<std::endl;
     remote_cache_config.version = 12;
     cache = new RemoteCache(&remote_cache_config);
     UnitTest::RunAllTests();

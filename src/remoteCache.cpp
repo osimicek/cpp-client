@@ -32,6 +32,13 @@ RemoteCache::RemoteCache(){
     RemoteCacheConfig remote_cache_config;
     init(&remote_cache_config);
 }
+RemoteCache::~RemoteCache(){
+    close();
+    delete transportFactory;
+    if(created_marshaller){
+        delete marshaller;
+    }
+}
 
 int RemoteCache::getVersion(){
     return transportFactory->get_hotrod_version();
@@ -41,11 +48,14 @@ int RemoteCache::getKeyOwnersNum(){
 }
 
 void RemoteCache::init(RemoteCacheConfig* remote_cache_config){
+    int status;
     srand (time(NULL));
+    created_marshaller = 0;
     transportFactory = new TransportFactory(remote_cache_config->host, remote_cache_config->port, remote_cache_config->version, remote_cache_config->intelligence);
     if(DEFAULT_MARSHALLER != NULL){
         marshaller = DEFAULT_MARSHALLER;
     }else{
+        created_marshaller = 1;
         marshaller = new MarshallerJBoss();
     }
     lifespan = remote_cache_config->lifespan;
@@ -53,8 +63,10 @@ void RemoteCache::init(RemoteCacheConfig* remote_cache_config){
     flags = remote_cache_config->flags;
     cache_name = remote_cache_config->cache_name;
     
-
-    ping();
+    status = ping();
+    if(status != NO_ERROR_STATUS){
+        throw status;
+    }
 }
 
 int RemoteCache::ping(){
@@ -67,6 +79,33 @@ int RemoteCache::ping(){
 int RemoteCache::clear(){
     ClearOperation *clearOperation = new ClearOperation(*transportFactory, &cache_name, flags);
     return clearOperation->execute();
+}
+
+
+int RemoteCache::replace(VarItem key,VarItem value,int lifespan, int maxidle){
+    std::string prev_value;
+    if(lifespan < 0){lifespan = this->lifespan;}
+    if(maxidle < 0){maxidle = this->maxidle;}
+    ReplaceOperation *replaceOperation = new ReplaceOperation(&key.marshalled, &value.marshalled, &prev_value, *transportFactory, &cache_name, flags, lifespan, maxidle);
+    return replaceOperation->execute();
+}
+
+
+int RemoteCache::replaceWithVersion(VarItem key, VarItem value, long long version,int lifespan, int maxidle){
+    /**
+    * Replaces the given value only if its version matches the supplied version.
+    *
+    * @param key key to use
+    * @param value value to use
+    * @param version numeric version that should match the one in the server
+    *                for the operation to succeed
+    * @return 0 if the value has been replaced
+    */
+    std::string prev_value;
+    if(lifespan < 0){lifespan = this->lifespan;}
+    if(maxidle < 0){maxidle = this->maxidle;}
+    ReplaceIfUnmodifiedOperation *replaceIfUnmodifiedOperation = new ReplaceIfUnmodifiedOperation(&key.marshalled, &value.marshalled, &prev_value, version, *transportFactory, &cache_name, flags, lifespan, maxidle);
+    return replaceIfUnmodifiedOperation->execute();
 }
 
 
@@ -127,15 +166,23 @@ int RemoteCache::putAllAsync(std::map<VarItem,VarItem> *data,int lifespan, int m
 
 int RemoteCache::putAll(std::map<VarItem,VarItem> *data,int lifespan, int maxidle){
     std::map<VarItem,VarItem>::iterator pos;
+    int state, tmp_state = NO_ERROR_STATUS;
     if(lifespan < 0){lifespan = this->lifespan;}
     if(maxidle < 0){maxidle = this->maxidle;}
-    
     for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
-       // print_servers();
-       put(&pos->first,&pos->second,lifespan,maxidle);
+       tmp_state = put(&pos->first,&pos->second,lifespan,maxidle);
+       if(tmp_state > NO_ERROR_STATUS){
+            state = tmp_state;
+       }
     }
 
-    return 0;
+    return state;
+}
+
+int RemoteCache::remove(const VarItem key){
+    std::string prev_value;
+    RemoveOperation *removeOperation = new RemoveOperation(&key.marshalled, &prev_value, *transportFactory, &cache_name, flags);
+    return removeOperation->execute();
 }
 
 int RemoteCache::getBulk(std::map<VarItem,VarItem> *bulk){
@@ -168,7 +215,7 @@ int RemoteCache::keySet(std::vector<VarItem> *keys,int scope){
     * @param scope 1 - Global scope , 2 - Local scope
     * @return returns Vector of string
     */
-    if(transportFactory->get_hotrod_version() < VERSION_12) return ERROR_NOT_IMPLEMENTED;
+    if(transportFactory->get_hotrod_version() < VERSION_12) return NOT_SUPPORTED_VERSION_STATUS;
    
     BulkKeysGetOperation *bulkKeysGetOperation = new BulkKeysGetOperation(keys, scope, *transportFactory, &cache_name, flags);
     return bulkKeysGetOperation->execute();  
@@ -194,8 +241,7 @@ void RemoteCache::print_servers(){
 }
 
 void RemoteCache::close(){
-    // transporter->close_servers();
-
+    transportFactory->close_servers();
 }
 
 

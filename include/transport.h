@@ -39,6 +39,7 @@ class Transport{
 
         std::string packet;
         Transport(std::string, int, TransportFactory &tF);
+        ~Transport();
         void write_header(char op_code, const std::string *cache_name, int flags);
         void write_version(long long value);
         void write_varint(int value);
@@ -59,6 +60,7 @@ class Transport{
         int check_for_errors_in_response_status(char status);
         int read_new_topology_if_present();
         int create_connection();
+        int close_connection();
 };
 
 

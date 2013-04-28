@@ -26,6 +26,16 @@ TransportFactory::TransportFactory(std::string host, int port, int version, char
 
     create_transport(&host, port, 0);
 }  
+TransportFactory::~TransportFactory(){
+    Transport *transport;
+    delete consistentHash;
+    for(u_int i = 0;i<this->transports.size();i++){
+        transport = this->transports.front();
+        delete transport;
+        this->transports.pop();       
+  } 
+
+}
 
 char TransportFactory::get_intelligence(){
     return intelligence;
@@ -192,6 +202,19 @@ void TransportFactory::print_hash_bank(){
   }
 }
 
+
+void TransportFactory::close_servers(){
+  LOCK()
+  Transport *transport;
+  // int changed = 0; 
+  for(u_int i = 0;i<this->transports.size();i++){
+        transport = this->transports.front();
+        this->transports.push(transport);
+        this->transports.pop();
+        transport->close_connection();
+  } 
+  UNLOCK();
+}
 
 
 

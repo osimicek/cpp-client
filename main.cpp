@@ -313,7 +313,60 @@ void doOperation(F f)
 
 
 
+void test_speed(){
+    RemoteCache x = RemoteCache();
+    std::map<VarItem, VarItem> d;
+    for(int q = 0; q<1000;q++){
+        d[q]="abcdeskdlf";
+    }
+    std::cout << d.size() <<std::endl;
+    x.putAll(&d);
 
+    struct timeval tv;
+    unsigned long long st;
+    unsigned long long en;
+    int suma = 0,sumb = 0;
+
+    for(int test = 0; test<10;test++){
+    for(int q = 0; q<1000;q++){
+        d[q+suma]=suma;
+    }
+    gettimeofday(&tv, NULL);
+    st = ((((unsigned long long)tv.tv_sec) * 1000) + (((unsigned long long)tv.tv_usec) / 1000));
+
+  
+
+
+      x.putAll(&d);
+    gettimeofday(&tv, NULL);
+    en = ((((unsigned long long)tv.tv_sec) * 1000) + (((unsigned long long)tv.tv_usec) / 1000));
+
+
+      std::cout << en -st << "-"<<std::endl;
+      suma += en -st;
+      for(int q = 0; q<1000;q++){
+        d[q+sumb]=sumb;
+    }
+
+        gettimeofday(&tv, NULL);
+    st = ((((unsigned long long)tv.tv_sec) * 1000) + (((unsigned long long)tv.tv_usec) / 1000));
+
+  
+
+
+      x.putAllAsync(&d);
+    gettimeofday(&tv, NULL);
+    en = ((((unsigned long long)tv.tv_sec) * 1000) + (((unsigned long long)tv.tv_usec) / 1000));
+
+
+
+      std::cout << en -st <<std::endl;
+      sumb += en -st;
+    }
+    std::cout << "FINAL" <<std::endl;
+    std::cout << suma <<std::endl;
+    std::cout << sumb <<std::endl;
+}
 
 int main(){
 
@@ -420,7 +473,7 @@ int main(){
 
     // x.stats(&bulk);
     // print_map(&bulk);
-    // Metadata meta;
+    // RemoteEntryMetadata meta;
     // x.getWithMetadata(&v, &meta, &k);
     // std::cout<<std::dec<<meta.created<<std::endl;
     // // x.get(&v,&"sfs");
@@ -512,7 +565,7 @@ int main(){
     status = x.put(777, "value");
 
 
-    Metadata meta;
+    RemoteEntryMetadata meta;
 
     for(int q=0;q<1;q++){
         meta.clear();
@@ -522,14 +575,65 @@ int main(){
         meta.created<<" "<<meta.lastused<<" "<<meta.version<<std::endl;
     }
 
-    VarItem ww = "ahoj";
-    status = x.put("abc", &ww);
 
+    
+    std::map<VarItem,VarItem> data;
+    VarItem value;
+  
 
-    ww.clear();
-    status = x.get("abc",&ww);
- 
-    std::cout << "re "<<std::hex<<status <<" "<< ww <<std::endl;
+    x.clear();
+    data["key1"] = "value";
+    data["key2"] = 555;
+    data["key3"] = 55.5;
+    data[11] = "value";
+    data[22] = 555;
+    data[33] = 55.5;
+    data[1.1] = "value";
+    data[2.2] = 555;
+    data[3.3] = 55.5;
+
+    x.putAll(&data);
+
+    status = x.get("key1", &value);
+    std::cout<<"key1 "<< value << std::endl;
+    
+    
+
+    status = x.get("key2", &value);
+    std::cout<<"key2 "<< value << std::endl;
+    
+    
+
+    status = x.get("key3", &value);
+    
+    
+
+    status = x.get(11, &value);
+    
+    
+
+    status = x.get(22, &value);
+    std::cout<<"22 "<< value << std::endl;
+    
+    
+
+    status = x.get(33, &value);
+    
+    
+
+    status = x.get(1.1, &value);
+    
+    
+
+    status = x.get(2.2, &value);
+    
+    
+
+    status = x.get(3.3, &value);
+
+    std::cout<<"end " << std::endl;
+    
+    
 
 	return 0;
 }

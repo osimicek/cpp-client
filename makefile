@@ -5,7 +5,7 @@ CC= g++ -Wall -dynamic_cast  -lpthread -I.
 hotrod_lib = libHotRod.a
 main = main
 
-CPPFLAGS += -g #-Wall -W -ansi
+CPPFLAGS += -std=c++0x -g #-Wall -W -ansi
 CPPFLAGS += -I./include
 objects = include/UnitTest++/AssertException.o \
 	include/UnitTest++/Test.o \
@@ -44,10 +44,12 @@ hotrod_cli_lib_obj := 	include/murmur/MurmurHash2.o \
 						include/murmur/MurmurHash3.o \
 						src/varItem.o\
 						src/RMMap.o\
+						src/codec.o\
 						src/codec10.o\
 						src/codec11.o\
 						src/codec12.o\
 						src/transport.o\
+						src/consistentHash.o\
 						src/consistentHash10.o\
 						src/consistentHash11.o\
 						src/consistentHash12.o\
@@ -65,6 +67,7 @@ hotrod_cli_lib_obj := 	include/murmur/MurmurHash2.o \
 # 	$(CC) $(hotrod_lib) main.o -o $(main) 
 # 	@echo Running unit tests...
 # 	@./$(main)
+.PHONY: tests clean doc
 
 ALL: $(hotrod_cli_lib_obj)  $(main).o
 	$(CC) $(hotrod_cli_lib_obj) $(main).o -o $(main) 
@@ -112,8 +115,8 @@ runtests:
 	@echo "*******************"
 	./test/hotrod_test
 
-
-
+doc:
+	doxygen ./doc/conf.doxygen 
 
 
 
@@ -183,6 +186,9 @@ clean:							# smazani nezadoucich souboru
 	rm -f examples/rmmap_example
 	rm -f examples/advanced_example
 	rm -f examples/rmmap_advanced_example
+
+	rm -f -r doc/html
+	rm -f -r doc/latex
 
 pack:
 	tar cf xsimic02.tar *.cpp README Makefile *.pdf 	

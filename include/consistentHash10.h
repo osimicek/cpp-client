@@ -2,19 +2,7 @@
 #define CONSISTENTHASH10_H_INCLUDED
 
 #include <murmur/MurmurHash2.h>
-#include "transportFactory.h"
-#include "transport.h"
 
-class TransportFactory;
-class Transport;
-
-class ConsistentHash{
-    public:
-        TransportFactory &transportFactory;
-        ConsistentHash(TransportFactory &tf);
-        Transport *get_transport();
-        virtual Transport *get_transport(const std::string *key);
-};
 
 class ConsistentHash10: public ConsistentHash{
 

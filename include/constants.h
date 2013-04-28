@@ -25,7 +25,7 @@
    const char STATS_REQUEST = 0x15;
    const char PING_REQUEST = 0x17;
    const char BULK_GET_REQUEST = 0x19;
-   const char GET_WITH_METADATA = 0x1B;
+   const char GET_WITH_RemoteEntryMetadata = 0x1B;
    const char BULK_GET_KEYS_REQUEST = 0x1D;
 
 
@@ -43,7 +43,7 @@
    const char STATS_RESPONSE = 0x16;
    const char PING_RESPONSE = 0x18;
    const char BULK_GET_RESPONSE = 0x1A;
-   const char GET_WITH_METADATA_RESPONSE = 0x1C;
+   const char GET_WITH_RemoteEntryMetadata_RESPONSE = 0x1C;
    const char BULK_GET_KEYS_RESPONSE = 0x1E;
    const char ERROR_RESPONSE = 0x50;
 
@@ -65,14 +65,19 @@
 
    const char INFINITE_LIFESPAN = 0x01;
    const char INFINITE_MAXIDLE = 0x02;
+   // flags
+   const char FORCE_RETURN_PREVIOUS_VALUE = 0x01;
+   const char DEFAULT_LIFESPAN = 0x02;
+   const char DEFAULT_MAX_IDLE = 0x04;
+
 
    // server side errors
    const int INVALID_SERVER_MAGIC = 0x50; //server send bad MAGIC
 
    // client side errors
-   const int FAILED_TO_SEND = 0x60; // failed when sending data to server
-   const int FAILED_TO_CHOOSE_TRANSPORT = 0x61; // could not choose transport
-   const int ERROR_BAD_TYPE = 0x65;
-   const int ERROR_TO_BIG_STRING = 0x66;
-   const int ERROR_NOT_IMPLEMENTED = 0x67;
+   const int FAILED_TO_SEND_STATUS = 0x60; // failed when sending data to server
+   const int FAILED_TO_CHOOSE_TRANSPORT_STATUS = 0x61; // could not choose transport
+   const int ERROR_BAD_TYPE_STATUS = 0x65;
+   const int ERROR_TO_BIG_STRING_STATUS = 0x66;
+   const int NOT_SUPPORTED_VERSION_STATUS = 0x67;
 #endif

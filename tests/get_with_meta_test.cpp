@@ -28,14 +28,14 @@ TEST(It_can_get_meta_basic)
         status = cache2.put(777, "value");
         CHECK(status == NO_ERROR_STATUS);
 
-        Metadata meta;
+        RemoteEntryMetadata meta;
         status = cache2.getWithMetadata(777, &value, &meta);
         CHECK(status == NO_ERROR_STATUS);
-        std::cout <<status<<" "<<(int)meta.flag<<" "<<meta.lifespan<<" "<<meta.maxidle<<" "<<meta.created<<" "<<meta.lastused<<" "<<meta.version<<std::endl;
-        CHECK(meta.flag == 0x03);
-        CHECK(meta.lifespan == -1);
+        // std::cout <<status<<" "<<(int)meta.flag<<" "<<meta.lifespan<<" "<<meta.maxidle<<" "<<meta.created<<" "<<meta.lastused<<" "<<meta.version<<std::endl;
+        CHECK(meta.flag >= 0x02);
+        CHECK(meta.lifespan >= -1);
         CHECK(meta.maxidle == -1);
-        CHECK(meta.created == -1);
+        CHECK(meta.created >= -1);
         CHECK(meta.lastused == -1);
         CHECK(meta.version > 0);
         
@@ -57,9 +57,9 @@ TEST(It_can_get_meta_basic)
     }else{
         int status;
         VarItem value;
-        Metadata meta;
+        RemoteEntryMetadata meta;
         status = cache->getWithMetadata(777, &value, &meta);
-        CHECK(status == ERROR_NOT_IMPLEMENTED);
+        CHECK(status == NOT_SUPPORTED_VERSION_STATUS);
     }
     
 }
@@ -83,7 +83,7 @@ TEST(It_can_get_meta_adv)
         remote_cache_config2.intelligence = CLIENT_INTELLIGENCE_BASIC;
         RemoteCache cache2(&remote_cache_config2);
 
-        Metadata meta;
+        RemoteEntryMetadata meta;
         status = cache2.put(777, "value");
         CHECK(status == NO_ERROR_STATUS);
 

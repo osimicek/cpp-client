@@ -39,6 +39,7 @@ class TransportFactory{
         ConsistentHash *consistentHash;
 
         explicit TransportFactory(std::string host, int port, int version, char intelligence);
+        ~TransportFactory();
         void execute();
         int get_and_inc_message_id();
         char get_intelligence();
@@ -63,7 +64,7 @@ class TransportFactory{
         void invalidate_transports();
         void del_invalid_transports();
         void print_hash_bank();
-
+        void close_servers();
 
 };
 

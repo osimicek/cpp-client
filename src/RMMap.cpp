@@ -5,19 +5,22 @@
 RMMap::RMMap(){
   RemoteCacheConfig remote_cache_config;
   remote_cache_config.intelligence = CLIENT_INTELLIGENCE_BASIC;
-	RC = RemoteCache(&remote_cache_config);
+	RC = new RemoteCache(&remote_cache_config);
 }
 
 RMMap::RMMap(RemoteCacheConfig *remote_cache_config){
-  RC = RemoteCache(remote_cache_config);
+  RC = new RemoteCache(remote_cache_config);
+}
 
+RMMap::~RMMap(){
+    delete RC;
 }
 
 
 u_int RMMap::size(){
         //stahni_data();
         std::map<VarItem,VarItem> bulk;
-        RC.getBulk(&bulk);
+        RC->getBulk(&bulk);
 
         return bulk.size();
  }
@@ -32,39 +35,39 @@ RMItem &RMMap::operator[](const VarItem &key)
 
 void RMMap::clear()
 {
- 	RC.clear();
+ 	RC->clear();
 }
 
  // RMMap& RMMap::operator= ( const std::map<VarItem,VarItem>& x ){
  // 	return (*this);	
  // }
 
-int RMMap::erase (const VarItem &key ){
+int RMMap::erase (const VarItem key){
 	int ret;
-	ret = RC.remove(&key);
+	ret = RC->remove(key);
 	if(ret == 0) return 1;
 	return 0;
 }
 
 VarItem *RMMap::get(const VarItem *key){
   VarItem *value = new VarItem();
-  RC.get(key,value);
+  RC->get(key,value);
 
   return value;
 
 }
 
 void RMMap::set(const VarItem *key,const VarItem *value){
-	RC.put(key,value);		
+	RC->put(key,value);		
 
 }
 
 void RMMap::close(){
-  RC.close();
+  RC->close();
 }
 
 RMMap::iterator RMMap::begin(){
-	RC.getBulk(&bulk);	
+	RC->getBulk(&bulk);	
 	return bulk.begin();	
 }
 
@@ -81,9 +84,12 @@ std::ostream & operator << (std::ostream& _stream, RMItem & rmItem)
     rmItem.print(_stream);
     return _stream;
 }
+RMItem::RMItem(){}
 
 RMItem::RMItem(RMMap *m,const VarItem *key):	rm_map(m),key(key){
-	
+}
+RMItem::~RMItem(){
+    // std::cout <<"DEL item"<<std::endl;
 }
 
 
