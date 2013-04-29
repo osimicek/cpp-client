@@ -59,7 +59,7 @@ TEST(It_can_get_meta_basic)
         VarItem value;
         RemoteEntryMetadata meta;
         status = cache->getWithMetadata(777, &value, &meta);
-        CHECK(status == NOT_SUPPORTED_VERSION_STATUS);
+        CHECK(status == NOT_IN_THIS_VERSION_STATUS);
     }
     
 }

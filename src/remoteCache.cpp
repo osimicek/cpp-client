@@ -215,7 +215,7 @@ int RemoteCache::keySet(std::vector<VarItem> *keys,int scope){
     * @param scope 1 - Global scope , 2 - Local scope
     * @return returns Vector of string
     */
-    if(transportFactory->get_hotrod_version() < VERSION_12) return NOT_SUPPORTED_VERSION_STATUS;
+    if(transportFactory->get_hotrod_version() < VERSION_12) return NOT_IN_THIS_VERSION_STATUS;
    
     BulkKeysGetOperation *bulkKeysGetOperation = new BulkKeysGetOperation(keys, scope, *transportFactory, &cache_name, flags);
     return bulkKeysGetOperation->execute();  

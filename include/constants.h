@@ -79,5 +79,5 @@
    const int FAILED_TO_CHOOSE_TRANSPORT_STATUS = 0x61; // could not choose transport
    const int ERROR_BAD_TYPE_STATUS = 0x65;
    const int ERROR_TO_BIG_STRING_STATUS = 0x66;
-   const int NOT_SUPPORTED_VERSION_STATUS = 0x67;
+   const int NOT_IN_THIS_VERSION_STATUS = 0x67;
 #endif

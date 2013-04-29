@@ -76,7 +76,7 @@ TEST(It_can_get_key_set)
         int status;
         std::vector<VarItem>  k_set;
         status = cache->keySet(&k_set,2);
-        CHECK(status == NOT_SUPPORTED_VERSION_STATUS);
+        CHECK(status == NOT_IN_THIS_VERSION_STATUS);
 
     }
 
