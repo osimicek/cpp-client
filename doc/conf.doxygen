@@ -1,0 +1,8 @@
+PROJECT_NAME = 'Hot Rod client C++'
+INPUT = ./include ./src
+
+OUTPUT_DIRECTORY = doc
+
+GENERATE_HTML = YES
+
+HTML_FILE_EXTENSION = .html
