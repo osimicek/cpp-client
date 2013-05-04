@@ -79,14 +79,18 @@ class RemoteCache{
     
     template <typename TYPE>
     int put(const VarItem key,const VarItem value, TYPE target_prev_value, int lifespan=-1, int maxidle=-1);
-    int put(const VarItem key,const VarItem value, int lifespan=-1, int maxidle=-1);
+    int put(const VarItem key,const VarItem value, int lifespan, int maxidle);
+    int put(const VarItem key,const VarItem value, int lifespan);
+    int put(const VarItem key,const VarItem value);
 
     int putAll(std::map<VarItem,VarItem> *data,int lifespan=-1, int maxidle=-1);
     int putAllAsync(std::map<VarItem,VarItem> *data,int lifespan=-1, int maxidle=-1);
 
     template <typename TYPE>
     int putIfAbsent(const VarItem key, const VarItem value, TYPE target_prev_value, int lifespan=-1, int maxidle=-1);
-    int putIfAbsent(const VarItem key, const VarItem value, int lifespan=-1, int maxidle=-1);
+    int putIfAbsent(const VarItem key, const VarItem value, int lifespan, int maxidle);
+    int putIfAbsent(const VarItem key, const VarItem value, int lifespan);
+    int putIfAbsent(const VarItem key, const VarItem value);
 
     template <typename TYPE>
     int replace(const VarItem key, const VarItem value, TYPE target_prev_value, int lifespan=-1, int maxidle=-1);

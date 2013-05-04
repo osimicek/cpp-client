@@ -143,8 +143,15 @@ int RemoteCache::replaceWithVersion(VarItem key, VarItem value, long long versio
 
 int RemoteCache::put(const VarItem key, const VarItem value, int lifespan, int maxidle){
     std::string prev_value; //has no effect
-
     return put(key, value, &prev_value, lifespan, maxidle, default_flags);
+}
+int RemoteCache::put(const VarItem key, const VarItem value, int lifespan){
+    std::string prev_value; //has no effect
+    return put(key, value, &prev_value, lifespan, -1, default_flags);
+}
+int RemoteCache::put(const VarItem key, const VarItem value){
+    std::string prev_value; //has no effect
+    return put(key, value, &prev_value, -1, -1, default_flags);
 }
 
 static void *put_provider( void * t_a)
@@ -204,6 +211,14 @@ int RemoteCache::putAllAsync(std::map<VarItem,VarItem> *data,int lifespan, int m
 int RemoteCache::putIfAbsent(const VarItem key, const VarItem value, int lifespan, int maxidle){
     std::string prev_value; //has no effect
     return putIfAbsent(key, value, &prev_value, lifespan, maxidle, default_flags);
+}
+int RemoteCache::putIfAbsent(const VarItem key, const VarItem value, int lifespan){
+    std::string prev_value; //has no effect
+    return putIfAbsent(key, value, &prev_value, lifespan, -1, default_flags);
+}
+int RemoteCache::putIfAbsent(const VarItem key, const VarItem value){
+    std::string prev_value; //has no effect
+    return putIfAbsent(key, value, &prev_value, -1, -1, default_flags);
 }
 
 int RemoteCache::putAll(std::map<VarItem,VarItem> *data,int lifespan, int maxidle){
