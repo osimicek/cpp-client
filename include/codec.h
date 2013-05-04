@@ -6,6 +6,15 @@
 #include <sys/time.h>
 #include <iostream>
 
+
+#ifndef NOT_THREAD_SAFE
+    #define LOCK_T_TF() pthread_mutex_lock (&transport.transportFactory.mutex);
+    #define UNLOCK_T_TF() pthread_mutex_unlock (&transport.transportFactory.mutex);
+#else
+    #define LOCK_T_TF()
+    #define UNLOCK_T_TF()
+#endif
+
 class Transport;
 
 class Codec{

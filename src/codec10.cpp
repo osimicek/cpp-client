@@ -132,7 +132,7 @@ void Codec10::read_new_topology_if_present(){
 }
 
 void Codec10::update_transport_bank(){
-  pthread_mutex_lock (&transport.transportFactory.mutex);
+  LOCK_T_TF();
   Transport *tmp_transport;
   
   transport.transportFactory.hash_transport_bank.clear();
@@ -156,7 +156,7 @@ void Codec10::update_transport_bank(){
   std::sort(transport.transportFactory.hash_vector.begin(), transport.transportFactory.hash_vector.end());
 
     
-  pthread_mutex_unlock (&transport.transportFactory.mutex);
+  UNLOCK_T_TF();
 
 }
 

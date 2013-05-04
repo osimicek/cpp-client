@@ -2,9 +2,8 @@
 ConsistentHash::ConsistentHash(TransportFactory &tf):transportFactory(tf){}
 
 
-
 Transport *ConsistentHash::get_transport(){
-    pthread_mutex_lock (&transportFactory.mutex);
+    LOCK_TF();
     Transport *transport = NULL;
     
     if(transportFactory.transports.size() > 0){
@@ -18,7 +17,7 @@ Transport *ConsistentHash::get_transport(){
     }
  
     if(transport != NULL)   transport->used = 1;
-    pthread_mutex_unlock (&transportFactory.mutex);
+    UNLOCK_TF()
     
 
     return transport;

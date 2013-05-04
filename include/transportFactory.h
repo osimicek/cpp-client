@@ -14,12 +14,19 @@
 #include "constants.h"
 
 class ConsistentHash;
-
+#define NOT_THREAD_SAFE
 class TransportFactory{
-    #define LOCK() pthread_mutex_lock (&mutex);
-    #define LOCK_ID() pthread_mutex_lock (&mutex_tf_id);
-    #define UNLOCK() pthread_mutex_unlock (&mutex);
-    #define UNLOCK_ID() pthread_mutex_unlock (&mutex_tf_id);
+    #ifndef NOT_THREAD_SAFE
+        #define LOCK() pthread_mutex_lock (&mutex); std::cout << "lock" <<std::endl;
+        #define LOCK_ID() pthread_mutex_lock (&mutex_tf_id);
+        #define UNLOCK() pthread_mutex_unlock (&mutex);
+        #define UNLOCK_ID() pthread_mutex_unlock (&mutex_tf_id);
+    #else
+        #define LOCK();
+        #define LOCK_ID() ;
+        #define UNLOCK() ;
+        #define UNLOCK_ID();
+    #endif
     private:
         int message_id;
         int hotrod_version;

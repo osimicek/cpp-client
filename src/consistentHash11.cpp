@@ -18,7 +18,7 @@ Transport *ConsistentHash11::get_transport(const std::string *key){
         int random_choice = rand();
         int found = 0;
         for(int i=0; i<key_owners_num; i++){
-            pthread_mutex_lock (&transportFactory.mutex);
+            LOCK_TF();
             if(transportFactory.hash_transport_bank.size() > 0){
                 int index = find_index_of_transport(hash);
                 int index_to_return = (index + ((random_choice + i) % key_owners_num)) % transportFactory.hash_transport_bank.size();
@@ -29,7 +29,7 @@ Transport *ConsistentHash11::get_transport(const std::string *key){
                 transport->used = 1;
                 found = 1;
             }
-            pthread_mutex_unlock (&transportFactory.mutex);
+            UNLOCK_TF();
             if(found) break;
         }
     }

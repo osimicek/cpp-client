@@ -18,11 +18,14 @@ RMMap::~RMMap(){
 
 
 u_int RMMap::size(){
-        //stahni_data();
-        std::map<VarItem,VarItem> bulk;
-        RC->getBulk(&bulk);
+    int status;
+    std::map<VarItem,VarItem> bulk;
+    status = RC->getBulk(&bulk);
+    if(status != NO_ERROR_STATUS){
+        throw status;
+    }
 
-        return bulk.size();
+    return bulk.size();
  }
 
 RMItem &RMMap::operator[](const VarItem &key)
@@ -35,7 +38,11 @@ RMItem &RMMap::operator[](const VarItem &key)
 
 void RMMap::clear()
 {
- 	RC->clear();
+    int status;
+ 	  status = RC->clear();
+    if(status != NO_ERROR_STATUS){
+        throw status;
+    }
 }
 
  // RMMap& RMMap::operator= ( const std::map<VarItem,VarItem>& x ){
@@ -43,36 +50,49 @@ void RMMap::clear()
  // }
 
 int RMMap::erase (const VarItem key){
-	int ret;
-	ret = RC->remove(key);
-	if(ret == 0) return 1;
-	return 0;
+  	int status;
+  	status = RC->remove(key);
+  	if(status != NO_ERROR_STATUS){
+          throw status;
+      }
 }
 
 VarItem *RMMap::get(const VarItem *key){
-  VarItem *value = new VarItem();
-  RC->get(key,value);
+    int status;
+    VarItem *value = new VarItem();
+    status = RC->get(key,value);
+    if(status != NO_ERROR_STATUS){
+        throw status;
+    }
 
-  return value;
+    return value;
 
 }
 
 void RMMap::set(const VarItem *key,const VarItem *value){
-	RC->put(key,value);		
+    int status;
+    status = RC->put(key,value);		
+    if(status != NO_ERROR_STATUS){
+        throw status;
+    }
 
 }
 
 void RMMap::close(){
-  RC->close();
+    RC->close();
 }
 
 RMMap::iterator RMMap::begin(){
-	RC->getBulk(&bulk);	
-	return bulk.begin();	
+    int status;
+  	status = RC->getBulk(&bulk);	
+    if(status != NO_ERROR_STATUS){
+        throw status;
+    }
+  	return bulk.begin();	
 }
 
 RMMap::iterator RMMap::end(){
-	return bulk.end();	
+	 return bulk.end();	
 }
 
 

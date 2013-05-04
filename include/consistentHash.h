@@ -3,7 +3,13 @@
 
 #include "transportFactory.h"
 #include "transport.h"
-#include "consistentHash.h"
+#ifndef NOT_THREAD_SAFE
+    #define LOCK_TF() pthread_mutex_lock (&transportFactory.mutex);
+    #define UNLOCK_TF() pthread_mutex_unlock (&transportFactory.mutex);
+#else
+    #define LOCK_TF()
+    #define UNLOCK_TF()
+#endif
 
 class TransportFactory;
 class Transport;
