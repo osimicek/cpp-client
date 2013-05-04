@@ -21,7 +21,7 @@ void Codec::write_header(char op_code, const std::string *cache_name, int flags,
     transport.write_char(version); //version 10 or 11
     transport.write_char(op_code); //op_code
     transport.write_array(cache_name); //cache name length
-    transport.write_char(flags); //flags
+    transport.write_varint(flags); //flags
     transport.write_char(transport.transportFactory.get_intelligence()); //intelligenc
     transport.write_varint(transport.transportFactory.get_topology_id()); //topology
     //todo change once TX support is added

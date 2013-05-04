@@ -194,7 +194,7 @@ int RemoveOperation::execute_operation()
     }
 
     status = transport->read_header();
-    if(status == NO_ERROR_STATUS){
+    if(status == NO_ERROR_STATUS or status == KEY_DOES_NOT_EXIST_STATUS){
         return_possible_prev_value(prev_value);
         if(DEBUG)std::cout << *prev_value << std::endl;
     }
@@ -222,7 +222,7 @@ int RemoveIfUnmodifiedOperation::execute_operation()
     }
 
     status = transport->read_header();
-    if(status == NO_ERROR_STATUS){
+    if(status == NO_ERROR_STATUS or status == NOT_PUT_REMOVED_REPLACED_STATUS){
         return_possible_prev_value(prev_value);
         if(DEBUG)std::cout << *prev_value << std::endl;
     }
@@ -272,7 +272,7 @@ int PutBasedOperation::execute_operation(int op_code){
     }
     
     status = transport->read_header();
-    if(status == NO_ERROR_STATUS){
+    if(status == NO_ERROR_STATUS or status == NOT_PUT_REMOVED_REPLACED_STATUS){
         return_possible_prev_value(prev_value);
         if(DEBUG)std::cout << *prev_value << std::endl;
     }
@@ -328,7 +328,7 @@ int ReplaceIfUnmodifiedOperation::execute_operation()
         return status;
     }
     status = transport->read_header();
-    if(status == NO_ERROR_STATUS){
+    if(status == NO_ERROR_STATUS or status == NOT_PUT_REMOVED_REPLACED_STATUS){
         return_possible_prev_value(prev_value);
         if(DEBUG)std::cout << *prev_value << std::endl;
     }

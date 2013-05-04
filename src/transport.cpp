@@ -207,7 +207,6 @@ void Transport::read_array(std::string *arr){
 
 
 int Transport::read_header(){
-    int hotrod_version = transportFactory.get_hotrod_version();
     return codec->read_header();
 }
 

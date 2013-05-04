@@ -18,9 +18,9 @@ int Codec10::read_header(){
 
 
     magic = transport.read_byte();
-      if (magic != RESPONSE_MAGIC) {
+    if (magic != RESPONSE_MAGIC) {
         if(DEBUG){
-            std::cerr <<std::hex<< "INVALID_SERVER_MAGIC, got "<< (u_short)magic<< std::endl;
+            std::cerr <<std::hex<< "INVALID_SERVER_MAGIC, got "<<   (int)magic<< std::endl;
         }
         return INVALID_SERVER_MAGIC;
     }

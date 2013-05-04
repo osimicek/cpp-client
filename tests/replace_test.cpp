@@ -127,4 +127,68 @@ TEST(It_can_replace_with_version)
 
 }
 
+TEST(It_can_replace_with_obtain_prev_value)
+{
+    VarItem prev_value;
+    int status;
+
+    CLEAR();
+
+    status = cache->replace("key", "value", &prev_value);
+    CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
+    CHECK(prev_value == "");
+
+    status = cache->replace("key", "value", &prev_value);
+    CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
+    CHECK(prev_value == "");
+
+
+    cache->put("key", "value1");
+
+    status = cache->replace("key", "value2", &prev_value);
+    CHECK(status == NO_ERROR_STATUS);
+    CHECK(prev_value == "value1");
+
+    status = cache->replace("key", "value3", &prev_value);
+    CHECK(status == NO_ERROR_STATUS);
+    CHECK(prev_value == "value2");
+    
+}
+
+TEST(It_can_replace_with_version_with_obtain_prev_value)
+{
+    VarItem value, prev_value;
+    int status;
+    long long version;
+
+    CLEAR();
+
+    status = cache->put(12.3, 45.6);
+    CHECK(status == NO_ERROR_STATUS);
+
+    value.clear();
+    status = cache->getWithVersion(12.3, &value, &version);
+    CHECK(status == NO_ERROR_STATUS);
+    CHECK(value == 45.6);
+
+
+    status = cache->replaceWithVersion(12.3, 999, version +1, &prev_value);
+    CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
+    CHECK(prev_value == 45.6);
+
+    status = cache->getWithVersion(12.3, &value, &version);
+    CHECK(status == NO_ERROR_STATUS);
+    CHECK(value == 45.6);
+
+     status = cache->replaceWithVersion(12.3, 999, version, &prev_value);
+    CHECK(status == NO_ERROR_STATUS);
+    CHECK(prev_value == 45.6);
+
+    status = cache->getWithVersion(12.3, &value, &version);
+    CHECK(status == NO_ERROR_STATUS);
+    CHECK(value == 999);
+
+    
+}
+
 }

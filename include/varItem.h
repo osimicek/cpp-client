@@ -10,64 +10,37 @@
 
 
 class VarItem{
-    public:
-
         Marshaller* marshaller;
+        bool alocated_marshaller;
+    public:
         std::string marshalled;
+        VarItem();
+        VarItem(const std::string value);
+        VarItem(const std::string *value);
+        VarItem(const char *value);
+        VarItem(const double value);
+        VarItem(const int value);
+        VarItem(const VarItem *item);
+        VarItem(const VarItem& origin);
+         ~VarItem();
 
+        void init();
+        int get_type();
+        void clear();
+        void set_value(std::string *value);
+        std::ostream & print(std::ostream& _stream) const;
 
-        VarItem(){init();}
+        bool operator==(const VarItem &other) const;
+        bool operator!=(const VarItem &other) const;
+        bool operator==(const std::string  &other) const;
+        bool operator!=(const std::string  &other) const;
+        bool operator==(const char*  other) const;
+        bool operator!=(const char*  other) const;
+        bool operator==(const int &other) const;
+        bool operator!=(const int &other) const;
+        bool operator==(const double &other) const;
+        bool operator!=(const double &other) const;
 
-        VarItem(const std::string value){
-            init();
-            marshaller->dump(&value, &marshalled);
-        }
-
-        VarItem(const std::string *value){
-            init();
-            marshaller->dump(value, &marshalled);
-        }
-
-        VarItem(const char *value){
-            init(); 
-            marshaller->dump(value, &marshalled);
-        }
-
-        VarItem(const double value){
-            init();
-            marshaller->dump(value, &marshalled);
-        }
-
-        VarItem(const int value){
-            init();
-            marshaller->dump(value, &marshalled);
-        }
-
-        void init(){
-            
-            if(DEFAULT_MARSHALLER != NULL){
-                // std::cout<<std::dec<< "WORKED"<<DEFAULT_MARSHALLER<< std::flush;
-                marshaller = DEFAULT_MARSHALLER;
-            }else{
-  
-                marshaller = new MarshallerJBoss();
-            }
-        }
-
-        int get_type(){
-            return marshaller->get_type(&marshalled);
-        }
-
-        void clear(){
-            marshalled  = "";
-        }
-
-        // operator std::string*() { 
-        //     std::string *strVal = new std::string();
-        //     marshaller->load(strVal, &marshalled);
-
-        //     return strVal;
-        // }
         virtual operator std::string() {
             std::string strVal; 
             marshaller->load(&marshalled, &strVal);
@@ -122,67 +95,6 @@ class VarItem{
             marshaller->dump(value, &marshalled);
             return *this;
         }
-
-        virtual void set_value(std::string *value){
-            marshalled = *value;
-        }
-
-        virtual std::ostream & print(std::ostream& _stream) const{
-            marshaller->print(_stream, &marshalled);
-            return _stream;
-        }
-
-        bool operator==(const VarItem &other) const { 
-            return marshalled == other.marshalled;
-         }
-
-         bool operator!=(const VarItem &other) const { 
-            return marshalled != other.marshalled;
-         }
-
-         bool operator==(const std::string  &other) const { 
-            std::string strVal; 
-            marshaller->load(&marshalled, &strVal);
-            return  strVal == other;
-         }
-
-         bool operator!=(const std::string  &other) const { 
-            std::string strVal; 
-            marshaller->load(&marshalled, &strVal);
-            return  strVal != other;
-         }
-
-         bool operator==(const char*  other) const { 
-            return  *this == std::string(other);
-         }
-
-         bool operator!=(const char*  other) const { 
-            return  *this != std::string(other);
-         }
-
-         bool operator==(const int &other) const { 
-            int intVal;
-            marshaller->load(&marshalled, &intVal);
-            return intVal == other;
-         }
-
-         bool operator!=(const int &other) const { 
-            int intVal;
-            marshaller->load(&marshalled, &intVal);
-            return intVal == other;
-         }
-
-         bool operator==(const double &other) const { 
-            double doubleVal;
-            marshaller->load(&marshalled, &doubleVal);
-            return doubleVal == other;
-         }
-
-         bool operator!=(const double &other) const { 
-            double doubleVal;
-            marshaller->load(&marshalled, &doubleVal);
-            return doubleVal == other;
-         }
         
 };
 

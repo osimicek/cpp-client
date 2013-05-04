@@ -93,4 +93,35 @@ TEST(It_can_put_if_absent_double)
 
 }
 
+TEST(It_can_put_if_absent_with_obtain_prev_value)
+{
+    int status;
+    VarItem prev_value, curr_value;
+
+    CLEAR();
+    
+    status = cache->putIfAbsent("key", "value1");
+    CHECK(status == NO_ERROR_STATUS);
+    status = cache->get("key", &curr_value);
+    CHECK(curr_value == "value1");
+
+    status = cache->putIfAbsent("key", 5, &prev_value);
+    CHECK(status == NOT_PUT_REMOVED_REPLACED_STATUS);
+    CHECK(prev_value == "value1");
+    status = cache->get("key", &curr_value);
+    CHECK(curr_value == "value1");
+    // status = cache->putIfAbsent("key", 5.555, &prev_value);
+    // CHECK(status == NO_ERROR_STATUS);
+    // CHECK(prev_value == 5);
+    // status = cache->get("key", &curr_value);
+    // CHECK(curr_value == 5.555);
+
+    // status = cache->putIfAbsent("key", "value1", &prev_value);
+    // CHECK(status == NO_ERROR_STATUS);
+    // CHECK(prev_value == 5.555);
+    // status = cache->get("key", &curr_value);
+    // CHECK(curr_value == "value1");
+
+}
+
 }

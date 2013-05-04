@@ -40,7 +40,7 @@ TEST(It_can_get_meta_basic)
         CHECK(meta.version > 0);
         
 
-        status = cache2.put(777, "value", 999, 999);
+        status = cache2.put(777, "value", 60000, 10000);
         CHECK(status == NO_ERROR_STATUS);
 
         meta.clear();
@@ -50,7 +50,7 @@ TEST(It_can_get_meta_basic)
         CHECK(meta.flag == 0x00);
         CHECK(meta.lifespan > 0);
 
-        CHECK(meta.maxidle == 999);
+        CHECK(meta.maxidle == 10000);
         CHECK(meta.created > 0);
         CHECK(meta.lastused > 0);
         CHECK(meta.version > 0);

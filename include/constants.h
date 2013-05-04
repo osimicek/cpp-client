@@ -72,7 +72,7 @@
 
 
    // server side errors
-   const int INVALID_SERVER_MAGIC = 0x50; //server send bad MAGIC
+   const int INVALID_SERVER_MAGIC = 0x59; //server send bad MAGIC
 
    // client side errors
    const int FAILED_TO_SEND_STATUS = 0x60; // failed when sending data to server

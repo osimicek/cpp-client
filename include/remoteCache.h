@@ -47,10 +47,23 @@ class RemoteCache{
   private:
     TransportFactory *transportFactory;
     Marshaller *marshaller;
-    int lifespan, maxidle, flags;
+    int default_lifespan, default_maxidle, default_flags;
     int created_marshaller;
     std::string cache_name;
     void init(RemoteCacheConfig* remote_cache_config);
+
+    template <typename TYPE>
+    int put(const VarItem key,const VarItem value, TYPE target_prev_value, int lifespan, int maxidle, int flags);
+    template <typename TYPE>
+    int putIfAbsent(const VarItem key, const VarItem value, TYPE target_prev_value, int lifespan, int maxidle, int flags);
+    template <typename TYPE>
+    int replace(const VarItem key, const VarItem value, TYPE target_prev_value, int lifespan, int maxidle, int flags);
+    template <typename TYPE>
+    int replaceWithVersion(VarItem key, VarItem value, long long version, TYPE target_prev_value, int lifespan, int maxidle, int flags);
+    template <typename TYPE>
+    int remove(const VarItem key, TYPE target_prev_value, int flags);
+    template <typename TYPE>
+    int removeWithVersion(const VarItem key, long long version, TYPE target_prev_value, int flags);
   public:
     RemoteCache(RemoteCacheConfig* remote_cache_config);
     RemoteCache(std::string host, int port);
@@ -63,24 +76,39 @@ class RemoteCache{
     int stats(std::map<std::string,std::string> *stats);
     int ping();
     int clear();
-    template <typename TYPE,typename TYPE2>
-    int put(const TYPE key,const TYPE2 value,int lifespan=-1, int maxidle=-1);
+    
+    template <typename TYPE>
+    int put(const VarItem key,const VarItem value, TYPE target_prev_value, int lifespan=-1, int maxidle=-1);
+    int put(const VarItem key,const VarItem value, int lifespan=-1, int maxidle=-1);
 
     int putAll(std::map<VarItem,VarItem> *data,int lifespan=-1, int maxidle=-1);
     int putAllAsync(std::map<VarItem,VarItem> *data,int lifespan=-1, int maxidle=-1);
-    template <typename TYPE,typename TYPE2>
-    int putIfAbsent(const TYPE key,const TYPE2 value,int lifespan=-1, int maxidle=-1);
-
-    int replace(VarItem key, VarItem value,int lifespan=-1, int maxidle=-1);
-
-    int replaceWithVersion(VarItem key,VarItem value,long long version,int lifespan=-1, int maxidle=-1);
 
     template <typename TYPE>
-    int replaceWithVersion(VarItem key,VarItem value, TYPE target_prev_value, long long version,int lifespan=-1, int maxidle=-1);
+    int putIfAbsent(const VarItem key, const VarItem value, TYPE target_prev_value, int lifespan=-1, int maxidle=-1);
+    int putIfAbsent(const VarItem key, const VarItem value, int lifespan=-1, int maxidle=-1);
 
+    template <typename TYPE>
+    int replace(const VarItem key, const VarItem value, TYPE target_prev_value, int lifespan=-1, int maxidle=-1);
+    int replace(VarItem key, VarItem value, int lifespan, int maxidle);
+    int replace(VarItem key, VarItem value, int lifespan);
+    int replace(VarItem key, VarItem value);
+
+    template <typename TYPE>
+    int replaceWithVersion(VarItem key, VarItem value, long long version, TYPE target_prev_value, int lifespan=-1, int maxidle=-1);
+    int replaceWithVersion(VarItem key, VarItem value, long long version, int lifespan, int maxidle);
+    int replaceWithVersion(VarItem key, VarItem value, long long version, int lifespan);
+    int replaceWithVersion(VarItem key, VarItem value, long long version);
+
+    template <typename TYPE>
+    int remove(const VarItem key, TYPE target_prev_value);
     int remove(const VarItem key);
+
     template <typename TYPE>
-    int removeWithVersion(const TYPE key, long long version);
+    int removeWithVersion(const VarItem key, long long version, TYPE target_prev_value);
+    int removeWithVersion(const VarItem key, long long version);
+
+
     template <typename TYPE>
     int containsKey(const TYPE key);
 
@@ -113,9 +141,13 @@ int RemoteCache::get(const TYPE key, TYPE2 value){
     std::string m_value, m_key;
     marshaller->dump(key, &m_key);
 
-    GetOperation *getOperation = new GetOperation(&m_key, &m_value, *transportFactory, &cache_name, flags);
+    GetOperation getOperation(&m_key,
+                             &m_value,
+                             *transportFactory,
+                             &cache_name,
+                             default_flags);
     
-    status = getOperation->execute();
+    status = getOperation.execute();
     marshaller->load(&m_value, value);
     return status;   
 };
@@ -126,9 +158,14 @@ int RemoteCache::getWithVersion(const TYPE key, TYPE2 value,long long *version){
     int status = 0;
     std::string m_value, m_key;
     marshaller->dump(key, &m_key);
-    GetWithVersionOperation *getWithVersionOperation = new GetWithVersionOperation(&m_key, &m_value, version, *transportFactory, &cache_name, flags);
+    GetWithVersionOperation getWithVersionOperation(&m_key,
+                                                 &m_value,
+                                                 version,
+                                                 *transportFactory,
+                                                 &cache_name,
+                                                 default_flags);
     
-    status = getWithVersionOperation->execute();
+    status = getWithVersionOperation.execute();
     marshaller->load(&m_value, value);
     return status;  
 }
@@ -139,43 +176,96 @@ int RemoteCache::getWithMetadata(const TYPE key, TYPE2 value, RemoteEntryMetadat
     int status = 0;
     std::string m_value, m_key;
     marshaller->dump(key, &m_key);
-    GetWithRemoteEntryMetadataOperation *getWithRemoteEntryMetadataOperation = new GetWithRemoteEntryMetadataOperation(&m_key, &m_value, meta, *transportFactory, &cache_name, flags);
+    GetWithRemoteEntryMetadataOperation getWithRemoteEntryMetadataOperation(&m_key,
+                                                                         &m_value,
+                                                                         meta,
+                                                                         *transportFactory,
+                                                                         &cache_name,
+                                                                         default_flags);
     
-    status = getWithRemoteEntryMetadataOperation->execute();
+    status = getWithRemoteEntryMetadataOperation.execute();
     marshaller->load(&m_value, value);
     return status;    
 }
 
 
-template <typename TYPE,typename TYPE2>
-int RemoteCache::put(const TYPE key,const TYPE2 value,int lifespan, int maxidle){
+template <typename TYPE>
+int RemoteCache::put(const VarItem key, const VarItem value, TYPE target_prev_value, int lifespan, int maxidle, int flags){
     std::string prev_value;
-    std::string m_value, m_key;
-    marshaller->dump(key, &m_key);
-    marshaller->dump(value, &m_value);
+    int status;
 
-    if(lifespan < 0){lifespan = this->lifespan;}
-    if(maxidle < 0){maxidle = this->maxidle;}
-    PutOperation *putOperation = new PutOperation(&m_key, &m_value, &prev_value, *transportFactory, &cache_name, flags, lifespan, maxidle);
-    return putOperation->execute();
+    if(lifespan < 0){lifespan = this->default_lifespan;}
+    if(maxidle < 0){maxidle = this->default_maxidle;}
+    PutOperation putOperation(&key.marshalled,
+                            &value.marshalled,
+                            &prev_value,
+                            *transportFactory,
+                            &cache_name,
+                            flags,
+                            lifespan,
+                            maxidle);
+    status = putOperation.execute();
+    marshaller->load(&prev_value, target_prev_value);
+    return status;
 };
 
-template <typename TYPE,typename TYPE2>
-int RemoteCache::putIfAbsent(const TYPE key,const TYPE2 value,int lifespan, int maxidle){
+template <typename TYPE>
+int RemoteCache::put(const VarItem key, const VarItem value, TYPE target_prev_value, int lifespan, int maxidle){
+    return put(key, value, target_prev_value, lifespan, maxidle, default_flags|FORCE_RETURN_PREVIOUS_VALUE);
+}
+
+template <typename TYPE>
+int RemoteCache::putIfAbsent(const VarItem key, const VarItem value, TYPE target_prev_value, int lifespan, int maxidle, int flags){
     std::string prev_value;
-    std::string m_value, m_key;
-    marshaller->dump(key, &m_key);
-    marshaller->dump(value, &m_value);
-    if(lifespan < 0){lifespan = this->lifespan;}
-    if(maxidle < 0){maxidle = this->maxidle;}
-    PutIfAbsentOperation *putIfAbsentOperation = new PutIfAbsentOperation(&m_key, &m_value, &prev_value, *transportFactory, &cache_name, flags, lifespan, maxidle);
-    return putIfAbsentOperation->execute();
+    int status;
+    if(lifespan < 0){lifespan = this->default_lifespan;}
+    if(maxidle < 0){maxidle = this->default_maxidle;}
+    PutIfAbsentOperation putIfAbsentOperation(&key.marshalled,
+                                            &value.marshalled,
+                                            &prev_value,
+                                            *transportFactory,
+                                            &cache_name,
+                                            flags,
+                                            lifespan,
+                                            maxidle);
+    status =  putIfAbsentOperation.execute();
+    marshaller->load(&prev_value, target_prev_value);
+    return status;
+}
+
+template <typename TYPE>
+int RemoteCache::putIfAbsent(const VarItem key, const VarItem value, TYPE target_prev_value, int lifespan, int maxidle){
+    return putIfAbsent(key, value, target_prev_value, lifespan, maxidle, default_flags|FORCE_RETURN_PREVIOUS_VALUE);
+}
+
+template <typename TYPE>
+int RemoteCache::replace(const VarItem key, const VarItem value, TYPE target_prev_value, int lifespan, int maxidle, int flags){
+    std::string prev_value;
+    int status;
+
+    if(lifespan < 0){lifespan = this->default_lifespan;}
+    if(maxidle < 0){maxidle = this->default_maxidle;}
+    ReplaceOperation replaceOperation(&key.marshalled,
+                                        &value.marshalled,
+                                        &prev_value,
+                                        *transportFactory,
+                                        &cache_name,
+                                        flags,
+                                        lifespan,
+                                        maxidle);
+    status = replaceOperation.execute();
+    marshaller->load(&prev_value, target_prev_value);
+    return status;
+}
+
+template <typename TYPE>
+int RemoteCache::replace(const VarItem key, const VarItem value, TYPE target_prev_value, int lifespan, int maxidle){
+    return replace(key, value, target_prev_value, lifespan, maxidle, default_flags|FORCE_RETURN_PREVIOUS_VALUE);
 }
 
 
-
 template <typename TYPE>
-int RemoteCache::replaceWithVersion(VarItem key, VarItem value, TYPE target_prev_value, long long version,int lifespan, int maxidle){
+int RemoteCache::replaceWithVersion(VarItem key, VarItem value, long long version, TYPE target_prev_value, int lifespan, int maxidle, int flags){
     /**
     * Replaces the given value only if its version matches the supplied version.
     *
@@ -186,24 +276,48 @@ int RemoteCache::replaceWithVersion(VarItem key, VarItem value, TYPE target_prev
     * @return 0 if the value has been replaced
     */
     std::string prev_value;
-    if(lifespan < 0){lifespan = this->lifespan;}
-    if(maxidle < 0){maxidle = this->maxidle;}
-    ReplaceIfUnmodifiedOperation *replaceIfUnmodifiedOperation = new ReplaceIfUnmodifiedOperation(&key.marshalled, 
-                                                                                                &value.marshalled, 
-                                                                                                &prev_value, version, 
-                                                                                                *transportFactory, 
-                                                                                                &cache_name, 
-                                                                                                flags|FORCE_RETURN_PREVIOUS_VALUE, 
-                                                                                                lifespan, 
-                                                                                                maxidle);
+    int status;
+    if(lifespan < 0){lifespan = this->default_lifespan;}
+    if(maxidle < 0){maxidle = this->default_maxidle;}
+    ReplaceIfUnmodifiedOperation replaceIfUnmodifiedOperation(&key.marshalled, 
+                                                            &value.marshalled, 
+                                                            &prev_value, 
+                                                            version, 
+                                                            *transportFactory, 
+                                                            &cache_name, 
+                                                            flags, 
+                                                            lifespan, 
+                                                            maxidle);
+    status = replaceIfUnmodifiedOperation.execute();
     marshaller->load(&prev_value, target_prev_value);
-    return replaceIfUnmodifiedOperation->execute();
+    return status;
 }
 
-
+template <typename TYPE>
+int RemoteCache::replaceWithVersion(VarItem key, VarItem value, long long version, TYPE target_prev_value, int lifespan, int maxidle){
+    return replaceWithVersion(key, value, version, target_prev_value, lifespan, maxidle, default_flags|FORCE_RETURN_PREVIOUS_VALUE);
+}
 
 template <typename TYPE>
-int RemoteCache::removeWithVersion(const TYPE key, long long version){
+int RemoteCache::remove(const VarItem key, TYPE target_prev_value, int flags){
+    std::string prev_value;
+    int status;
+    RemoveOperation removeOperation(&key.marshalled, 
+                                    &prev_value, 
+                                    *transportFactory, 
+                                    &cache_name, 
+                                    flags);
+    status = removeOperation.execute();
+    marshaller->load(&prev_value, target_prev_value);
+    return status;
+}
+template <typename TYPE>
+int RemoteCache::remove(const VarItem key, TYPE target_prev_value){
+    return remove(key, target_prev_value, default_flags|FORCE_RETURN_PREVIOUS_VALUE);
+}
+
+template <typename TYPE>
+int RemoteCache::removeWithVersion(const VarItem key, long long version, TYPE target_prev_value, int flags){
     /**
     * Removes the given entry only if its version matches the supplied version.
     *
@@ -213,19 +327,33 @@ int RemoteCache::removeWithVersion(const TYPE key, long long version){
     * @return 0 if the value has been removed
     */
     std::string prev_value;
-    std::string m_key;
-    marshaller->dump(key, &m_key);
-    RemoveIfUnmodifiedOperation *removeIfUnmodifiedOperation = new RemoveIfUnmodifiedOperation(&m_key, &prev_value, version, *transportFactory, &cache_name, flags);
-    return removeIfUnmodifiedOperation->execute();
-    
+    int status;
+
+    RemoveIfUnmodifiedOperation removeIfUnmodifiedOperation(&key.marshalled, 
+                                                         &prev_value,
+                                                         version,
+                                                         *transportFactory,
+                                                         &cache_name,
+                                                         flags);
+    status = removeIfUnmodifiedOperation.execute();
+    marshaller->load(&prev_value, target_prev_value);
+    return status;
+}
+
+template <typename TYPE>
+int RemoteCache::removeWithVersion(const VarItem key, long long version, TYPE target_prev_value){
+    return removeWithVersion(key, version, target_prev_value, default_flags|FORCE_RETURN_PREVIOUS_VALUE);
 }
 
 template <typename TYPE>
 int RemoteCache::containsKey(const TYPE key){
     std::string m_key;
     marshaller->dump(key, &m_key);
-    ContainsKeyOperation *containsKeyOperation = new ContainsKeyOperation(&m_key, *transportFactory, &cache_name, flags);
-    return containsKeyOperation->execute();
+    ContainsKeyOperation containsKeyOperation(&m_key,
+                                             *transportFactory,
+                                             &cache_name,
+                                             default_flags);
+    return containsKeyOperation.execute();
 }
 
 

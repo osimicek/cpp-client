@@ -58,9 +58,9 @@ void RemoteCache::init(RemoteCacheConfig* remote_cache_config){
         created_marshaller = 1;
         marshaller = new MarshallerJBoss();
     }
-    lifespan = remote_cache_config->lifespan;
-    maxidle = remote_cache_config->maxidle;
-    flags = remote_cache_config->flags;
+    default_lifespan = remote_cache_config->lifespan;
+    default_maxidle = remote_cache_config->maxidle;
+    default_flags = remote_cache_config->flags;
     cache_name = remote_cache_config->cache_name;
     
     status = ping();
@@ -70,24 +70,33 @@ void RemoteCache::init(RemoteCacheConfig* remote_cache_config){
 }
 
 int RemoteCache::ping(){
-    PingOperation *pingOperation = new PingOperation(*transportFactory, &cache_name, flags);
-    return pingOperation->execute();
+    PingOperation pingOperation(*transportFactory,
+                                 &cache_name,
+                                 default_flags);
+    return pingOperation.execute();
 }
 
 
 
 int RemoteCache::clear(){
-    ClearOperation *clearOperation = new ClearOperation(*transportFactory, &cache_name, flags);
-    return clearOperation->execute();
+    ClearOperation clearOperation(*transportFactory,
+                                 &cache_name,
+                                 default_flags);
+    return clearOperation.execute();
 }
 
 
-int RemoteCache::replace(VarItem key,VarItem value,int lifespan, int maxidle){
-    std::string prev_value;
-    if(lifespan < 0){lifespan = this->lifespan;}
-    if(maxidle < 0){maxidle = this->maxidle;}
-    ReplaceOperation *replaceOperation = new ReplaceOperation(&key.marshalled, &value.marshalled, &prev_value, *transportFactory, &cache_name, flags, lifespan, maxidle);
-    return replaceOperation->execute();
+int RemoteCache::replace(const VarItem key, const VarItem value, int lifespan, int maxidle){
+    std::string prev_value; //has no effect
+    return replace(key, value, &prev_value, lifespan, maxidle, default_flags);
+}
+int RemoteCache::replace(const VarItem key, const VarItem value, int lifespan){
+    std::string prev_value; //has no effect
+    return replace(key, value, &prev_value, lifespan, -1, default_flags);
+}
+int RemoteCache::replace(const VarItem key, const VarItem value){
+    std::string prev_value; //has no effect
+    return replace(key, value, &prev_value, -1, -1, default_flags);
 }
 
 
@@ -101,14 +110,42 @@ int RemoteCache::replaceWithVersion(VarItem key, VarItem value, long long versio
     *                for the operation to succeed
     * @return 0 if the value has been replaced
     */
-    std::string prev_value;
-    if(lifespan < 0){lifespan = this->lifespan;}
-    if(maxidle < 0){maxidle = this->maxidle;}
-    ReplaceIfUnmodifiedOperation *replaceIfUnmodifiedOperation = new ReplaceIfUnmodifiedOperation(&key.marshalled, &value.marshalled, &prev_value, version, *transportFactory, &cache_name, flags, lifespan, maxidle);
-    return replaceIfUnmodifiedOperation->execute();
+    std::string prev_value; //has no effect
+    return replaceWithVersion(key, value, version, &prev_value, lifespan, maxidle, default_flags);
+}
+int RemoteCache::replaceWithVersion(VarItem key, VarItem value, long long version,int lifespan){
+    /**
+    * Replaces the given value only if its version matches the supplied version.
+    *
+    * @param key key to use
+    * @param value value to use
+    * @param version numeric version that should match the one in the server
+    *                for the operation to succeed
+    * @return 0 if the value has been replaced
+    */
+    std::string prev_value; //has no effect
+    return replaceWithVersion(key, value, version, &prev_value, lifespan, -1, default_flags);
+}
+int RemoteCache::replaceWithVersion(VarItem key, VarItem value, long long version){
+    /**
+    * Replaces the given value only if its version matches the supplied version.
+    *
+    * @param key key to use
+    * @param value value to use
+    * @param version numeric version that should match the one in the server
+    *                for the operation to succeed
+    * @return 0 if the value has been replaced
+    */
+    std::string prev_value; //has no effect
+    return replaceWithVersion(key, value, version, &prev_value, -1, -1, default_flags);
 }
 
 
+int RemoteCache::put(const VarItem key, const VarItem value, int lifespan, int maxidle){
+    std::string prev_value; //has no effect
+
+    return put(key, value, &prev_value, lifespan, maxidle, default_flags);
+}
 
 static void *put_provider( void * t_a)
 {
@@ -122,8 +159,8 @@ static void *put_provider( void * t_a)
 int RemoteCache::putAllAsync(std::map<VarItem,VarItem> *data,int lifespan, int maxidle){
     // mel by vracet i chyby, asi pocet neulozenych polozek
     int max_threads = transportFactory->get_key_owners_num();
-    if(lifespan < 0){lifespan = this->lifespan;}
-    if(maxidle < 0){maxidle = this->maxidle;}
+    if(lifespan < 0){lifespan = this->default_lifespan;}
+    if(maxidle < 0){maxidle = this->default_maxidle;}
     std::map<VarItem,VarItem>::iterator pos;
     int *rets = new int[data->size()];
     pthread_t *threads = new pthread_t[data->size()];
@@ -164,11 +201,16 @@ int RemoteCache::putAllAsync(std::map<VarItem,VarItem> *data,int lifespan, int m
     return 0;
 }
 
+int RemoteCache::putIfAbsent(const VarItem key, const VarItem value, int lifespan, int maxidle){
+    std::string prev_value; //has no effect
+    return putIfAbsent(key, value, &prev_value, lifespan, maxidle, default_flags);
+}
+
 int RemoteCache::putAll(std::map<VarItem,VarItem> *data,int lifespan, int maxidle){
     std::map<VarItem,VarItem>::iterator pos;
     int state, tmp_state = NO_ERROR_STATUS;
-    if(lifespan < 0){lifespan = this->lifespan;}
-    if(maxidle < 0){maxidle = this->maxidle;}
+    if(lifespan < 0){lifespan = this->default_lifespan;}
+    if(maxidle < 0){maxidle = this->default_maxidle;}
     for (pos = (*data).begin(); pos != (*data).end(); ++pos) {
        tmp_state = put(&pos->first,&pos->second,lifespan,maxidle);
        if(tmp_state > NO_ERROR_STATUS){
@@ -180,9 +222,13 @@ int RemoteCache::putAll(std::map<VarItem,VarItem> *data,int lifespan, int maxidl
 }
 
 int RemoteCache::remove(const VarItem key){
-    std::string prev_value;
-    RemoveOperation *removeOperation = new RemoveOperation(&key.marshalled, &prev_value, *transportFactory, &cache_name, flags);
-    return removeOperation->execute();
+    std::string prev_value; //has no effect
+    return remove(key, &prev_value, default_flags);
+}
+
+int RemoteCache::removeWithVersion(const VarItem key, long long version){
+    std::string prev_value; //has no effect
+    return removeWithVersion(key, version, &prev_value, default_flags);
 }
 
 int RemoteCache::getBulk(std::map<VarItem,VarItem> *bulk){
@@ -203,8 +249,12 @@ int RemoteCache::getBulk(std::map<VarItem,VarItem> *bulk,int count){
     * @param count maximal number of returned entries
     * @return returns Map of string
     */
-    GetBulkOperation *getBulkOperation = new GetBulkOperation(bulk, count, *transportFactory, &cache_name, flags);
-    return getBulkOperation->execute();  
+    GetBulkOperation getBulkOperation(bulk,
+                                     count,
+                                     *transportFactory,
+                                     &cache_name,
+                                     default_flags);
+    return getBulkOperation.execute();  
     
 }
 
@@ -217,16 +267,23 @@ int RemoteCache::keySet(std::vector<VarItem> *keys,int scope){
     */
     if(transportFactory->get_hotrod_version() < VERSION_12) return NOT_IN_THIS_VERSION_STATUS;
    
-    BulkKeysGetOperation *bulkKeysGetOperation = new BulkKeysGetOperation(keys, scope, *transportFactory, &cache_name, flags);
-    return bulkKeysGetOperation->execute();  
+    BulkKeysGetOperation bulkKeysGetOperation(keys,
+                                             scope,
+                                             *transportFactory,
+                                             &cache_name,
+                                             default_flags);
+    return bulkKeysGetOperation.execute();  
     
 }
 
 
 
 int RemoteCache::stats(std::map<std::string,std::string> *stats){
-    StatsOperation *statsOperation = new StatsOperation(stats, *transportFactory, &cache_name, flags);
-    return statsOperation->execute();  
+    StatsOperation statsOperation(stats,
+                                 *transportFactory,
+                                 &cache_name,
+                                 default_flags);
+    return statsOperation.execute();  
 }
 
 void RemoteCache::print_servers(){

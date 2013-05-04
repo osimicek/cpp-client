@@ -165,6 +165,40 @@ TEST(It_can_get_and_put_with_varItem)
 
 }
 
+TEST(It_can_put_with_obtain_prev_value)
+{
+    int status;
+
+    CLEAR();
+    VarItem prev_value, curr_value;
+    status = cache->put("key", "value1");
+    CHECK(status == NO_ERROR_STATUS);
+    status = cache->get("key", &curr_value);
+    CHECK(curr_value == "value1");
+
+    status = cache->put("key", 5, &prev_value);
+    CHECK(status == NO_ERROR_STATUS);
+    CHECK(prev_value == "value1");
+    status = cache->get("key", &curr_value);
+    CHECK(curr_value == 5);
+
+    status = cache->put("key", 5.555, &prev_value);
+    CHECK(status == NO_ERROR_STATUS);
+    CHECK(prev_value == 5);
+    status = cache->get("key", &curr_value);
+    CHECK(curr_value == 5.555);
+
+    status = cache->put("key", "value1", &prev_value);
+    CHECK(status == NO_ERROR_STATUS);
+    CHECK(prev_value == 5.555);
+    status = cache->get("key", &curr_value);
+    CHECK(curr_value == "value1");
+
+
+
+
+}
+
 
 
 
