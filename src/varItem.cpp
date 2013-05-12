@@ -44,12 +44,13 @@ VarItem::VarItem(const VarItem& origin){
 VarItem::~VarItem(){
     // std::cout <<"free "<<this <<" "<<marshaller<<std::flush<<std::endl;
     if(alocated_marshaller){
-        //causes error in std::map
-        //delete marshaller;
+        
+        //delete marshaller; //causes error in std::map
         marshaller = NULL;
     }
 }
 
+//initialize inner marshaler
 void VarItem::init(){
     alocated_marshaller = false;
     if(DEFAULT_MARSHALLER != NULL){
@@ -62,14 +63,25 @@ void VarItem::init(){
     }
 }
 
+/**
+    * Return int reprezentation of type of stored data. 
+    *
+    * @return int reprezentation of type
+*/
 int VarItem::get_type(){
     return marshaller->get_type(&marshalled);
 }
-
+/**
+    * Clears serialized value. 
+*/
 void VarItem::clear(){
     marshalled  = "";
 }
 
+/**
+    * Sets serialized value. 
+    *
+*/
 void VarItem::set_value(std::string *value){
     marshalled = *value;
 }

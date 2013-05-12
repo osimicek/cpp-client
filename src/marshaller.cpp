@@ -2,46 +2,131 @@
 Marshaller* DEFAULT_MARSHALLER;
 
 Marshaller::Marshaller(){}
+/**
+    * Serializes int.
+    *
+    * @param src source
+    * @param dest pointer to destination 
+    *
+    * @return NO_ERROR_STATUS
+*/
 int Marshaller::dump(const int src, std::string* dest){
     std::stringstream ss;
     ss << src;
     *dest = ss.str();
     return NO_ERROR_STATUS;
 };
+/**
+    * Serializes double.
+    *
+    * @param src source
+    * @param dest pointer to destination 
+    *
+    * @return NO_ERROR_STATUS
+*/
 int Marshaller::dump(const double src, std::string* dest){
     std::stringstream ss;
     ss << src;
     *dest = ss.str();
     return NO_ERROR_STATUS;
 };
+/**
+    * Serializes char*.
+    *
+    * @param src source
+    * @param dest pointer to destination 
+    *
+    * @return NO_ERROR_STATUS
+*/
 int Marshaller::dump(const char *src, std::string* dest){
     *dest = src;
     return NO_ERROR_STATUS;
 };
+/**
+    * Serializes string.
+    *
+    * @param src source
+    * @param dest pointer to destination 
+    *
+    * @return NO_ERROR_STATUS
+*/
 int Marshaller::dump(const std::string *src, std::string* dest){
     *dest = *src;
     return NO_ERROR_STATUS;
 };
+/**
+    * Serializes VarItem.
+    *
+    * @param src source
+    * @param dest pointer to destination 
+    *
+    * @return NO_ERROR_STATUS
+*/
 int Marshaller::dump(const VarItem *src, std::string* dest){
     *dest = src->marshalled;
     return NO_ERROR_STATUS;
 };
-
+/**
+    * Deserializes int.
+    *
+    * @param src source serialized data
+    * @param dest pointer to destination of deserialized data
+    *
+    * @return NO_ERROR_STATUS
+*/
 int Marshaller::load(const std::string* src, int* dest){};
+/**
+    * Deserializes double.
+    *
+    * @param src source serialized data
+    * @param dest pointer to destination of deserialized data
+    *
+    * @return NO_ERROR_STATUS
+*/
 int Marshaller::load(const std::string* src, double* dest){};
+/**
+    * Deserializes char *.
+    *
+    * @param src source serialized data
+    * @param dest pointer to destination of deserialized data
+    *
+    * @return NO_ERROR_STATUS
+*/
 int Marshaller::load(const std::string* src, char* dest){ // otestovat
     dest =(char *)src->c_str();
     return NO_ERROR_STATUS;
 };
+/**
+    * Deserializes string.
+    *
+    * @param src source serialized data
+    * @param dest pointer to destination of deserialized data
+    *
+    * @return NO_ERROR_STATUS
+*/
 int Marshaller::load(const std::string* src, std::string* dest){
     *dest = *src;
     return NO_ERROR_STATUS;
 };
+/**
+    * Deserializes VarItem.
+    *
+    * @param src source serialized data
+    * @param dest pointer to destination of deserialized data
+    *
+    * @return NO_ERROR_STATUS
+*/
 int Marshaller::load(const std::string* src, VarItem* dest){
     dest->marshalled = *src;
     return NO_ERROR_STATUS;
 };
-
+/**
+    * Returns type of serialized data.
+    *
+    * @param src source serialized data
+    *
+    * @return type of data
+*/
 int Marshaller::get_type(const std::string* src){};
 std::ostream & Marshaller::print(std::ostream& _stream, const std::string* src){
     return _stream;
@@ -49,6 +134,9 @@ std::ostream & Marshaller::print(std::ostream& _stream, const std::string* src){
 
 
 MarshallerJBoss::MarshallerJBoss(){}
+/**
+    * @see Marshaller#dump(const int src, std::string* dest)
+*/
 int MarshallerJBoss::dump(const int src, std::string* dest){
     dest->clear();
     short type = INT_TYPE;
@@ -59,6 +147,9 @@ int MarshallerJBoss::dump(const int src, std::string* dest){
     }
     return NO_ERROR_STATUS;
 };
+/**
+    * @see Marshaller#dump(const double src, std::string* dest)
+*/
 int MarshallerJBoss::dump(const double src, std::string* dest){
     dest->clear();
     short type = DOUBLE_TYPE;
@@ -69,11 +160,16 @@ int MarshallerJBoss::dump(const double src, std::string* dest){
     }
     return NO_ERROR_STATUS;
 };
+/**
+    * @see Marshaller#dump(const char *src, std::string* dest)
+*/
 int MarshallerJBoss::dump(const char *src, std::string* dest){
     std::string src2(src);
     return MarshallerJBoss::dump(&src2, dest);
 };
-
+/**
+    * @see Marshaller#dump(const std::string *src, std::string* dest)
+*/
 int MarshallerJBoss::dump(const std::string *src, std::string* dest){
     dest->clear();
     short type;
@@ -103,12 +199,16 @@ int MarshallerJBoss::dump(const std::string *src, std::string* dest){
     return NO_ERROR_STATUS;
    
 };
-
+/**
+    * @see Marshaller#dump(const VarItem *src, std::string* dest)
+*/
 int MarshallerJBoss::dump(const VarItem *src, std::string* dest){
     *dest = src->marshalled;
     return NO_ERROR_STATUS;
 }
-
+/**
+    * @see Marshaller#dump(const std::string* src, std::string* dest)
+*/
 int MarshallerJBoss::load(const std::string* src, int* dest){
     *dest = 0;
     int result = 0;
@@ -128,6 +228,9 @@ int MarshallerJBoss::load(const std::string* src, int* dest){
     *dest = result;
     return NO_ERROR_STATUS;
 };
+/**
+    * @see Marshaller#dump(const std::string* src, std::string* dest)
+*/
 int MarshallerJBoss::load(const std::string* src, double* dest){
     *dest = 0;
     long long result = 0;
@@ -148,7 +251,15 @@ int MarshallerJBoss::load(const std::string* src, double* dest){
     *dest = *((double *)&result);
     return NO_ERROR_STATUS;
 };
-int MarshallerJBoss::load(const std::string* src, char* dest){};
+/**
+    * @see Marshaller#dump(const std::string* src, std::string* dest)
+*/
+int MarshallerJBoss::load(const std::string* src, char* dest){
+    throw "Not implemented";
+};
+/**
+    * @see Marshaller#dump(const std::string* src, std::string* dest)
+*/
 int MarshallerJBoss::load(const std::string* src, std::string* dest){
     dest->clear();
     int result = 0;
@@ -177,12 +288,16 @@ int MarshallerJBoss::load(const std::string* src, std::string* dest){
     dest->append(*src,possition,len);
     return NO_ERROR_STATUS;
 };
-
+/**
+    * @see Marshaller#dump(const std::string* src, std::string* dest)
+*/
 int MarshallerJBoss::load(const std::string* src, VarItem* dest){
     dest->marshalled = *src;
     return NO_ERROR_STATUS;
 }
-
+/**
+    * @see Marshaller#get_type(const std::string* src)
+*/
 int MarshallerJBoss::get_type(const std::string* src){
     if(src->length() < 2){
         return 0;

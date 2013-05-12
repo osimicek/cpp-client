@@ -17,27 +17,18 @@ Transport::Transport(std::string host, int port, TransportFactory &tF):transport
         codec = new Codec11(*this);
     }else{
         codec = new Codec12(*this);
-    }
-
-
-
-    
+    }   
 } 
 Transport::~Transport(){
     delete codec;
     close_connection();
 }
 
-void Transport::write_version(long long value){
-    std::string result;
-    for(int i=0;i<8;i++){
-        char bits = value>>56 & 0xff;
-        value <<= 8;
-        result += (char)(bits);
-    }
-    packet += result;
-}
-
+/**
+* Encodes int to varInt and writes it to the packet.
+*
+* @param value value to use
+*/
 void Transport::write_varint(int value){
     std::string result;
     char bits = value & 0x7f;
@@ -52,6 +43,11 @@ void Transport::write_varint(int value){
     packet += result;
 }
 
+/**
+* Encode long long to varLong and writes it to the packet.
+*
+* @param value value to use
+*/
 void Transport::write_varlong(long long value){
     std::string result;
     char bits = value & 0x7f;
@@ -65,14 +61,28 @@ void Transport::write_varlong(long long value){
     result += bits;
     packet += result;
 }
-
+/**
+* Writes char to the packet.
+*
+* @param value value to use
+*/
 void Transport::write_char(char value){
     packet += value; 
 }
-void Transport::write_byte(short byte){
-    packet += (char)byte;
-}
 
+/**
+* Writes byte (short) to the packet.
+*
+* @param value value to use
+*/
+void Transport::write_byte(short value){
+    packet += (char)value;
+}
+/**
+* Writes long long to the packet.
+*
+* @param value value to use
+*/
 void Transport::write_8bytes(long long value){
     for(int k=0; k<8; k++){
         write_char((char) (((long long)0xff00000000000000 &  value ) >> 56 ));
@@ -80,18 +90,33 @@ void Transport::write_8bytes(long long value){
     }
 }
 
+/**
+* Writes header of request to the packet.
+*
+* @param op_code code of operation
+* @param cache_name name of the cache to comunicate with
+* @param flags flags to use
+*/
 void Transport::write_header(char op_code, const std::string *cache_name, int flags){
     int hotrod_version = transportFactory.get_hotrod_version();
     codec->write_header(op_code, cache_name, flags);
 }
 
+/**
+* Encodes and writes string array to the packet.
+*
+* @param arr array to use
+*/
 void Transport::write_array(const std::string *arr){
     write_varlong((*arr).length()); // array len
     packet += (*arr); //key
 }
 
-
-
+/**
+* Sends request to the server.
+*
+* @return status of operation
+*/
 int Transport::flush(){
     // sends data to server
     int status = 0;
@@ -117,7 +142,11 @@ int Transport::flush(){
     return NO_ERROR_STATUS;
 }
 
-
+/**
+* Reads and decodes varInt from response.
+*
+* @return decoded varInt
+*/
 int Transport::read_varint(){
     int result = 0;
     int shift = 0;
@@ -135,6 +164,11 @@ int Transport::read_varint(){
     }
 }
 
+/**
+* Reads and decodes varLong from response.
+*
+* @return decoded varLong
+*/
 long long Transport::read_varlong(){
     long long result = 0;
     int shift = 0;
@@ -152,14 +186,22 @@ long long Transport::read_varlong(){
     }
 
 }
-
+/**
+* Reads byte from response.
+*
+* @return value of the byte
+*/
 int Transport::read_byte(){
     int n;
     char loaded_data[1]; 
     n = recv(this->_socket, loaded_data, 1,0);
     return ((int)0x000000ff) & loaded_data[0];
 }
-
+/**
+* Reads 2bytes from response.
+*
+* @return value
+*/
 int Transport::read_2bytes(){
     int data;
     data = ((int)0x000000ff) & read_byte();      
@@ -167,7 +209,11 @@ int Transport::read_2bytes(){
     data |= (((int)0x000000ff) & read_byte());
     return data;
 }
-
+/**
+* Reads 4bytes from response.
+*
+* @return value
+*/
 int Transport::read_4bytes(){
     int data = 0;
     for(int k=0; k<4; k++){
@@ -176,7 +222,11 @@ int Transport::read_4bytes(){
     }
     return data;
 }
-
+/**
+* Reads 8bytes from response.
+*
+* @return value
+*/
 long long Transport::read_8bytes(){
     long long data = 0;
     for(int k=0; k<8; k++){
@@ -190,7 +240,11 @@ long long Transport::read_8bytes(){
 
 
 
-
+/**
+* Reads and decodes string array from the response.
+*
+* @param arr pointer to return array
+*/
 void Transport::read_array(std::string *arr){
     int n;
     u_short loaded_data[9];
@@ -204,13 +258,15 @@ void Transport::read_array(std::string *arr){
     }
 }
 
-
-
+/**
+    * Reads a response header from the transport and returns the status
+    * of the response.
+*/
 int Transport::read_header(){
     return codec->read_header();
 }
 
-
+//creates connection to the server
 int Transport::create_connection(){
   struct sockaddr_in sin;
   sin.sin_family = PF_INET;
@@ -243,6 +299,10 @@ int Transport::create_connection(){
 
 }
 
+/**
+    * Closes connection to the server.
+    * @return status
+*/
 int Transport::close_connection(){
     return close(_socket);
 }

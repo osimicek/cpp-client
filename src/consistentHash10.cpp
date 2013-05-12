@@ -2,9 +2,42 @@
 
 ConsistentHash10::ConsistentHash10(TransportFactory &tf):ConsistentHash(tf){}
 
+/**
+    * Returns Transport object for comunication with server.
+    *
+    * @return NULL or Transport object
+    */
+Transport *ConsistentHash10::get_transport(){
+    LOCK_TF();
+    Transport *transport = NULL;
+    
+    if(transportFactory.transports.size() > 0){
+        for(u_int i=0; i<transportFactory.transports.size(); i++){
+            transport = transportFactory.transports.front();
+            transportFactory.transports.push(transport);
+            transportFactory.transports.pop();
+            if(transport->used != 1) break;
+            else transport = NULL;
+        }
+    }
+ 
+    if(transport != NULL)   transport->used = 1;
+    UNLOCK_TF()
+    
+
+    return transport;
+} 
+
+/**
+    * Returns Transport object for comunication with server where
+    * the key is located
+    *
+    * @param key key to use
+    * @return NULL or Transport object
+*/
 Transport *ConsistentHash10::get_transport(const std::string *key){
     Transport *transport = NULL;
-    if(transportFactory.hash_vector.size() == 0){
+    if(transportFactory.get_intelligence() != CLIENT_INTELLIGENCE_HASH_DISTRIBUTION_AWARE or transportFactory.hash_vector.size() == 0){
         transport = get_transport();
     }else{
         int key_owners_num = transportFactory.get_key_owners_num();
@@ -36,6 +69,14 @@ Transport *ConsistentHash10::get_transport(const std::string *key){
     return transport;
 } 
 
+/**
+    * Finds index of transport from hash_transport_bank.
+    * Finds transport with closest hash_code to hash of key.
+    * Uses binary search
+    *
+    * @param key_hash hash of key to use
+    * @return index to hash_transport_bank
+*/
 int ConsistentHash10::find_index_of_transport(int key_hash){
     int imid;
     int imin = 0;

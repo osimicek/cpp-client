@@ -12,10 +12,19 @@ extern Marshaller* DEFAULT_MARSHALLER;
 
 class VarItem;
 
+
+/**
+    * Implements interface of marshaller
+    *
+    * @author ondrejsimicek@seznam.cz
+*/
 class Marshaller{
 public:
-    const static short DOUBLE_TYPE = 0x01;
-    const static short INT_TYPE = 0x02;
+    /** Represents int type */
+    const static short INT_TYPE    = 0x01;
+    /** Represents double type */
+    const static short DOUBLE_TYPE = 0x02;
+    /** Represents string type */
     const static short STRING_TYPE = 0x03;
 
     Marshaller();
@@ -36,10 +45,18 @@ public:
 
 };
 
+/**
+    * Implements JBoss like marshaller
+    *
+    * @author ondrejsimicek@seznam.cz
+*/
 class MarshallerJBoss: public Marshaller{
 public:
-    const static short DOUBLE_TYPE = 0x034f;
+    /** Represents int type */
     const static short INT_TYPE = 0x034b;
+    /** Represents double type */
+    const static short DOUBLE_TYPE = 0x034f;
+    /** Represents string type */
     const static short STRING_TYPE = 0x033d;
     const static short STRING_TYPE_LEN_0 = 0x033d;
     const static short STRING_TYPE_LEN_1 = 0x033e;

@@ -5,7 +5,12 @@
     #include <murmur/MurmurHash3.h>
 
 
-
+    /**
+     * A consistent hash algorithm implementation for Hot Rod v1.1
+     *
+     *
+     * @author ondrejsimicek@seznam.cz
+     */
     class ConsistentHash11: public ConsistentHash10{
         public:
             ConsistentHash11(TransportFactory &tf);

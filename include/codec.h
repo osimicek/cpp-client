@@ -17,6 +17,11 @@
 
 class Transport;
 
+/**
+ * A Hot Rod protocol encoder/decoder.
+ *
+ * @author ondrejsimicek@seznam.cz
+ */
 class Codec{
 
 public:
@@ -24,7 +29,7 @@ public:
     Codec(Transport &t);
     virtual int read_header();
     virtual void write_header(char op_code, const std::string *cache_name, int flags);
-    void write_header(char op_code, const std::string *cache_name, int flags, char version);
+    virtual void write_header(char op_code, const std::string *cache_name, int flags, char version);
 };
 
 #include "codec10.h"

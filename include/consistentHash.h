@@ -14,11 +14,17 @@
 class TransportFactory;
 class Transport;
 
+/**
+ * A consistent hash algorithm implementation. 
+ *
+ *
+ * @author ondrejsimicek@seznam.cz
+ */
 class ConsistentHash{
     public:
         TransportFactory &transportFactory;
         ConsistentHash(TransportFactory &tf);
-        Transport *get_transport();
+        virtual Transport *get_transport();
         virtual Transport *get_transport(const std::string *key);
 };
 

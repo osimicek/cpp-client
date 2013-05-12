@@ -1,6 +1,6 @@
 #include "RMMap.h"
 
-void example1(){
+void basic(){
     RMMap cache;
 
     cache.clear();
@@ -14,9 +14,22 @@ void example1(){
     }
 }
 
+void size(){
+    RMMap cache;
+
+    cache.clear();
+    cache["key"] = "value";
+    cache[123] = 3.21;
+    cache[4.56] = 654;
+    std::cout << "size: "<< cache.size() <<std::endl;
+}
+
 int main(int, char const *[])
 {
-    example1();
+    std::cout <<"\nBasic example /////////////////////"<< std::endl;
+    basic();
+    std::cout <<"\nSize example /////////////////////"<< std::endl;
+    size();
 
     return 0;
 }

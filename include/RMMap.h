@@ -11,6 +11,12 @@ class RMItem;
 
 std::ostream & operator << (std::ostream& s, RMItem & p);
 
+/**
+    * Implements "RMMap" containers as interface of Infinispan cache
+    * \warning does't support map reduce, you can't iterate over distributed cache
+    *
+    * @author ondrejsimicek@seznam.cz
+*/
 class RMMap{
     private:
     	std::string x;
@@ -38,7 +44,12 @@ class RMMap{
 };
 
 
-
+/**
+    * Implements remote item, that is returned by #RMMap.
+    * It can set and get entry from cache.
+    *
+    * @author ondrejsimicek@seznam.cz
+*/
 class RMItem{
 private:
     RMMap *rm_map;

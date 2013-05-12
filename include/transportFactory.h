@@ -1,5 +1,6 @@
 #ifndef TRANSPORTFACTORY_H_INCLUDED
 #define TRANSPORTFACTORY_H_INCLUDED
+
 #include "transport.h"
 #include "consistentHash.h"
 
@@ -14,10 +15,16 @@
 #include "constants.h"
 
 class ConsistentHash;
-#define NOT_THREAD_SAFE
+/**
+ * transport factory for building and managing Transport objects
+ * and topology of the cluster.
+ *
+ * @author ondrejsimicek@seznam.cz
+ */
+
 class TransportFactory{
     #ifndef NOT_THREAD_SAFE
-        #define LOCK() pthread_mutex_lock (&mutex); std::cout << "lock" <<std::endl;
+        #define LOCK() pthread_mutex_lock (&mutex);
         #define LOCK_ID() pthread_mutex_lock (&mutex_tf_id);
         #define UNLOCK() pthread_mutex_unlock (&mutex);
         #define UNLOCK_ID() pthread_mutex_unlock (&mutex_tf_id);
@@ -47,7 +54,6 @@ class TransportFactory{
 
         explicit TransportFactory(std::string host, int port, int version, char intelligence);
         ~TransportFactory();
-        void execute();
         int get_and_inc_message_id();
         char get_intelligence();
         void set_topology_id(int id);
@@ -70,7 +76,7 @@ class TransportFactory{
         Transport * create_transport(std::string *host, int port, int hash);
         void invalidate_transports();
         void del_invalid_transports();
-        void print_hash_bank();
+        //void print_hash_bank();
         void close_servers();
 
 };

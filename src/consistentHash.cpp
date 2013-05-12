@@ -1,28 +1,22 @@
 #include "consistentHash.h"
 ConsistentHash::ConsistentHash(TransportFactory &tf):transportFactory(tf){}
 
-
+/**
+    * Returns Transport object for comunication with server.
+    *
+    * @return NULL or Transport object
+*/
 Transport *ConsistentHash::get_transport(){
-    LOCK_TF();
-    Transport *transport = NULL;
-    
-    if(transportFactory.transports.size() > 0){
-        for(u_int i=0; i<transportFactory.transports.size(); i++){
-            transport = transportFactory.transports.front();
-            transportFactory.transports.push(transport);
-            transportFactory.transports.pop();
-            if(transport->used != 1) break;
-            else transport = NULL;
-        }
-    }
- 
-    if(transport != NULL)   transport->used = 1;
-    UNLOCK_TF()
-    
-
-    return transport;
+    return NULL;
 } 
 
+/**
+    * Returns Transport object for comunication with server where
+    * the key is located
+    *
+    * @param key key to use
+    * @return NULL or Transport object
+*/
 Transport *ConsistentHash::get_transport(const std::string *key){
     return NULL;
 }

@@ -13,10 +13,17 @@ RMMap::RMMap(RemoteCacheConfig *remote_cache_config){
 }
 
 RMMap::~RMMap(){
+    //TODO delete all RemoteItems
     delete RC;
 }
 
-
+/**
+    * Return size of cache.
+    * \warning does't support map reduce
+    *
+    *
+    * @return size of cache
+*/
 u_int RMMap::size(){
     int status;
     std::map<VarItem,VarItem> bulk;
@@ -35,7 +42,11 @@ RMItem &RMMap::operator[](const VarItem &key)
     return *item;
  }
 
-
+/**
+    * Clears cache.
+    *
+    * @throw status
+*/
 void RMMap::clear()
 {
     int status;
@@ -45,16 +56,18 @@ void RMMap::clear()
     }
 }
 
- // RMMap& RMMap::operator= ( const std::map<VarItem,VarItem>& x ){
- // 	return (*this);	
- // }
+/**
+    * Remoce entry from cache.
+    *
+    * @param key key to use
+    *
+    * return status
+*/
 
-int RMMap::erase (const VarItem key){
+int RMMap::erase(const VarItem key){
   	int status;
   	status = RC->remove(key);
-  	if(status != NO_ERROR_STATUS){
-          throw status;
-      }
+    return status;
 }
 
 VarItem *RMMap::get(const VarItem *key){
@@ -78,10 +91,15 @@ void RMMap::set(const VarItem *key,const VarItem *value){
 
 }
 
+/**
+    * Close all connections to the servers.
+*/
 void RMMap::close(){
     RC->close();
 }
-
+/**
+    * Bigin iterator.
+*/
 RMMap::iterator RMMap::begin(){
     int status;
   	status = RC->getBulk(&bulk);	
@@ -90,7 +108,9 @@ RMMap::iterator RMMap::begin(){
     }
   	return bulk.begin();	
 }
-
+/**
+    * End iterator.
+*/
 RMMap::iterator RMMap::end(){
 	 return bulk.end();	
 }
@@ -111,8 +131,6 @@ RMItem::RMItem(RMMap *m,const VarItem *key):	rm_map(m),key(key){
 RMItem::~RMItem(){
     // std::cout <<"DEL item"<<std::endl;
 }
-
-
 
 VarItem &RMItem::get() const{ 
 	return *rm_map->get(key); 

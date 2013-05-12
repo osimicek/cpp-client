@@ -25,13 +25,27 @@
 
 class TransportFactory;
 
+/**
+    * Comunicates with one instance of Infinispan cache.
+    * Can write header, key, value .... to request header,
+    * than send request. Also can read header and data from
+    * the response
+    * 
+    *
+    * @author ondrejsimicek@seznam.cz
+*/
 class Transport{
+    private:
+        int create_connection();
     public:
         std::string host;
         int port;
+        /** Data to get hash code of server */
         int hash;
+        /** Only one thread can use this Transport at the same time */
         int used;
         int _socket;
+        /** Used to invalidate Transport when topology change */
         int valid;
         Codec *codec;
 
@@ -41,12 +55,11 @@ class Transport{
         Transport(std::string, int, TransportFactory &tF);
         ~Transport();
         void write_header(char op_code, const std::string *cache_name, int flags);
-        void write_version(long long value);
         void write_varint(int value);
         void write_varlong(long long value);
         void write_char(char value);
         void write_array(const std::string *arr);
-        void write_byte(short byte);
+        void write_byte(short value);
         void write_8bytes(long long value);
         int flush();
         int read_varint();
@@ -57,9 +70,6 @@ class Transport{
         long long read_8bytes();
         void read_array(std::string *arr);
         int read_header();
-        int check_for_errors_in_response_status(char status);
-        int read_new_topology_if_present();
-        int create_connection();
         int close_connection();
 };
 

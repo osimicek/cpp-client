@@ -2,14 +2,16 @@
 
 ConsistentHash11::ConsistentHash11(TransportFactory &tf):ConsistentHash10(tf){}
 
-// Transport *ConsistentHash11::get_transport(){
-//     ConsistentHash10::get_transport();
-// } 
-
-
+/**
+    * Returns Transport object for comunication with server where
+    * the key is located
+    *
+    * @param key key to use
+    * @return NULL or Transport object
+    */
 Transport *ConsistentHash11::get_transport(const std::string *key){
     Transport *transport = NULL;
-    if(transportFactory.hash_vector.size() == 0){
+    if(transportFactory.get_intelligence() != CLIENT_INTELLIGENCE_HASH_DISTRIBUTION_AWARE or transportFactory.hash_vector.size() == 0){
         transport = get_transport();
     }else{
         int key_owners_num = transportFactory.get_key_owners_num();

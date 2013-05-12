@@ -8,10 +8,17 @@
 
 
 
-
+/**
+    * Implements variable type serializer.
+    * Accepts int, double, char* and string. 
+    * Returns int, double, char* and string.
+    *
+    * @author ondrejsimicek@seznam.cz
+*/
 class VarItem{
         Marshaller* marshaller;
         bool alocated_marshaller;
+        void init();
     public:
         std::string marshalled;
         VarItem();
@@ -24,7 +31,7 @@ class VarItem{
         VarItem(const VarItem& origin);
          ~VarItem();
 
-        void init();
+        
         int get_type();
         void clear();
         void set_value(std::string *value);
