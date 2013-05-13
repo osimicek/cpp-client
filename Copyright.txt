@@ -1,0 +1,3 @@
+Hot Rod client in C++ is licensed under the GNU LGPL as same as Infinispan project.
+
+Author: Ondrej Simicek, ondrejsimicek@seznam.cz
