@@ -1,7 +1,7 @@
-HotRod client in C++
+Implementation of HotRod client in C++. Client can comunicate with intelligence 0x01, 0x02, 0x03.
 ==============
 
-Start servers
+Start server
 --------------
 1 server
 ```bash
@@ -24,4 +24,16 @@ Run client´s tests
 make tests
 ```
 
+Examples
+--------------
+See /examples directory
+You can run them via makefile
 
+```bash
+make basic_example
+make bulk_example
+make rmmap_example
+make advanced_example
+make rmmap_advanced_example
+make not_thread_safe_example
+```

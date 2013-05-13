@@ -11,7 +11,6 @@
 class Codec11  : public Codec10{
     protected:
         void read_new_topology_with_hash_space();
-        void read_new_topology_without_hash_space();
     public:
         Codec11(Transport &t);
         using Codec::write_header;

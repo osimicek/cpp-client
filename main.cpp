@@ -20,7 +20,7 @@ int main(){
     RemoteCacheConfig remote_cache_config;
     remote_cache_config.cache_name = "";
     remote_cache_config.version = 11;
-    remote_cache_config.intelligence = 3;
+    remote_cache_config.intelligence = 2;
     RemoteCache x = RemoteCache(&remote_cache_config);
 
     x.clear();
@@ -33,7 +33,7 @@ int main(){
     std::cout <<status <<std::endl;
 
     status = x.removeWithVersion(55,ver);
-    std::cout <<status <<std::endl;
+    std::cout <<std::hex<<status <<std::endl;
     std::cout<< "OK\n"<<std::flush;
 
 	return 0;

@@ -1,7 +1,7 @@
 # Soubor:  Makefile
 # Autor: Ondrej Simicek
 
-CC= g++ -Wall -dynamic_cast  -lpthread -I.
+CC= g++ -Wall -dynamic_cast  -pthread -I.
 
 CPPFLAGS += -std=c++0x -g 
 CPPFLAGS += -I./include

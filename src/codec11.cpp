@@ -9,15 +9,7 @@ Codec11::Codec11(Transport &t):Codec10(t){}
 void Codec11::write_header(char op_code, const std::string *cache_name, int flags){
     write_header(op_code, cache_name, flags, VERSION_11);
 }
-/**
-    * Reads tolopogy informations in response and updates 
-    * transports vector.
-    * No hash space informations are presented
-*/
-void Codec11::read_new_topology_without_hash_space(){
 
-
-}
 /**
     * Reads tolopogy informations in response and updates 
     * TransportFactories transport bank.

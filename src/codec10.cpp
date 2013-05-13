@@ -94,6 +94,8 @@ void Codec10::read_new_topology_if_present(){
     if(topology_change == 0x01){
         if(transport.transportFactory.get_intelligence() == CLIENT_INTELLIGENCE_HASH_DISTRIBUTION_AWARE){
             read_new_topology_with_hash_space();
+        }else{
+            read_new_topology_without_hash_space();
         }
     }
 }
@@ -103,7 +105,53 @@ void Codec10::read_new_topology_if_present(){
     * No hash space informations are presented
 */
 void Codec10::read_new_topology_without_hash_space(){
+    int topology_id;
+    int  num_servers;
 
+    topology_id = transport.read_varint();
+    transport.transportFactory.set_topology_id(topology_id);
+
+    num_servers = transport.read_varint();
+    transport.transportFactory.set_key_owners_num(num_servers);
+
+    transport.transportFactory.set_virtual_nodes_num(0); // rozdil ve verzich
+
+
+  if(DEBUG){
+    std::cout <<"** Topology ID: "<<std::dec<<topology_id<<" old: "<<transport.transportFactory.get_topology_id()<<std::endl;
+    std::cout <<"** Num servers in topology: "<<num_servers<<std::endl;
+  }
+
+  int port;
+  std::string host;
+
+
+  transport.transportFactory.invalidate_transports();
+  for(int i = 0; i<num_servers;i++){
+
+
+    if(DEBUG){
+        std::cout <<"***";
+    } 
+    transport.read_array(&host);
+    if(DEBUG){
+        std::cout <<host<<"/";
+    } 
+    port = transport.read_2bytes();
+
+    if(DEBUG){
+      std::cout <<std::dec << port<<std::endl;
+    }  
+
+   
+    Transport *t = transport.transportFactory.get_transport(&host, port, 1);
+    if(t == NULL){
+        t = transport.transportFactory.create_transport(&host, port, 1);
+    }
+    t->valid = 1;
+
+  }
+  transport.transportFactory.del_invalid_transports();
 
 }
 /**
