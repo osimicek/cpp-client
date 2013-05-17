@@ -1,4 +1,5 @@
-PROJECT_NAME = 'Hot Rod client C++'
+PROJECT_NAME = "Hot Rod client in C++"
+
 INPUT = ./include ./src
 
 OUTPUT_DIRECTORY = doc
@@ -8,3 +9,5 @@ GENERATE_HTML = YES
 HTML_FILE_EXTENSION = .html
 
 GENERATE_LATEX = NO
+
+EXCLUDE_SYMBOLS = std::less

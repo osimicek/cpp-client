@@ -30,7 +30,7 @@ void Codec10::write_header(char op_code, const std::string *cache_name, int flag
     transport.write_varint(flags); //flags
     transport.write_char(transport.transportFactory.get_intelligence()); //intelligenc
     transport.write_varint(transport.transportFactory.get_topology_id()); //topology
-    //todo change once TX support is added
+    //change once TX support is added
     transport.write_char(0x00); //transaction type
 }
 

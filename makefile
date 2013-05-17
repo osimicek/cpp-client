@@ -115,22 +115,22 @@ doc:
 
 
 startserver:
-	./server/infinispan/bin/startServer.sh -r hotrod
+	bash ./server/infinispan/bin/startServer.sh -r hotrod
 
 startservers:
-	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11222 -c ./server/distrib.xml &
+	 bash ./server/infinispan/bin/startServer.sh -r hotrod -p 11222 -c ./server/distrib.xml &
 	 sleep 3
-	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11223 -c ./server/distrib.xml &
+	 bash ./server/infinispan/bin/startServer.sh -r hotrod -p 11223 -c ./server/distrib.xml &
 	 sleep 1
-	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11224 -c ./server/distrib.xml &
+	 bash ./server/infinispan/bin/startServer.sh -r hotrod -p 11224 -c ./server/distrib.xml &
 	 sleep 1
-	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11225 -c ./server/distrib.xml &
+	 bash ./server/infinispan/bin/startServer.sh -r hotrod -p 11225 -c ./server/distrib.xml &
 	 sleep 1
-	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11226 -c ./server/distrib.xml &
+	 bash ./server/infinispan/bin/startServer.sh -r hotrod -p 11226 -c ./server/distrib.xml &
 	 sleep 1
-	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11227 -c ./server/distrib.xml &
+	 bash ./server/infinispan/bin/startServer.sh -r hotrod -p 11227 -c ./server/distrib.xml &
 	 sleep 1
-	 ./server/infinispan/bin/startServer.sh -r hotrod -p 11228 -c ./server/distrib.xml &
+	 bash ./server/infinispan/bin/startServer.sh -r hotrod -p 11228 -c ./server/distrib.xml &
 
 kill:
 	killall -9 -v java

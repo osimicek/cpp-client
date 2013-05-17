@@ -159,7 +159,7 @@ int Transport::read_varint(){
           return result;
         }
         shift += 7;
-        if (shift >= 32) {}//todo
+        if (shift >= 32) {}
           //raise DecodeError("Too many bytes when decoding varint.")
     }
 }
@@ -181,7 +181,7 @@ long long Transport::read_varlong(){
           return result;
         }
         shift += 7;
-        if (shift >= 64) {}//todo
+        if (shift >= 64) {}
           //raise DecodeError("Too many bytes when decoding varint.")
     }
 

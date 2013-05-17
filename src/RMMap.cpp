@@ -13,7 +13,7 @@ RMMap::RMMap(RemoteCacheConfig *remote_cache_config){
 }
 
 RMMap::~RMMap(){
-    //TODO delete all RemoteItems
+    //delete all RemoteItems
     delete RC;
 }
 
